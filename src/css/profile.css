@@ -1,0 +1,23 @@
+h4,h5,h6{
+    text-align:left;
+}
+.EP12{
+    border:1px solid grey;
+    width:920px;
+    border-width:1px;
+    border-radius:8px;
+    /* height:121px; */
+    display: block;
+    padding:10px;
+    margin-bottom:25px;
+
+}
+
+.msg_icon{
+    height:25px;
+    
+}
+.notifications{
+    height:500px;
+    width:300px;
+}

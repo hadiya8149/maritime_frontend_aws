@@ -1,0 +1,17 @@
+.mb-20{
+    margin-bottom:20%;
+}
+
+.headline{
+    text-align:center;
+    font-weight: bold;
+    margin-bottom:10px;
+}
+a:hover{
+    text-decoration: none;
+}
+#CourseBanner{
+    background-image: url(../assets/img/illustrations/Category-bg.png);
+    background-size: cover; /* This is the key property */
+    background-repeat: none;
+}

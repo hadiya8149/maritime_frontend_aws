@@ -1,0 +1,115 @@
+.bg-holder d-none d-sm-block{
+background-position:right top;
+background-size:contain;
+
+}
+
+.form-container {
+    /* background-color: rgba(255, 255, 255, 0.603); 
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px; */
+  } 
+  form {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    width:100%;
+  }
+  .form-control:focus {
+    outline: none;
+    border-color: #337ab7; /* Blue border on focus */
+  }
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .btn-primary {
+    background-color: #337ab7; /* Blue button color */
+    border-color: #337ab7;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  select {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  #form-heading {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    font-size:36px;
+    margin-bottom: 25px;
+  }
+#bannerImage{
+    background-image: url('../assets/maritime-training-academy-banner-1.jpg');
+}
+
+footer {
+  background-color: #f5f5f5;
+  padding: 1.5rem 0;
+  border-top: 1px solid #e5e5e5;
+}
+
+footer h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+footer .nav-link {
+  color: #777;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease-in-out;
+}
+
+footer .nav-link:hover {
+  color: #333;
+}
+
+footer .form {
+  margin-top: 1rem;
+}
+
+footer .form p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+footer .form-control {
+  border-radius: 0;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+}
+
+footer .btn-primary {
+  background-color: #333;
+  border-color: #333;
+}
+#home-banner-1{
+  background-image: url(../assets/img/jobsearch.avif);
+ 
+    
+
+}
+#bg-holder2{
+  background-image: url(../assets/img/illustrations/hero-bg.png);
+
+}
+#create-account{
+  text-align: center;
+}
