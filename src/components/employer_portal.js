@@ -8,6 +8,8 @@ export default function EmployerPortal() {
   
   const user_id = localStorage.getItem('user_id')
   const navigate=useNavigate('')
+  const employer_id=localStorage.getItem('employer_id')
+  
   const role = localStorage.getItem('role')
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
@@ -23,7 +25,7 @@ export default function EmployerPortal() {
     requirements: '',
     location: '',
     salary: 0,
-    employer_id: 1, //only for test purpose,
+    employer_id: employer_id, //only for test purpose,
     PostingDate: new Date().toISOString().slice(0, 10),
     ExpiryDate: ''
   })
@@ -31,7 +33,7 @@ export default function EmployerPortal() {
   async function createJob() {
     console.log(jobForm)
     try {
-      await axios.post('http://localhost:8000/api/create_job/', { body: jobForm })
+      await axios.post('http://localhost:8000/api/create_job', { body: jobForm })
         .then(
           (data) =>
             new Promise((resolve, reject) => {
@@ -55,10 +57,10 @@ export default function EmployerPortal() {
 
   
   async function fetchEmployerId() {
-    const response = await axios.get('https://maritime-backend.vercel.app/api/employer_by_user_id/' + user_id)
+    const response = await axios.get('http://localhost:8000/api/employer_by_user_id/' + user_id)
     // console.log(response)
     console.log(response.data.data)
-    localStorage.setItem('employer_id', response.data.data[0].employer_id)
+    localStorage.setItem('employer_id', response.data.data.employer_id)
   }
   function handleChange(e) {
     const { name, value } = e.target;
@@ -89,25 +91,25 @@ useEffect(()=>{
 }, [])
   return (
     <div className='h-100'>
-      <nav class="navbar  navbar-expand-lg bg-body-tertiary" style={{ marginTop: '5%' }}>
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+      <nav className="navbar  navbar-expand-lg bg-body-tertiary" style={{ marginTop: '5%' }}>
+        <div className="container-fluid">
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/employer">Home</a>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <a className="nav-link" aria-current="page" href="/employer">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/job_applications">My Jobs</a>
+              <li className="nav-item">
+                <a className="nav-link" href="/job_applications">My Jobs</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#postJobModal" data-bs-toggle="modal" data-target="#postJobModal">Post a job</a>
+              <li className="nav-item">
+                <a className="nav-link" href="#postJobModal" data-bs-toggle="modal" data-target="#postJobModal">Post a job</a>
               </li>
               <div className="dropdown">
 
-                <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} className='msg_icon'></img></a>
+                <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon}alt='msg dropdown' className='msg_icon'></img></a>
                 <ul className="dropdown-menu messaages" style={{width:'500px'}}>
                                 {messages.length === 0 ? (
       <li className="">No notifications</li>

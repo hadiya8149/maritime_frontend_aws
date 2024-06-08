@@ -14,15 +14,15 @@ export default function AdminNotifications(){
       }))
   }
   async function createNotification(){
-    const response = await axios.post("https://maritime-backend.vercel.app/api/sendnotification", {body:notificationForm})
+    const response = await axios.post("http://localhost:8000/api/sendnotification", {body:notificationForm})
     if(response.status===200){
       alert("notification created successfully")
     }
   }
     async function getNotifications(){
-      const response = await axios.get('https://maritime-backend.vercel.app/api/notifications');
+      const response = await axios.get('http://localhost:8000/api/notifications');
       if(response.status===200){
-      setNotifications(response.data.data)
+      setNotifications(response.data.Data)
       }
     }
     useEffect(()=>{
@@ -64,7 +64,7 @@ export default function AdminNotifications(){
         </tr>
     </thead>
     <tbody>
-      {notifications.map((notification)=>{
+      {notifications && notifications.map((notification)=>{
         return(
           <tr key={notification.notification_id}>
             <td>{notification.notification_id}</td>

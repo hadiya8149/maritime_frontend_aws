@@ -17,7 +17,7 @@ export default function JobApplications(){
     requirements:'',
     location:'',
     salary:0,
-    employer_id:1, //only for test purpose,
+    employer_id:employer_id, //only for test purpose,
     PostingDate: new Date().toISOString().slice(0,10),
     ExpiryDate: ''
   })
@@ -34,6 +34,7 @@ export default function JobApplications(){
             (data)=>
             new Promise((resolve, reject) => {
                 setTimeout(() => {
+                  console.log(data)
                    if(data.status===200){
                     console.log(data.data.data)
                     setApplications(data.data.data)
@@ -217,7 +218,7 @@ async function deleteJobApplication(app){
   },[])
 
     return (
-<div className=''>
+<div style={{minHeight:'100vh'}}>
 <nav className="navbar  navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -232,7 +233,7 @@ async function deleteJobApplication(app){
           <a className="nav-link"  onClick={fetchApplications} href="">My Jobs</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="#postJobModal"  data-bs-toggle="modal"  data-target="#postJobModal">Post a job</a>
+          <a  className="nav-link" href="#postJobModal" data-bs-toggle="modal" data-target="#postJobModal">Post a job</a>
         </li>
         <div className="dropdown">
                                
@@ -399,6 +400,46 @@ async function deleteJobApplication(app){
     </div>
   </div>
 </div>
+<div className="modal fade" id="postJobModal" tabIndex="-1" aria-labelledby="postJobModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="postJobModalLabel">Post a Job</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={createJob}>
+                  <div className="mb-3">
+                    <label htmlFor="jobTitle" className="form-label">Job Title</label>
+                    <input type="text" className="form-control" id="jobTitle" name='job_title' onChange={handleChange} required />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="jobDescription" className="form-label">Job Description</label>
+                    <textarea className="form-control" id="jobDescription" name='job_description' onChange={handleChange} rows="3" required></textarea>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="Requirements" className="form-label">Requirements</label>
+                    <textarea className="form-control" id="Requirements" rows="3" name='requirements' onChange={handleChange} required></textarea>
+                  </div>
+                  <div className="mb-3" style={{ textAlign: 'left' }}>
+                    <input type='text' id='location' required name='location' placeholder='Location' onChange={handleChange} />
+                  </div>
+                  <div className="mb-3" style={{ textAlign: 'left' }}>
+                    <input type='text' id='salary' required name="salary" placeholder='Salary' onChange={handleChange} />
+                  </div>
+                  <div className="mb-3" style={{ textAlign: 'left' }}>
+                    <input type='text' id='deadline' required name='ExpiryDate' placeholder='Deadline' onChange={handleChange} />
+                  </div>
+                  <div style={{ textAlign: 'left' }}>
+                    <label htmlFor="postingDate" className="form-label" style={{ fontSize: '14px' }}>Posting Date {new Date().toISOString().slice(0, 10)}</label>
+                  </div>
+                  <br />
+                  <button type="submit" className="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 </div>
     )
 }

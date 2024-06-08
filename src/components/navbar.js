@@ -57,16 +57,12 @@ Account
             </li>
 
             <li className='nav-item px-2'>
-            <div className='dropdown'>
-            <a className='fw-medium ' role='button' data-bs-toggle='dropdown' aria-expanded='false' href="#">
-                  <span>{username && username}</span>
-                  </a>
-<ul className='dropdown-menu' style={{height:'55px'}}>
-                  <h6>{username && role}</h6>
-                  <li className='dropdown-item'></li>  
-  </ul>                  
+            <a className='fw-medium ' href="#">
+                  <span>{username && username} </span>
+                  <span style={{fontSize:'10px'}}>{username && ('('+ role+')')}</span>
 
-            </div>
+                  </a>
+
             
               </li>
           </ul>

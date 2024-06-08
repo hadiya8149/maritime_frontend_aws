@@ -32,22 +32,22 @@ export default function StudentPortal(){
     return (
         
         <>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+  <div className="container-fluid">
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="/student">Home</a>
+    <div className="collapse navbar-collapse" id="navbarNav">
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <a className="nav-link " aria-current="page" href="/student">Home</a>
         </li>
      
-        <li class="nav-item">
-          <a class="nav-link" href="/my_course&programs">My Courses and Programs</a>
+        <li className="nav-item">
+          <a className="nav-link" href="/my_course&programs">My Courses and Programs</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/profile">Profile</a>
+        <li className="nav-item">
+          <a className="nav-link" href="/profile">Profile</a>
         </li>
       </ul>
     </div>

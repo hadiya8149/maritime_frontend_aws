@@ -37,22 +37,22 @@ export default function MyCoursesAndPrograms() {
     }, []);
     return (
         <>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+            <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+  <div className="container-fluid">
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="/student">Home</a>
+    <div className="collapse navbar-collapse" id="navbarNav">
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <a className="nav-link " aria-current="page" href="/student">Home</a>
         </li>
      
-        <li class="nav-item">
-          <a class="nav-link" href="/my_course&programs">My Courses and Programs</a>
+        <li className="nav-item">
+          <a className="nav-link" href="/my_course&programs">My Courses and Programs</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/profile">Profile</a>
+        <li className="nav-item">
+          <a className="nav-link" href="/profile">Profile</a>
         </li>
       </ul>
     </div>
@@ -99,11 +99,11 @@ export default function MyCoursesAndPrograms() {
     </tr>
         </thead>
         <tbody>
-                    {myPrograms.map(program => {
+                    {myPrograms && myPrograms.map(program => {
                         return (
                             <tr key={program.program_id}>
                             <td style={{ marginBottom: '5px' }}>{program.program_name}</td>
-                            <td><a href={`/course_info/${program.program_id}`} style={{color:'blue', textDecoration:'underline'}}>Go to Program</a></td>
+                            <td><a href={`/program_info/${program.program_id}`} style={{color:'blue', textDecoration:'underline'}}>Go to Program</a></td>
                        
     </tr>    
         

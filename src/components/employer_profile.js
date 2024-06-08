@@ -58,29 +58,29 @@ export default function EmployerProfile() {
     fetchMessages()
 },[]);
     return (
-        <div className='h-100'>
-                        <nav class="navbar  navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+        <div style={{minHeight:'100vh'}}>
+                        <nav className="navbar  navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+  <div className="container-fluid">
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="/employer">Home</a>
+    <div className="collapse navbar-collapse" id="navbarNav">
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <a className="nav-link " aria-current="page" href="/employer">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link"  href="/job_applications">My Jobs</a>
+        <li className="nav-item">
+          <a className="nav-link"  href="/job_applications">My Jobs</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/employer" >Post a job</a>
+        <li className="nav-item">
+          <a className="nav-link" href="/employer" >Post a job</a>
         </li>
         <div className="dropdown">
                                
                                 <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} className='msg_icon'></img></a>
                                 <ul className="dropdown-menu messaages" style={{width:'500px'}}>
                                 {messages.length === 0 ? (
-      <li className="">No notifications</li>
+      <li className="">No Messages</li>
     ) : (
       messages.map((message) => (
         <li key={message.message_id} >

@@ -8,9 +8,15 @@ import { useNavigate } from 'react-router-dom';
 export default function AppliedJobs() {
   const navigate = useNavigate()
   const [notifications, setNotifications]=useState([])
-
+  const [messages, setMessages]=useState([])
+  const user_id= localStorage.getItem('user_id')
+  async function fetchMessages(){
+    console.log(user_id)
+    const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+    console.log(response.data)
+    setMessages(response.data)
+  }
     const [myJobs, setmyJobs] = useState([])
-    const user_id = localStorage.getItem('user_id')
     const jobSeeker_id = localStorage.getItem('jobSeeker_id')
   const fetchData = async () => {
       try {
@@ -34,7 +40,7 @@ export default function AppliedJobs() {
   useEffect(() => {
       fetchData();
     getNotifications();
-
+fetchMessages()
   },[]);
     return (
         <div style={{marginBottom:'20%'}}>
@@ -72,14 +78,21 @@ export default function AppliedJobs() {
                                 </ul>
                             </div>
                             <div className="dropdown">
-
-                                <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} className='msg_icon'></img></a>
-                                <ul className="dropdown-menu messaages">
-                                    <li><a className="dropdown-item" href="#">Mark all as read</a></li>
-                                    <li><a className="dropdown-item" href="#">Notification 1</a></li>
-                                    <li><a className="dropdown-item" href="#">Notification 2</a></li>
-                                </ul>
-                            </div>
+                               
+                               <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} alt='msg dropdown' className='msg_icon'></img></a>
+                               <ul className="dropdown-menu messaages overflow-auto" style={{width:'600px', height:'500px'}}>
+                               {messages.length === 0 ? (
+     <li className="">No Messages</li>
+   ) : (
+     messages.map((message) => (
+       <li key={message.message_id} >
+         {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
+         <hr/>
+       </li>
+     ))
+   )}
+                               </ul>
+                           </div>
                             <li className="nav-item">
                                 <a className="nav-link" href='/jobseeker_profile' role='button'>Profile</a>
                             </li>
