@@ -5,9 +5,6 @@ import axios from 'axios';
 import {get} from 'aws-amplify'
 import Navbar from './navbar.js'
 import { Amplify } from 'aws-amplify';
-import amplifyconfig from './amplifyconfiguration.json';
-
-Amplify.configure(amplifyconfig);
 export  const Login=()=> {
   const navigate = useNavigate();
 
