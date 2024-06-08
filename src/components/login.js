@@ -1,11 +1,15 @@
+import amplifyconfig from '../amplifyconfiguration.json';
+
 import React, { useState, useEffect } from 'react';
 import '../css/login.css'
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import {get} from 'aws-amplify'
-import Navbar from './navbar.js'
+import { post } from 'aws-amplify/api';
+
 import { Amplify } from 'aws-amplify';
+Amplify.configure(amplifyconfig);
+
 export  const Login=()=> {
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('')
@@ -21,22 +25,22 @@ export  const Login=()=> {
 
     event.preventDefault()
 
-    var requestOptions = {
-      method: 'POST',
-        email:email,
-        password:password,
-      redirect: 'follow',
-      withCredentials:true
-    };
-    try {
-      const restOperation = get({
-        apiName: 'api',
-        path: '/login'
-      });
-      const { body } = await restOperation.response;
-    const response = await body.json();
-    console.log('POST call succeeded');
-    console.log(response);
+    // var requestOptions = {
+    //   method: 'POST',
+    //     email:email,
+    //     password:password,
+    //   redirect: 'follow',
+    //   withCredentials:true
+    // };
+    // try {
+    //   const restOperation = get({
+    //     apiName: 'api',
+    //     path: '/login'
+    //   });
+    //   const { body } = await restOperation.response;
+    // const response = await body.json();
+    // console.log('POST call succeeded');
+    // console.log(response);
     // await axios.post('http://localhost:8000/api/login',requestOptions).then(
     //   (data)=>
     //     new Promise((resolve, reject) => {
@@ -85,12 +89,34 @@ export  const Login=()=> {
     //   }
     // })
     
-  }catch(err){
-    console.log(err)
+  // }catch(err){
+  //   console.log(err)
+  // }
   }
-  }
+  async function postTodo() {
+    try {
+      const restOperation = post({
+        apiName: 'api',
+        path: '/login',
+        options: {
+          body: {
+            message: 'Mow the lawn'
+          }
+        }
+      });
+  
+      const { body } = await restOperation.response;
+      const response = await body.json();
+  
+      console.log('POST call succeeded');
+      console.log(response);
+    } catch (e) {
+      console.log('POST call failed: ', JSON.parse(e.response.body));
+    }}
+
   useEffect(()=>{
     const user_id = localStorage.getItem('user_id')
+    postTodo()
     if (user_id){
       navigate('/')
     }
@@ -124,6 +150,3 @@ export  const Login=()=> {
     </div>
   )
 }
-// Login.propTypes = {
-//   setToken: PropTypes.func.isRequired
-// }
