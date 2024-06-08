@@ -11,5 +11,26 @@
       "StackId": "arn:aws:cloudformation:ap-southeast-2:533267048008:stack/amplify-maritime-dev-52921/46120720-2551-11ef-9ded-06e3e25e4f9b",
       "AmplifyAppId": "d1tkpp4yl30dfw"
     }
+  },
+  "backdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-maritime-backdev-e4224-authRole",
+      "UnauthRoleArn": "arn:aws:iam::533267048008:role/amplify-maritime-backdev-e4224-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::533267048008:role/amplify-maritime-backdev-e4224-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-maritime-backdev-e4224-deployment",
+      "UnauthRoleName": "amplify-maritime-backdev-e4224-unauthRole",
+      "StackName": "amplify-maritime-backdev-e4224",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:533267048008:stack/amplify-maritime-backdev-e4224/fe03b3e0-2558-11ef-a01c-065706d81cd5",
+      "AmplifyAppId": "d1tkpp4yl30dfw"
+    },
+    "categories": {
+      "function": {
+        "maritimelogin": {}
+      },
+      "auth": {
+        "maritime": {}
+      }
+    }
   }
 }
