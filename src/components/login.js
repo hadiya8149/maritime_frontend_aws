@@ -88,8 +88,10 @@ export  const Login=()=> {
     //   }
     // })
     
+  }catch(err){
+    console.log(err)
   }
-
+  }
   useEffect(()=>{
     const user_id = localStorage.getItem('user_id')
     if (user_id){
