@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, BrowserRouter} from 'react-router-dom';
+import { Routes, Route, BrowserRouter, generatePath} from 'react-router-dom';
 import React from 'react'
 import {Login} from './components/login.js'
 import JobPortal from './components/job_portal.js';

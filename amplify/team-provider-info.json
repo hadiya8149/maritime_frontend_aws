@@ -22,14 +22,21 @@
       "UnauthRoleName": "amplify-maritime-backdev-e4224-unauthRole",
       "StackName": "amplify-maritime-backdev-e4224",
       "StackId": "arn:aws:cloudformation:ap-southeast-2:533267048008:stack/amplify-maritime-backdev-e4224/fe03b3e0-2558-11ef-a01c-065706d81cd5",
-      "AmplifyAppId": "d1tkpp4yl30dfw"
+      "AmplifyAppId": "d1tkpp4yl30dfw",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-maritime-backdev-e4224-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "function": {
-        "maritimelogin": {}
+        "maritimelogin": {
+          "deploymentBucketName": "amplify-maritime-backdev-e4224-deployment",
+          "s3Key": "amplify-builds/maritimelogin-686e6d786f3938416765-build.zip"
+        }
       },
       "auth": {
         "maritime": {}
+      },
+      "api": {
+        "api": {}
       }
     }
   }

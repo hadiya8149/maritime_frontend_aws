@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import '../css/login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import {get} from 'aws-amplify'
 import Navbar from './navbar.js'
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './amplifyconfiguration.json';
+
+Amplify.configure(amplifyconfig);
 export  const Login=()=> {
   const navigate = useNavigate();
 
@@ -26,53 +31,62 @@ export  const Login=()=> {
       redirect: 'follow',
       withCredentials:true
     };
-    await axios.post('http://localhost:8000/api/login',requestOptions).then(
-      (data)=>
-        new Promise((resolve, reject) => {
-            setTimeout(() => {
-                console.log(data)
-                if(data['status']===200){
-                const role = data['data'].user_role
-                console.log(role)
-                localStorage.setItem('authToken', data.data.token);
-                localStorage.setItem('role', role);
-                localStorage.setItem('user_id', data.data.user_id)
-                localStorage.setItem('username', data.data.username)
-                setUser_id(data.data.user_id)
-                 if(data.data.user_role.toLowerCase() ==='student') {
-                  navigate('/student', {replace:true})
-                 }
-                 else if (data.data.user_role.toLowerCase()=='employer'){
-                  navigate('/employer')
-                 }
-                 else if (data.data.user_role=='Job Seeker'){
-                  const user_id = localStorage.getItem('user_id')
-                  const fetchJobSeekerID = async()=>{
-                    const response = await axios.get('http://localhost:8000/api/jobseeker_by_user_id/'+user_id)
-                    if (response.status===200){
-                      localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
-                      navigate('/jobseeker')
+    try {
+      const restOperation = get({
+        apiName: 'api',
+        path: '/login'
+      });
+      const { body } = await restOperation.response;
+    const response = await body.json();
+    console.log('POST call succeeded');
+    console.log(response);
+    // await axios.post('http://localhost:8000/api/login',requestOptions).then(
+    //   (data)=>
+    //     new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             console.log(data)
+    //             if(data['status']===200){
+    //             const role = data['data'].user_role
+    //             console.log(role)
+    //             localStorage.setItem('authToken', data.data.token);
+    //             localStorage.setItem('role', role);
+    //             localStorage.setItem('user_id', data.data.user_id)
+    //             localStorage.setItem('username', data.data.username)
+    //             setUser_id(data.data.user_id)
+    //              if(data.data.user_role.toLowerCase() ==='student') {
+    //               navigate('/student', {replace:true})
+    //              }
+    //              else if (data.data.user_role.toLowerCase()=='employer'){
+    //               navigate('/employer')
+    //              }
+    //              else if (data.data.user_role=='Job Seeker'){
+    //               const user_id = localStorage.getItem('user_id')
+    //               const fetchJobSeekerID = async()=>{
+    //                 const response = await axios.get('http://localhost:8000/api/jobseeker_by_user_id/'+user_id)
+    //                 if (response.status===200){
+    //                   localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
+    //                   navigate('/jobseeker')
 
-                    }
-                  }
+    //                 }
+    //               }
                   
-                  fetchJobSeekerID()
-                 }
-                 else if (data.data.user_role=='admin'){
-                  navigate('/admin')
-                 }
-              }
-            }, 1);
-          }),
+    //               fetchJobSeekerID()
+    //              }
+    //              else if (data.data.user_role=='admin'){
+    //               navigate('/admin')
+    //              }
+    //           }
+    //         }, 1);
+    //       }),
     
-    ).catch(function(error){
-      if (error.response.status==401){
-        alert("Invalid password. Please try again")
-      }
-      else if (error.response.status==404){
-        alert("user not found . Please signup")
-      }
-    })
+    // ).catch(function(error){
+    //   if (error.response.status==401){
+    //     alert("Invalid password. Please try again")
+    //   }
+    //   else if (error.response.status==404){
+    //     alert("user not found . Please signup")
+    //   }
+    // })
     
   }
 

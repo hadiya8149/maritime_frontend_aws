@@ -9,14 +9,36 @@
       "UnauthRoleName": "amplify-maritime-backdev-e4224-unauthRole",
       "StackName": "amplify-maritime-backdev-e4224",
       "StackId": "arn:aws:cloudformation:ap-southeast-2:533267048008:stack/amplify-maritime-backdev-e4224/fe03b3e0-2558-11ef-a01c-065706d81cd5",
-      "AmplifyAppId": "d1tkpp4yl30dfw"
+      "AmplifyAppId": "d1tkpp4yl30dfw",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-maritime-backdev-e4224-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     }
   },
   "function": {
     "maritimelogin": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2024-06-08T06:02:39.081Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-06-08T06:02:43.200Z",
+      "distZipFilename": "maritimelogin-686e6d786f3938416765-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-maritime-backdev-e4224-deployment",
+        "s3Key": "amplify-builds/maritimelogin-686e6d786f3938416765-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-maritime-backdev-e4224-deployment/amplify-cfn-templates/function/maritimelogin-cloudformation-template.json",
+        "logicalId": "functionmaritimelogin"
+      },
+      "lastPushTimeStamp": "2024-06-08T06:05:06.288Z",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::533267048008:role/maritimeLambdaRoled6d081ea-backdev",
+        "Region": "ap-southeast-2",
+        "Arn": "arn:aws:lambda:ap-southeast-2:533267048008:function:maritimelogin-backdev",
+        "Name": "maritimelogin-backdev",
+        "LambdaExecutionRole": "maritimeLambdaRoled6d081ea-backdev"
+      },
+      "lastPushDirHash": "FkRoQf6nRHPs1u0GfmM24aMQUW4="
     }
   },
   "auth": {
@@ -42,7 +64,22 @@
         "verificationMechanisms": [
           "EMAIL"
         ]
-      }
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-maritime-backdev-e4224-deployment/amplify-cfn-templates/auth/maritime-cloudformation-template.json",
+        "logicalId": "authmaritime"
+      },
+      "lastPushTimeStamp": "2024-06-08T06:05:06.288Z",
+      "output": {
+        "UserPoolId": "ap-southeast-2_E8ecAl28D",
+        "AppClientIDWeb": "v9kke49c1gnmr5ogpjl1lahb6",
+        "AppClientID": "35b079r005aa4us7jo575eviag",
+        "IdentityPoolId": "ap-southeast-2:ae70c093-77ca-45ef-971c-b0419c89fd44",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-southeast-2:533267048008:userpool/ap-southeast-2_E8ecAl28D",
+        "IdentityPoolName": "maritime_identitypool_86e59cba__backdev",
+        "UserPoolName": "maritime_userpool_86e59cba"
+      },
+      "lastPushDirHash": "CAAN6XsbK33slnxETVraRYCXp/A="
     }
   },
   "api": {
@@ -58,7 +95,18 @@
             "Arn"
           ]
         }
-      ]
+      ],
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-maritime-backdev-e4224-deployment/amplify-cfn-templates/api/api-cloudformation-template.json",
+        "logicalId": "apiapi"
+      },
+      "lastPushTimeStamp": "2024-06-08T06:05:06.288Z",
+      "output": {
+        "ApiName": "api",
+        "RootUrl": "https://vcasnoo32f.execute-api.ap-southeast-2.amazonaws.com/backdev",
+        "ApiId": "vcasnoo32f"
+      },
+      "lastPushDirHash": "itZ128HhN3eET/o6M/J3FPw5wPk="
     }
   }
 }
