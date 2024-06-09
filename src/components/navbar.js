@@ -11,7 +11,7 @@ const navigate = useNavigate()
     navigate('/')
   }
   return (
-    <nav className="navbar navbar-expand-lg navbar-light fixed-top py-3 backdrop mb-3" data-navbar-on-scroll="data-navbar-on-scroll" style={{ background: 'rgb(7 48 91)' }}>
+    <nav className="navbar navbar-expand-lg navbar-light "  data-navbar-on-scroll="data-navbar-on-scroll" style={{ background: 'rgb(7 48 91)',marginBottom:'0px' }}>
       <div className="container-fluid"><a className="navbar-brand d-flex align-items-center fw-bolder fs-2 fst-italic" href="/">
         <div className="text-info">Mari</div>
         <div className="text-warning">Time</div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from 'axios';
 import React from 'react'
 import { API_URL } from '../utils.js';
+import '../css/signup.css'
 
 export default function Signup() {
     const [signupForm, setsignupForm] = useState({
@@ -59,37 +60,33 @@ export default function Signup() {
 
     return (
         <div id="bannerImage">
-            <div className='container'>
+            <div className='container signupform-container'>
                 <div className='m-auto form-container'>
-                    <div className="card w-100" style={{ background: 'none', border: 'none' }}>
-                        <form onSubmit={handleSubmit} className="w-50 m-auto p-5" style={{ color: 'black' }}>
+                    <div className=" w-100 signupcard" style={{ background: 'none', border: 'none' }}>
+                        <form onSubmit={handleSubmit} id="signupform" className=" m-auto p-5" style={{ color: 'black' }}>
                         <span id="create-account"><h4 style={{textAlign:'center'}}>Create Account</h4></span>
 
-                            <div className="mb-3">
-                                <input type="email" placeholder="Email Address" className="form-control" onChange={handleChange} name='email' id="InputEmail" aria-describedby="emailHelp" required />
-                            </div>
-                            <div className="mb-3">
-                                <input type="text" placeholder="User Name" className="form-control" onChange={handleChange} id="InputUserName" name='username' aria-describedby="UserNameHelp" required/>
+                            <div className="mb-3 group " >
+                             
+                                <input type="email" placeholder="Email Address" className="form-control mr-3 " onChange={handleChange} name='email' id="InputEmail" aria-describedby="emailHelp" required />
+                           
+                                <input type="text" placeholder="User Name" className="form-control mr-3 " onChange={handleChange} id="InputUserName" name='username' aria-describedby="UserNameHelp" required/>
                             </div>
                             <div className="mb-3">
                                 <input type="password" placeholder="password" className="form-control mb-3" onChange={handleChange} id="InputPassword" name='password' required/>
                                 <input type="password" placeholder="Re enter password" className="form-control" onChange={handleChange} name='password1' id="InputPassword1" required/>
 
                             </div>
-                            <div className="mb-3">
-                                <input type="number" placeholder="age" className="form-control" id="InputAge" name='age' onChange={handleChange} aria-describedby="AgeHelp" min='18'required and max='70' />
-                                <label htmlFor="InputGender" className="form-label">Gender</label>
-                                <select onChange={handleChange} className="w-100" name='gender' required>
-                                    <option>Select</option>
+                            <div className="mb-3 group">
+                                <input type="number" placeholder="age" className="form-control mr-3" id="InputAge" name='age' onChange={handleChange} aria-describedby="AgeHelp" min='18'required and max='70' />
+                                <select onChange={handleChange} className="w-100 mr-3" name='gender' required>
+                                    <option>Gender</option>
                                     <option >Female</option>
                                     <option>Male</option>
                                     <option>Others</option>
                                 </select>
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="InputRole" className="form-label">Role</label>
-                                <select onChange={handleChange} htmlFor='role' className="w-100" name='role' required>
-                                    <option>Select</option>
+                                <select onChange={handleChange} htmlFor='role' className="w-100 mr-3" name='role' required>
+                                    <option>Role</option>
                                     <option>
                                         Student
                                     </option>
@@ -99,7 +96,7 @@ export default function Signup() {
                                     <option>Job Seeker</option>
                                 </select>
                             </div>
-                            <button type="submit" className="btn btn-primary btn-lg col-3" style={{heihgt:'50px'}}>Signup</button>
+                            <button id='signupbtn' type="submit" className="btn btn-primary signup-btn btn-lg " style={{heihgt:'50px'}}>Signup</button>
                         </form>
                     </div>
 

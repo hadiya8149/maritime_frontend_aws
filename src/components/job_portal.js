@@ -1,5 +1,6 @@
 // import '../css/job.css';
 import React from 'react'
+import '../css/job_portal.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import jobPortalImage from '../assets/introduction-to-port-state-control-1.jpg'
@@ -86,8 +87,8 @@ export default function Job_Portal() {
     console.log("filter", filterQuery)
   }
   return (
-    <div className='mt-8'>
-      <div style={{ padding: '16px', background: '#f1f3f7', height: '200px', width: '80%', margin: 'auto', marginTop: 'auto', borderRadius: '5px' }}>
+    <div className=''>
+      <div style={{ padding: '16px', background: '#f1f3f7', height: '200px', margin: 'auto', marginTop: 'auto', borderRadius: '5px' }}>
         <div className='mb-3  m-auto' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>
           <input className='h-100 mr-3  form-control' onChange={(e) => setSearchQuery(e.target.value)} type='text' placeholder='Job Title' />
         </div>

@@ -94,7 +94,7 @@ export  const Login=()=> {
     }
   })
   return (
-    <div id="bannerImage">
+    <div id="bannerImage" style={{width:'100%'}}>
     <div className='container'>
 
       <div className='m-auto form-container'>

@@ -10,7 +10,7 @@ export default function Home(){
 return (
     <main className="main" 
     >
-      <section className="py-0 mt-5" id="home">
+      <section className="py-0" id="home">
                 <img alt='background  of sea' loading="lazy" className='mb-0' decoding="async" width="100%" height="467" src={seaImage} sizes="(max-width: 1280px) 100vw, 1280px"></img>
         
         <div className="container" >
