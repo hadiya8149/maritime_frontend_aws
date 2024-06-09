@@ -4,7 +4,7 @@ import { createNotification, getAllNotifications, sendNotificationToUser } from 
 import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const notificationRouter = express.Router();
-
+notificationRouter.use(authenticateJwt)
 // Route to create a notification
 notificationRouter.post('/sendnotification', createNotification);
 

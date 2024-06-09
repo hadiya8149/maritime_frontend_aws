@@ -5,7 +5,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
 import dotenv from 'dotenv';
-import servelss from "serverless-http"
+import serverless from "serverless-http"
 import  path from 'path';
 
 import userRoute from './routers/userRoute.js';
@@ -26,7 +26,6 @@ import progressRouter from './routers/progressRoute.js';
 
 // Initialize dotenv for environment variables
 dotenv.config();
-
 const app = express();
 // if (process.env.DEVELOPMENT){
 //   const corsOpts = {
@@ -45,7 +44,6 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 // Initialize session and cookie parser middleware
 app.use(cookieParser());
 app.use(session({
@@ -60,7 +58,7 @@ app.use('/api',
   courseRouter, 
   courseApplicationRouter, 
   programApplicationRouter,
-  trainingRouter,
+  // trainingRouter,
   adminRouter,
   jobSeekerRouter,
   jobApplicationRouter, 
@@ -71,32 +69,31 @@ app.use('/api',
   notificationRouter,
   resumeRoute,
   progressRouter
-
 );
 app.use(express.static('public/data/uploads'))
 // 404 Error Handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 // Global Error Handler
-app.use((err, req, res, next) => {
+// app.use((err, req, res, next) => {
   
-  err.statusCode = err.statusCode || 500;
-  err.message = err.message || 'Internal Server Error';
+//   err.statusCode = err.statusCode || 500;
+//   err.message = err.message || 'Internal Server Error';
   
-  res.status(err.statusCode).json({
-    message: err.message
-  });
-});
+//   res.status(err.statusCode).json({
+//     message: err.message
+//   });
+// });
 
 // // Start the server
 
 // if(process.env.DEVELOPMENT){
-// const PORT = process.env.PORT || 8000;
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}.`);
-// });
-// }
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+}); 
 
-export const handler = servelss(app);
+// }
+// export const handler = servelss(app);

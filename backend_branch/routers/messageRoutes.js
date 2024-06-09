@@ -3,12 +3,12 @@ import { getAllMessages, sendMessage } from '../controllers/messageController.js
 import { db } from '../config/dbConnection.js';
 const messageRouter = express.Router();
 import {authenticateJwt} from '../middleware/authMiddleware.js'
-
+messageRouter.use(authenticateJwt)
 // Route to send a message from admin to a user
 messageRouter.post('/send_message', sendMessage);
 // route to send a message from employer to jobseeker
 
-messageRouter.post('/send_message_to_jobSeeker/:id', async(req, res)=>{
+messageRouter.post('/send_message_to_jobSeeker/:id', authenticateJwt,async(req, res)=>{
     const {jobseeker_id,body,subject }=req.body
     const sender_id = req.params.id
     console.log(req.body, req.params)
@@ -33,7 +33,7 @@ messageRouter.post('/send_message_to_jobSeeker/:id', async(req, res)=>{
 
 })
 
-messageRouter.get('/messages' , getAllMessages);
+messageRouter.get('/messages' ,getAllMessages);
 
 messageRouter.get('/message_by_user_id/:id', async(req, res)=>{
     const user_id = req.params.id;

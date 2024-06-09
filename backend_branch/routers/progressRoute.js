@@ -4,7 +4,7 @@ import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 
 const progressRouter = express.Router();
-
+progressRouter.use(authenticateJwt)
 // Create a new progress
 progressRouter.post('/progress', async(req, res)=>{
   const {std_id, CourseID, ProgramID, ProgressPercentage, CompletionStatus, LastUpdatedDate} = req.body;

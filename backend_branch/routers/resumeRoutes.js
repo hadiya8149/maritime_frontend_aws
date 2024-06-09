@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage})
 
 const resumeRoute = express.Router();
-
+resumeRoute.use(authenticateJwt)
 resumeRoute.post('/upload_resume' , upload.single('file') ,authenticateJwt, async(req, res) => {
     console.log(req.body)
     console.log(req.file)

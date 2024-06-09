@@ -3,7 +3,7 @@ import { createJobSeeker, deleteJobSeeker, getJobSeekerById, getJobSeekerByUserI
 import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const jobSeekerRouter = express.Router();
-
+jobSeekerRouter.use(authenticateJwt)
 // Create job seeker
 jobSeekerRouter.post('/create_jobseeker', createJobSeeker);
 

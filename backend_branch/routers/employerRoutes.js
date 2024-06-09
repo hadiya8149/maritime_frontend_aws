@@ -3,7 +3,7 @@ import { createEmployer, deleteEmployer,getEmployerByUserId, getEmployerById, ge
 import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const employerRouter = express.Router();
-
+employerRouter.use(authenticateJwt)
 // Create employer
 employerRouter.post('/create_employer', createEmployer);
 

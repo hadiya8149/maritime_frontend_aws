@@ -3,7 +3,7 @@ import {db} from '../config/dbConnection.js';
 import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const programApplicationRouter = Router();
-
+programApplicationRouter.use(authenticateJwt)
 //craete program
 programApplicationRouter.post('/apply_for_program', (req,res)=>{
     const {std_id, course_id, program_id, AppDate, Status}=req.body.body

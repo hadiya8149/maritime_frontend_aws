@@ -123,7 +123,7 @@ export const getCourseById = (req, res) => {
 // Get all courses
 export const getAllCourses = (req, res) => {
   const query = `SELECT * FROM courses`;
-
+  console.log('all courses')
   db.query(query, (error, results) => {
     if (error) {
       res.status(500).json({

@@ -4,12 +4,11 @@ import {upload} from '../middleware/upload.js';
 import {authenticateJwt} from '../middleware/authMiddleware.js'
 import fs from 'fs'
 const courseRouter = Router();
-
 //craete course
-courseRouter.post('/course', createCourse);
+courseRouter.post('/course', authenticateJwt,createCourse);
 // Get all courses
 courseRouter.get('/courses', getAllCourses);
-courseRouter.get('/view_course/:path', async(req, res)=>{
+courseRouter.get('/view_course/:path', authenticateJwt, async(req, res)=>{
     const path = './public/data/uploads/courses/'+req.params.path;
      if (fs.existsSync(path)){
         res.contentType("application/pdf");
@@ -22,12 +21,12 @@ courseRouter.get('/view_course/:path', async(req, res)=>{
      }
 })
 // Get course by ID
-courseRouter.get('/course/:id', getCourseById);
+courseRouter.get('/course/:id',authenticateJwt, getCourseById);
 
 // Update course by ID
-courseRouter.put('/course/:id',upload, updateCourse);
+courseRouter.put('/course/:id',upload,authenticateJwt, updateCourse);
 
 // Delete course by ID
-courseRouter.delete('/course/:id', deleteCourse);
+courseRouter.delete('/course/:id',authenticateJwt, deleteCourse);
 
 export default courseRouter;

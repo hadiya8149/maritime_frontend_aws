@@ -1,4 +1,4 @@
-import express from 'express';
+import {Router} from 'express';
 import { createUser, getUserById, updateUser, deleteUser, logout } from '../controllers/userController.js';
 import { check } from 'express-validator';
 import { authenticateJwt } from '../middleware/authMiddleware.js';
@@ -7,7 +7,7 @@ import { db } from "../config/dbConnection.js";
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcryptjs";
 const secretkey = process.env.JWT_SECRET
-const userRouter = express.Router();
+const userRouter = Router();
 
 
 userRouter.post('/create_user' , createUser);
@@ -70,6 +70,6 @@ userRouter.put('/update_user/:id', authenticateJwt, updateUser);
 userRouter.delete('/delete_user/:userId', authenticateJwt, deleteUser);
 
 
-userRouter.post('/logout' ,logout);
+userRouter.post('/logout' , authenticateJwt,logout);
 
 export default userRouter;

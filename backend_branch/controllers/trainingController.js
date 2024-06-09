@@ -3,7 +3,7 @@
 import { db } from '../config/dbConnection.js';
 
 // Create a new program
-export const createProgram = async (req, res) => {
+export const createProgram = async (req, res, next) => {
   const { program_name, description, duration_months, trainer } = req.body.body;
   console.log(program_name, description, duration_months, trainer)
 
@@ -60,16 +60,16 @@ export const getProgramById = (req, res) => {
 };
 
 // Get all programs
-export const getAllPrograms = (req, res) => {
+export const getAllPrograms = (req, res, next) => {
+  console.log('all programs')
   const query = `SELECT * FROM trainingprograms`;
-
   db.query(query, (error, results) => {
     if (error) {
+      console.log(error)
       res.status(500).json({
         success: false,
         error: 'Internal Server Error'
       });
-      return;
     }
 
     res.status(200).json({
@@ -79,6 +79,7 @@ export const getAllPrograms = (req, res) => {
 
     });
   });
+  next()
 };
 
 // Update program by ID

@@ -7,18 +7,18 @@ import { createJob, deleteJob, getJobById, getAllJobs, getJobByEmployerId, updat
 const jobRouter = express.Router();
 
 // Create job
-jobRouter.post('/create_job', createJob);
+jobRouter.post('/create_job',authenticateJwt, createJob);
 
 // Update job
-jobRouter.put('/update_job/:id', updateJob);
+jobRouter.put('/update_job/:id',authenticateJwt, updateJob);
 
 // Delete job
-jobRouter.delete('/delete_job/:id', deleteJob);
+jobRouter.delete('/delete_job/:id',authenticateJwt, deleteJob);
 
 // Get job by ID
 jobRouter.get('/job/:id', getJobById);
 
-jobRouter.get('/get_job_by_employer_id/:id', getJobByEmployerId);
+jobRouter.get('/get_job_by_employer_id/:id',authenticateJwt, getJobByEmployerId);
 
 // Get all jobsbs
 jobRouter.get('/jobs', getAllJobs);

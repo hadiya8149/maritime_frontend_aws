@@ -4,7 +4,7 @@ import { upload } from '../middleware/upload.js';
 import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const jobApplicationRouter = express.Router();
-
+jobApplicationRouter.use(authenticateJwt)
 // Create job application by employer
 jobApplicationRouter.post('/create_job_application', upload, createJobApplication);
 
