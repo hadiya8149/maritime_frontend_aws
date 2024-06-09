@@ -5,7 +5,7 @@ import { db } from "../config/dbConnection.js";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
-
+const saltRounds = 10;
 // CREATE USER
 
 export const createUser = async (req, res) => {
@@ -23,7 +23,9 @@ export const createUser = async (req, res) => {
 
         // Insert user data into the users table
         const userInsertQuery = 'INSERT INTO users (username, email, password, role, user_age, user_gender) VALUES (?, ?, ?, ?, ?, ?)';
-        const userInsertParams = [username, email, password, role, age, gender];
+        const encryptedPassword = await bcrypt.hash(password, saltRounds)
+        const userInsertParams = [username, email, encryptedPassword, role, age, gender];
+
         const insertUser = (userInsertQuery, userInsertParams) => {
             return new Promise((resolve, reject) => {
                 db.query(userInsertQuery, userInsertParams, (err, result) => {
