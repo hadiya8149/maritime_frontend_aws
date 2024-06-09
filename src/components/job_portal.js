@@ -5,6 +5,7 @@ import axios from 'axios'
 import jobPortalImage from '../assets/introduction-to-port-state-control-1.jpg'
 import jobSearch from '../assets/img/illustrations/online-job-search-4836622-4032953.png'
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../utils';
 import { useCallback } from 'react';
 export default function Job_Portal() {
 
@@ -22,7 +23,7 @@ export default function Job_Portal() {
 
   const fetchData =useCallback( async()=>{
     try {
-      const response = await axios.get('http://localhost:8000/api/jobs');
+      const response = await axios.get(`${API_URL}/jobs`);
       console.log(response)
       if (response.status === 200) {
         setJobs(response.data.data);
@@ -34,7 +35,7 @@ export default function Job_Portal() {
   })
   const fetchJobDescription = async (id) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/job/' + id);
+      const response = await axios.get(`${API_URL}/job/` + id);
       if (response.status === 200) {
         console.log(response.data.data)
         setJobDetails(response.data.data);
@@ -45,7 +46,7 @@ export default function Job_Portal() {
     }
   };
   const applyForJob = async (id) => {
-    const res = await axios.get('http://localhost:8000/api/jobseeker/'+jobSeeker_id);
+    const res = await axios.get(`${API_URL}/jobseeker/`+jobSeeker_id);
       const resume_url = res.data.data.resumeURL;
     const data = {
       jobSeeker_id: jobSeeker_id,
@@ -54,7 +55,7 @@ export default function Job_Portal() {
       Status: 'pending',
       ResumeURL: resume_url
     }
-    const response = await axios.post('http://localhost:8000/api/create_job_application', { body: data })
+    const response = await axios.post(`${API_URL}/create_job_application`, { body: data })
     if (response.status=200){
       alert("Applied to job successfully")
     }

@@ -4,6 +4,8 @@ import {useState, useEffect} from 'react';
 import axios from 'axios'
 import jobPortalImage from '../assets/introduction-to-port-state-control-1.jpg'
 import jobSearch from '../assets/img/illustrations/online-job-search-4836622-4032953.png'
+import { API_URL } from '../utils'
+
 export default function JobSearch(){
 
 
@@ -20,7 +22,7 @@ export default function JobSearch(){
 
   const fetchData = async () => {
       try {
-          const response = await axios.get('http://localhost:8000/api/jobs');
+          const response = await axios.get(`${API_URL}/jobs`);
           console.log(response)
           if (response.status === 200) {
             console.log(response.data.data)
@@ -36,7 +38,7 @@ export default function JobSearch(){
   }, []);
   const fetchJobDescription = async (id) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/job/'+id);
+      const response = await axios.get(`${API_URL}/job/`+id);
           if (response.status === 200) {
             console.log(response.data.data)
               setJobDetails(response.data.data);
@@ -54,7 +56,7 @@ export default function JobSearch(){
       Status:'pending',
       ResumeURL : ''
     }
-    const response = await axios.post('http://localhost:8000/api/create_job_application', {body:data})
+    const response = await axios.post(`${API_URL}/create_job_application`, {body:data})
   }
   return (
     <div>

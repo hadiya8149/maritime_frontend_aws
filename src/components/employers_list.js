@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminNavbar from './admin_navbar';
-
-
+import { API_URL } from '../utils';
 export default function EmployersList() {
     
     const [users, setUsers] = useState([])
     
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/employers');
+            const response = await axios.get(`${API_URL}/employers`);
             if (response.status === 200) {
                 setUsers(response.data.data);
             }
@@ -24,7 +23,7 @@ export default function EmployersList() {
 
     async function deleteUser(userID) {
         try {
-            const url = 'http://localhost:8000/api/delete_user/' + userID;
+            const url = `${API_URL}/delete_user/` + userID;
             const response = await axios.delete(url);
             if (response.status === 200) {
                 fetchData(); // Update users list after deletion

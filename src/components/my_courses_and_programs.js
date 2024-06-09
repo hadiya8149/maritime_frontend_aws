@@ -1,6 +1,7 @@
 import msg_icon from '../assets/icons8-message-50.png'
 import React from 'react'
 import axios from 'axios'
+import { API_URL } from '../utils'
 import { useCallback, useEffect , useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 export default function MyCoursesAndPrograms() {
@@ -11,7 +12,7 @@ export default function MyCoursesAndPrograms() {
 
     const fetchCourses = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/course_application_by_std/'+std_id);
+            const response = await axios.get(`${API_URL}/course_application_by_std/`+std_id);
             if (response.status === 200) {
                 console.log(response.data.data)
                 setMyCourses(response.data.data)
@@ -22,7 +23,7 @@ export default function MyCoursesAndPrograms() {
     });
     const fetchPrograms = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/program_application_by_std/'+std_id);
+            const response = await axios.get(`${API_URL}/program_application_by_std/${std_id}`);
             if (response.status === 200) {
                 console.log(response.data.data)
                 setMyPrograms(response.data.data)

@@ -2,6 +2,8 @@ import '../css/courses.css';
 import courseImage from '../assets/images.jpg'
 import React from 'react'
 import courseBanner from '../assets/study-w1880x1253.jpeg'
+import { API_URL } from '../utils';
+
 import {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
 export default function CoursesList() {
@@ -16,7 +18,7 @@ export default function CoursesList() {
   
   const fetchData = useCallback(async () => {
       try {
-          const response = await axios.get('http://localhost:8000/api/courses');
+          const response = await axios.get(`${API_URL}/courses`);
           if (response.status === 200) {
               setCourses(response.data.data);
           }
@@ -37,7 +39,7 @@ export default function CoursesList() {
         AppDate:new Date().toISOString().slice(0,19).replace('T', ' '),
         Status: 'pending'
       }
-      const response = await axios.post('http://localhost:8000/api/apply_for_course', {body:data})
+      const response = await axios.post(`${API_URL}/apply_for_course`, {body:data})
       if (response.status===201){
         alert("Course  enrolled successfully")
       }

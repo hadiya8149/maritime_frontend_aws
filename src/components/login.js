@@ -1,12 +1,10 @@
-import amplifyconfig from '../amplifyconfiguration.json';
 
 import React, { useState, useEffect } from 'react';
 import '../css/login.css'
 import { useNavigate } from "react-router-dom";
-import { post } from 'aws-amplify/api';
+import axios from 'axios'
+import { API_URL } from '../utils';
 
-import { Amplify } from 'aws-amplify';
-Amplify.configure(amplifyconfig);
 
 export  const Login=()=> {
 
@@ -25,98 +23,72 @@ export  const Login=()=> {
 
     event.preventDefault()
 
-    // var requestOptions = {
-    //   method: 'POST',
-    //     email:email,
-    //     password:password,
-    //   redirect: 'follow',
-    //   withCredentials:true
-    // };
-    // try {
-    //   const restOperation = get({
-    //     apiName: 'api',
-    //     path: '/login'
-    //   });
-    //   const { body } = await restOperation.response;
-    // const response = await body.json();
-    // console.log('POST call succeeded');
-    // console.log(response);
-    // await axios.post('http://localhost:8000/api/login',requestOptions).then(
-    //   (data)=>
-    //     new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             console.log(data)
-    //             if(data['status']===200){
-    //             const role = data['data'].user_role
-    //             console.log(role)
-    //             localStorage.setItem('authToken', data.data.token);
-    //             localStorage.setItem('role', role);
-    //             localStorage.setItem('user_id', data.data.user_id)
-    //             localStorage.setItem('username', data.data.username)
-    //             setUser_id(data.data.user_id)
-    //              if(data.data.user_role.toLowerCase() ==='student') {
-    //               navigate('/student', {replace:true})
-    //              }
-    //              else if (data.data.user_role.toLowerCase()=='employer'){
-    //               navigate('/employer')
-    //              }
-    //              else if (data.data.user_role=='Job Seeker'){
-    //               const user_id = localStorage.getItem('user_id')
-    //               const fetchJobSeekerID = async()=>{
-    //                 const response = await axios.get('http://localhost:8000/api/jobseeker_by_user_id/'+user_id)
-    //                 if (response.status===200){
-    //                   localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
-    //                   navigate('/jobseeker')
+    var requestOptions = {
+      method: 'POST',
+        email:email,
+        password:password,
+      redirect: 'follow',
+      withCredentials:true
+    };
+    try{
+    await axios.post(`${API_URL}/login`,requestOptions).then(
+      (data)=>
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.log(data)
+                if(data['status']===200){
+                const role = data['data'].user_role
+                console.log(role)
+                localStorage.setItem('authToken', data.data.token);
+                localStorage.setItem('role', role);
+                localStorage.setItem('user_id', data.data.user_id)
+                localStorage.setItem('username', data.data.username)
+                setUser_id(data.data.user_id)
+                 if(data.data.user_role.toLowerCase() ==='student') {
+                  navigate('/student', {replace:true})
+                 }
+                 else if (data.data.user_role.toLowerCase()=='employer'){
+                  navigate('/employer')
+                 }
+                 else if (data.data.user_role=='Job Seeker'){
+                  const user_id = localStorage.getItem('user_id')
+                  const fetchJobSeekerID = async()=>{
+                    const response = await axios.get(`${API_URL}/jobseeker_by_user_id/`+user_id)
+                    if (response.status===200){
+                      localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
+                      navigate('/jobseeker')
 
-    //                 }
-    //               }
+                    }
+                  }
                   
-    //               fetchJobSeekerID()
-    //              }
-    //              else if (data.data.user_role=='admin'){
-    //               navigate('/admin')
-    //              }
-    //           }
-    //         }, 1);
-    //       }),
+                  fetchJobSeekerID()
+                 }
+                 else if (data.data.user_role=='admin'){
+                  navigate('/admin')
+                 }
+              }
+            }, 1);
+          }),
     
-    // ).catch(function(error){
-    //   if (error.response.status==401){
-    //     alert("Invalid password. Please try again")
-    //   }
-    //   else if (error.response.status==404){
-    //     alert("user not found . Please signup")
-    //   }
-    // })
+    ).catch(function(error){
+      if (error.response.status==401){
+        alert("Invalid password. Please try again")
+      }
+      else if (error.response.status==404){
+        alert("user not found . Please signup")
+      }
+    })
     
-  // }catch(err){
-  //   console.log(err)
-  // }
   }
-  async function postTodo() {
-    try {
-      const restOperation = post({
-        apiName: 'api',
-        path: '/login',
-        options: {
-          body: {
-            message: 'Mow the lawn'
-          }
-        }
-      });
+  catch(err){
+    console.log(err)
+  }
+}
   
-      const { body } = await restOperation.response;
-      const response = await body.json();
-  
-      console.log('POST call succeeded');
-      console.log(response);
-    } catch (e) {
-      console.log('POST call failed: ', JSON.parse(e.response.body));
-    }}
+      
 
   useEffect(()=>{
     const user_id = localStorage.getItem('user_id')
-    postTodo()
     if (user_id){
       navigate('/')
     }

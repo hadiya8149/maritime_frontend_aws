@@ -3,6 +3,7 @@ import msg_icon from '../assets/icons8-message-50.png'
 import { useState } from 'react';
 import React from 'react'
 import axios from 'axios'
+import { API_URL } from '../utils';
 export default function JobSeekerApplications(){
     const jobSeeker_id = localStorage.getItem('jobSeeker_id');
     const user_id = localStorage.getItem('user_id')
@@ -10,7 +11,7 @@ export default function JobSeekerApplications(){
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/applied_jobs_by_user/' + jobSeeker_id);
+            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id);
             if (response.status === 200) {
                 // Update state immediately
                 setAppliedJobs(response.data.data);

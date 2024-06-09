@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import '../css/employer.css'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../utils';
+
 export default function EmployerPortal() {
   
   const user_id = localStorage.getItem('user_id')
@@ -15,7 +17,7 @@ export default function EmployerPortal() {
   const [messages, setMessages]=useState([])
   async function fetchMessages(){
     console.log(user_id)
-    const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
     console.log(response.data)
     setMessages(response.data)
   }
@@ -33,7 +35,7 @@ export default function EmployerPortal() {
   async function createJob() {
     console.log(jobForm)
     try {
-      await axios.post('http://localhost:8000/api/create_job', { body: jobForm })
+      await axios.post(`${API_URL}/create_job`, { body: jobForm })
         .then(
           (data) =>
             new Promise((resolve, reject) => {
@@ -57,7 +59,7 @@ export default function EmployerPortal() {
 
   
   async function fetchEmployerId() {
-    const response = await axios.get('http://localhost:8000/api/employer_by_user_id/' + user_id)
+    const response = await axios.get(`${API_URL}/employer_by_user_id/` + user_id)
     // console.log(response)
     console.log(response.data.data)
     localStorage.setItem('employer_id', response.data.data.employer_id)
@@ -69,7 +71,7 @@ export default function EmployerPortal() {
     }))
   }
   async function getNotifications(){
-    const response = await axios.get("http://localhost:8000/api/notification_by_user_id/"+user_id)
+    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
     console.log(response)
     setNotifications(response.data)
 }

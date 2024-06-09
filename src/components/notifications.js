@@ -1,6 +1,8 @@
 import AdminNavbar from './admin_navbar.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
+import { API_URL } from '../utils.js';
+
 export default function AdminNotifications(){
     const [notificationForm, setNotificationForm]=useState({
       content:"",
@@ -14,13 +16,13 @@ export default function AdminNotifications(){
       }))
   }
   async function createNotification(){
-    const response = await axios.post("http://localhost:8000/api/sendnotification", {body:notificationForm})
+    const response = await axios.post(`${API_URL}/sendnotification`, {body:notificationForm})
     if(response.status===200){
       alert("notification created successfully")
     }
   }
     async function getNotifications(){
-      const response = await axios.get('http://localhost:8000/api/notifications');
+      const response = await axios.get(`${API_URL}/notifications`);
       if(response.status===200){
       setNotifications(response.data.Data)
       }

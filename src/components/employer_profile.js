@@ -5,6 +5,8 @@ import msg_icon from '../assets/icons8-message-50.png'
 import axios from 'axios'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../utils';
+
 import profile_image from '../assets/profile-icon-design-free-vector.jpg'
 export default function EmployerProfile() {
 
@@ -18,7 +20,7 @@ export default function EmployerProfile() {
   const [messages, setMessages]=useState([])
     async function fetchMessages(){
       console.log(user_id)
-      const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
       console.log(response.data)
       setMessages(response.data)
     }
@@ -26,7 +28,7 @@ export default function EmployerProfile() {
         try {
             const employer_id = localStorage.getItem("employer_id")
 
-            const response = await axios.get('http://localhost:8000/api/employer/'+employer_id);
+            const response = await axios.get(`${API_URL}/employer/`+employer_id);
             if (response.status === 200) {
               console.log(response.data.data)
               setProfile(response.data.data)
@@ -36,7 +38,7 @@ export default function EmployerProfile() {
         }
     }, []);
     async function handleSubmit(){
-      const response = await axios.put('http://localhost:8000/api/update_employer/'+employer_id, 
+      const response = await axios.put(`${API_URL}/update_employer/`+employer_id, 
       {body:editProfile})
       console.log("respnose", response)
     }
@@ -48,7 +50,7 @@ export default function EmployerProfile() {
       }))
     }
     async function getNotifications(){
-      const response = await axios.get("http://localhost:8000/api/notification_by_user_id/"+user_id)
+      const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
       console.log(response)
       setNotifications(response.data)
   }

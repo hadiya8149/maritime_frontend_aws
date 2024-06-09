@@ -5,6 +5,8 @@ import axios from 'axios'
 import programImage from '../assets/images.jpg'
 import React from 'react'
 import ProgramBanner from '../assets/598198350abe8-page-banners6.jpg';
+import { API_URL } from '../utils'
+
 export default function Programs(){
   const stdID = localStorage.getItem('std_id');
   const [programs, setPrograms] = useState([])
@@ -48,7 +50,7 @@ export default function Programs(){
         AppDate:new Date().toISOString().slice(0,19).replace('T', ' '),
         Status: 'pending'
       }
-      const response = await axios.post('http://localhost:8000/api/apply_for_program', {body:data})
+      const response = await axios.post(`${API_URL}/apply_for_program`, {body:data})
       if (response.status===201){
         alert("program enrolled successfully")
       }
@@ -57,7 +59,7 @@ export default function Programs(){
   }
   const fetchData = async () => {
     try {
-        const response = await axios.get('http://localhost:8000/api/programs');
+        const response = await axios.get(`${API_URL}/programs`);
         if (response.status === 200) {
           console.log(response.data.data)
             setPrograms(response.data.data);

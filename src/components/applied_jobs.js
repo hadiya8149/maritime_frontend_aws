@@ -4,15 +4,17 @@ import msg_icon from '../assets/icons8-message-50.png'
 
 import { useCallback, useState, useEffect } from 'react';
 import axios from 'axios'
+import { API_URL } from '../utils';
 import { useNavigate } from 'react-router-dom';
 export default function AppliedJobs() {
+  
   const navigate = useNavigate()
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
   const user_id= localStorage.getItem('user_id')
   async function fetchMessages(){
     console.log(user_id)
-    const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
     console.log(response.data)
     setMessages(response.data)
   }
@@ -20,7 +22,7 @@ export default function AppliedJobs() {
     const jobSeeker_id = localStorage.getItem('jobSeeker_id')
   const fetchData = async () => {
       try {
-          const response = await axios.get('http://localhost:8000/api/applied_jobs_by_user/'+jobSeeker_id);
+          const response = await axios.get(`${API_URL}/applied_jobs_by_user/`+jobSeeker_id);
           if (response.status === 200) {
               setmyJobs(response.data.data);
           }
@@ -33,7 +35,7 @@ export default function AppliedJobs() {
   };
 
   async function getNotifications(){
-    const response = await axios.get("http://localhost:8000/api/notification_by_user_id/"+user_id)
+    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
     console.log(response)
     setNotifications(response.data)
 }

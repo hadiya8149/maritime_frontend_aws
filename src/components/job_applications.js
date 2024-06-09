@@ -5,6 +5,7 @@ import { useState,useEffect } from 'react'
 import '../css/employer.css'
 import { useNavigate } from 'react-router-dom'
 import jobImage from '../assets/onboared-laptop.jpg'
+import { API_URL } from '../utils'
 export default function JobApplications(){
   const employer_id = localStorage.getItem('employer_id')
   const [applications, setApplications]=useState([])
@@ -29,7 +30,7 @@ export default function JobApplications(){
   async function fetchApplications(){
     console.log("fetching data")
     try{
-        axios.get('http://localhost:8000/api/get_job_by_employer_id/'+employer_id)
+        axios.get(`${API_URL}/get_job_by_employer_id/`+employer_id)
         .then(
             (data)=>
             new Promise((resolve, reject) => {
@@ -52,7 +53,7 @@ export default function JobApplications(){
   }
   async function DeleteJob(id){
     console.log(id)
-    axios.delete('http://localhost:8000/api/delete_job/'+id)
+    axios.delete(`${API_URL}/delete_job/`+id)
         .then(
             (data)=>
             new Promise((resolve, reject) => {
@@ -71,7 +72,7 @@ export default function JobApplications(){
   async function createJob(){
     console.log(jobForm)
     try{
-      await axios.post('http://localhost:8000/api/create_job/', {body:jobForm})
+      await axios.post(`${API_URL}/create_job/`, {body:jobForm})
       .then(
           (data)=>
           new Promise((resolve, reject) => {
@@ -122,7 +123,7 @@ export default function JobApplications(){
 }
   async function submitEditJobForm(id){
     try{
-      await axios.put('http://localhost:8000/api/update_job/'+id, {body:editJobForm})
+      await axios.put(`${API_URL}/update_job/`+id, {body:editJobForm})
       .then(
           (data)=>
           new Promise((resolve, reject) => {
@@ -145,7 +146,7 @@ export default function JobApplications(){
   }
   async function getApplicantsByJobId(id){
     try {
-      const response = await axios.get('http://localhost:8000/api/applicants/' + id);
+      const response = await axios.get(`${API_URL}/applicants/` + id);
       if (response.status === 200) {
         setApplicants(response.data.data); // Update applicants directly
       } else {
@@ -159,7 +160,7 @@ export default function JobApplications(){
   };
   
   async function getNotifications(){
-    const response = await axios.get("http://localhost:8000/api/notification_by_user_id/"+user_id)
+    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
     console.log(response)
     setNotifications(response.data)
 }
@@ -167,13 +168,13 @@ export default function JobApplications(){
   const content = "Thank you for taking the time to apply. We regret to inform that we have moved with another applicant."
   
   const notificationType="reject";
-  const response = await axios.post('http://localhost:8000/api/sendnotificationtouser/'+id, {content:content, notificationType:notificationType});
+  const response = await axios.post(`${API_URL}/sendnotificationtouser/`+id, {content:content, notificationType:notificationType});
   console.log(response)
   }
 async function deleteJobApplication(app){
   const id=app.app_id
   
-  const response = await axios.delete('http://localhost:8000/api/delete_job_application/'+id);
+  const response = await axios.delete(`${API_URL}/delete_job_application/`+id);
   if (response.status===200){
     alert("job deleted successfully")
 
@@ -196,7 +197,7 @@ async function deleteJobApplication(app){
     console.log(msgForm)
   }
   async function submitMessage(id){
-    const response = await axios.post('http://localhost:8000/api/send_message_to_jobSeeker/'+user_id, {
+    const response = await axios.post(`${API_URL}/send_message_to_jobSeeker/`+user_id, {
       subject:msgForm.subject,
       body:msgForm.body,
       jobseeker_id:id
@@ -206,7 +207,7 @@ async function deleteJobApplication(app){
   }
   async function fetchMessages(){
     console.log(user_id)
-    const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
     console.log(response.data)
     setMessages(response.data)
   }

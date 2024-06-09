@@ -4,6 +4,8 @@ import {useState, useEffect} from 'react';
 import axios from 'axios'
 import React from 'react'
 import AdminNavbar from './admin_navbar';
+import { API_URL } from '../utils';
+
 export default function CoursesAndProgramsManagement(){
   const stdID = localStorage.getItem('std_id');
   const [programs, setPrograms] = useState([])
@@ -14,7 +16,7 @@ export default function CoursesAndProgramsManagement(){
   const [programForm, setProgramForm]=useState([])
   const fetchData = async () => {
     try {
-        const response = await axios.get('http://localhost:8000/api/programs');
+        const response = await axios.get(`${API_URL}/programs`);
         if (response.status === 200) {
           console.log(response.data.data)
             setPrograms(response.data.data);
@@ -23,7 +25,7 @@ export default function CoursesAndProgramsManagement(){
         console.error(error);
     }
     try {
-        const response = await axios.get('http://localhost:8000/api/courses');
+        const response = await axios.get(`${API_URL}/courses`);
         if (response.status === 200) {
           console.log(response.data.data)
             setCourses(response.data.data);
@@ -62,7 +64,7 @@ function handleEditProgramChange(e) {
   }))
 }
   async function createCourse(){
-    const response = await axios.post("http://localhost:8000/api/course", {body:courseForm});
+    const response = await axios.post(`${API_URL}/course`, {body:courseForm});
     console.log(response)
     if (response.status===201)
       alert("Course created successfully")
@@ -70,20 +72,20 @@ function handleEditProgramChange(e) {
 
   async function createProgram(){
     console.log(programForm)
-const response = await axios.post("http://localhost:8000/api/program", {body:programForm});
+const response = await axios.post(`${API_URL}/program`, {body:programForm});
     console.log(response)
     if (response.status===201)
       alert("Program created successfully")
     }
     
   async function deleteCourse(id){
-    const response = await axios.delete('http://localhost:8000/api/course/'+id);
+    const response = await axios.delete(`${API_URL}/course/`+id);
     if (response.status===200){
       alert("course deleted successfully")
     }
   }
   async function deleteProgram(id){
-    const response = await axios.delete('http://localhost:8000/api/program/'+id);
+    const response = await axios.delete(`${API_URL}/program/`+id);
     if (response.status===200){
       alert("Program deleted successfully")
     }
@@ -97,7 +99,7 @@ const response = await axios.post("http://localhost:8000/api/program", {body:pro
       duration:editCourseForm.duration_months,
       instructor:editCourseForm.instructor,  
     }
-    const response  = await axios.put('http://localhost:8000/api/course/'+course_id, body ).then((data)=>console.log(data)).catch((err)=>console.log(err))
+    const response  = await axios.put(`${API_URL}/course/`+course_id, body ).then((data)=>console.log(data)).catch((err)=>console.log(err))
     console.log(response)
     alert('course update successfully') 
   }
@@ -110,7 +112,7 @@ const response = await axios.post("http://localhost:8000/api/program", {body:pro
       duration:editProgramForm.duration_months,
       trainer:editProgramForm.trainer,  
     }
-    const response  = await axios.put('http://localhost:8000/api/update_program/'+program_id, body ).then((data)=>console.log(data)).catch((err)=>console.log(err))
+    const response  = await axios.put(`${API_URL}/update_program/`+program_id, body ).then((data)=>console.log(data)).catch((err)=>console.log(err))
     if(response.status===200){
       console.log(response)
     }    

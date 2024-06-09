@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import { API_URL } from '../utils';
+
 export default function JobSeekerPortal() {
     const navigate=useNavigate()
     const [notifications, setNotifications]=useState([])
@@ -28,13 +30,13 @@ export default function JobSeekerPortal() {
  const [messages, setMessages]=useState([])
     async function fetchMessages(){
       console.log(user_id)
-      const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
       console.log(response.data)
       setMessages(response.data)
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/applied_jobs_by_user/' + jobSeeker_id);
+            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id);
             if (response.status === 200) {
                 // Update state immediately
                 setAppliedJobs(response.data.data);
@@ -44,7 +46,7 @@ export default function JobSeekerPortal() {
         }
     }
     async function getNotifications(){
-        const response = await axios.get("http://localhost:8000/api/notification_by_user_id/"+user_id)
+        const response = await axios.get(`${API_URL}notification_by_user_id/`+user_id)
         console.log(response)
         setNotifications(response.data)
     }

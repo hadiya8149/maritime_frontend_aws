@@ -1,6 +1,7 @@
 import AdminNavbar from './admin_navbar.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
+import { API_URL } from '../utils.js';
 export default function AdminMessages(){
   const user_id = localStorage.getItem("user_id")
     const [messageForm, setMessageForm]=useState({
@@ -22,7 +23,7 @@ export default function AdminMessages(){
   //   }
   // }
     async function getMessages(){
-      const response = await axios.get('http://localhost:8000/api/message_by_user_id/'+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
       if(response.status===200){
       console.log(response.data.data)
         setMessages(response.data)
@@ -38,7 +39,7 @@ export default function AdminMessages(){
     }
     async function submitMessage(id){
       const receiverID = msgForm.user_id
-      const response = await axios.post('http://localhost:8000/api/send_message', {
+      const response = await axios.post(`${API_URL}/send_message`, {
         sender_id:user_id,
         subject:msgForm.subject,
         body:msgForm.body,

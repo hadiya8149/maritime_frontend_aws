@@ -3,6 +3,8 @@ import '../css/home.css'
 import { useState } from "react";
 import axios from 'axios';
 import React from 'react'
+import { API_URL } from '../utils.js';
+
 export default function Signup() {
     const [signupForm, setsignupForm] = useState({
         username: "",
@@ -35,7 +37,7 @@ export default function Signup() {
         e.preventDefault()
         const { password1, ...body } = signupForm;
         console.log(body)
-        const response = await axios.post('http://localhost:8000/api/create_user', body).then(
+        const response = await axios.post(`${API_URL}/create_user`, body).then(
             (data) =>
                 new Promise((resolve, reject) => {
                     setTimeout(() => {

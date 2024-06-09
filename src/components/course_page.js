@@ -3,11 +3,13 @@ import {useEffect, useState} from 'react'
 import React from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
+import { API_URL } from '../utils';
+
 export default function CourseInfo(){
   const [course, setCourse]=useState()
   const{id}=useParams();
   async function getCourseInfo(){
-    const response = await axios.get("http://localhost:8000/api/course/"+id)
+    const response = await axios.get(`${API_URL}/course/`+id)
     console.log(response.data.data)
     setCourse(response.data.data)
   }
@@ -23,7 +25,7 @@ export default function CourseInfo(){
 
     }
     console.log(data)
-    const response = await axios.post('http://localhost:8000/api/progress', body)
+    const response = await axios.post(`${API_URL}/progress`, body)
     console.log(response)
     if(response.status===200){
       alert("Congratulations on completing the course")

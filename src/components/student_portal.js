@@ -4,6 +4,8 @@ import '../css/students.css'
 import { useEffect} from 'react'
 import courseIllustration from '../assets/img/illustrations/course_illustration.jpg'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../utils.js';
+
 export default function StudentPortal(){
     const navigate=useNavigate();
     const user_id = localStorage.getItem('user_id');
@@ -22,7 +24,7 @@ export default function StudentPortal(){
         
     })
     async function  fetchStdID(){
-        const response = await  axios.get('http://localhost:8000/api/student_by_user_id/'+user_id);
+        const response = await  axios.get(`${API_URL}/student_by_user_id/`+user_id);
         console.log(response)
         if (response.status === 200) {
             console.log(response.data.data.user_id)

@@ -5,6 +5,7 @@ import profile_image from '../assets/profile-icon-design-free-vector.jpg'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
+import { API_URL } from '../utils'
 import axios from 'axios'
 export default function JobSeekerProfile() {
     const navigate = useNavigate();
@@ -36,13 +37,13 @@ export default function JobSeekerProfile() {
  const [messages, setMessages]=useState([])
     async function fetchMessages(){
       console.log(user_id)
-      const response = await axios.get("http://localhost:8000/api/message_by_user_id/"+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
       console.log(response.data)
       setMessages(response.data)
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/applied_jobs_by_user/' + jobSeeker_id);
+            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id);
             if (response.status === 200) {
                 // Update state immediately
                 setAppliedJobs(response.data.data);
@@ -54,12 +55,12 @@ export default function JobSeekerProfile() {
 
     const fetchUserProfile=async()=>{
         const authToken = localStorage.getItem('authToken')
-        const response = await axios.get('http://localhost:8000/api/user/'+user_id,{body:{authToken:authToken}})
+        const response = await axios.get(`${API_URL}/user/`+user_id,{body:{authToken:authToken}})
         setUserProfile(response.data.data)
     }
     const fetchProfile = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/jobseeker/' + jobseekerID);
+            const response = await axios.get(`${API_URL}/jobseeker/` + jobseekerID);
             if (response.status === 200) {
                 console.log(response.data.data)
                 setProfile(response.data.data)
@@ -69,14 +70,14 @@ export default function JobSeekerProfile() {
         }
     };
     async function getNotifications(){
-        const response = await axios.get("http://localhost:8000/api/notification_by_user_id/"+user_id)
+        const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
         console.log(response)
         setNotifications(response.data)
     }
 
     async  function handleSubmit(){
         
-        const response = await axios.put('http://localhost:8000/api/update_user/'+user_id, {user_age:editUser.user_age,username: editUser.username})
+        const response = await axios.put(`${API_URL}/update_user/`+user_id, {user_age:editUser.user_age,username: editUser.username})
         console.log("respnose", response)
       }
       function handleChange(e){
@@ -89,7 +90,7 @@ export default function JobSeekerProfile() {
      async function handleJobSeekerProfileSubmit(){
         debugger;
 
-        const response = await axios.put('http://localhost:8000/api/update_jobseeker/'+jobSeeker_id,editjobSeekerProfile).then((result) => console.log(result))
+        const response = await axios.put(`${API_URL}/update_jobseeker/`+jobSeeker_id,editjobSeekerProfile).then((result) => console.log(result))
         .catch((error) => console.error(error));
         
         console.log(response)
@@ -115,7 +116,7 @@ export default function JobSeekerProfile() {
         formData.append('jobSeeker_id', jobSeeker_id)
         console.log(file)
         try {
-            const response = await axios.post('http://localhost:8000/api/upload_resume',formData,{
+            const response = await axios.post(`${API_URL}/upload_resume`,formData,{
                 headers:{'Content-Type':'multipart/form-data'}
             })
 
@@ -130,13 +131,13 @@ export default function JobSeekerProfile() {
             console.error(error);
             alert('An error occurred while uploading the resume.');
         }
-        const response = await axios.put('http://localhost:8000/api/update_jobseeker/'+jobSeeker_id,{resumeURL:file.name}).then((result) => console.log(result))
+        const response = await axios.put(`${API_URL}/update_jobseeker/`+jobSeeker_id,{resumeURL:file.name}).then((result) => console.log(result))
         .catch((error) => console.error(error));
         fetchProfile()
     };
    
     function getpdf(filepath){
-        window.open('http://localhost:8000/'+filepath)
+        window.open('https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/'+filepath)
     }
     useEffect(() => {
         fetchProfile()

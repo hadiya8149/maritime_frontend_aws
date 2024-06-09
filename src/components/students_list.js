@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminNavbar from './admin_navbar';
+import { API_URL } from '../utils';
 export default function StudentsList() {
     const [users, setUsers] = useState([])
+    
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/students');
+            const response = await axios.get(`${API_URL}/students`);
             if (response.status === 200) {
                 setUsers(response.data.data);
                 console.log(response)
@@ -21,7 +23,7 @@ export default function StudentsList() {
 
     async function deleteUser(userID) {
         try {
-            const url = 'http://localhost:8000/api/delete_student/' + userID;
+            const url = `${API_URL}/delete_student/` + userID;
             const response = await axios.delete(url);
             if (response.status === 200) {
                 // setUsers((prevUsers) => prevUsers.filter((user) => user.std_id !== user.std_id)); // Filter out deleted applicant

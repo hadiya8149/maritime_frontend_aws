@@ -5,7 +5,6 @@ import passion from '../assets/img/illustrations/passion.png'
 import joinImage from '../assets/img/illustrations/come-on-join.png'
 import feature from '../assets/img/clients.jpg'
 import jobImage from '../assets/img/illustrations/jobs.png'
-import image3 from '../assets/img/illustrations/job-search-illustration.jpg'
 export default function Home(){
   
 return (

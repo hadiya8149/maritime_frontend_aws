@@ -5,6 +5,7 @@ import axios from 'axios'
 import React from 'react'
 import { useCallback } from 'react'
 
+import { API_URL } from '../utils.js';
 
 export default function Profile() {
     const [progress, setProgress]=useState([])
@@ -21,7 +22,7 @@ export default function Profile() {
     const fetchProfile = useCallback(async () => {
     
       try {
-            const response = await axios.get('http://localhost:8000/api/student/'+std_id);
+            const response = await axios.get(`${API_URL}/student/`+std_id);
             if (response.status === 200) {
                 console.log(response) 
               setProfile(response.data.data)
@@ -33,7 +34,7 @@ export default function Profile() {
     }, [std_id]);
     const fetchProgress = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/progress/'+std_id);
+            const response = await axios.get(`${API_URL}/progress/`+std_id);
             if (response.status === 200) {
               console.log(response.data.data)
               setProgress(response.data.data)
@@ -54,7 +55,7 @@ export default function Profile() {
     }
     async function handleSubmit(e){
       console.log(editProfile)
-      await axios.put('http://localhost:8000/api/update_student/'+std_id, {editProfile}).then((response) => response.text())
+      await axios.put(`${API_URL}/update_student/`+std_id, {editProfile}).then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
     }

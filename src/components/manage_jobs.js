@@ -3,6 +3,7 @@ import React from 'react'
 
 import {useState, useEffect} from 'react';
 import axios from 'axios'
+import { API_URL } from '../utils';
 import AdminNavbar from './admin_navbar';
 export default function ManageJobs(){
   const [jobs, setJobs] = useState([])
@@ -24,7 +25,7 @@ export default function ManageJobs(){
   }
   async function submitEditJobForm(id){
     try{
-      const response = await axios.put('http://localhost:8000/api/update_job/'+id, {body:editJobForm})
+      const response = await axios.put(`${API_URL}/update_job/`+id, {body:editJobForm})
       .then(
           (data)=>
           new Promise((resolve, reject) => {
@@ -51,7 +52,7 @@ export default function ManageJobs(){
   }, [editJobForm]);
   const fetchData = async () => {
       try {
-          const response = await axios.get('http://localhost:8000/api/jobs');
+          const response = await axios.get(`${API_URL}/jobs`);
           if (response.status === 200) {
             console.log(response.data.data)
               setJobs(response.data.data);
@@ -70,7 +71,7 @@ export default function ManageJobs(){
   }, []);
   const fetchJobDescription = async (id) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/job/'+id);
+      const response = await axios.get(`${API_URL}/job/`+id);
           if (response.status === 200) {
             console.log(response.data.data)
               setJobDetails(response.data.data);
@@ -80,7 +81,7 @@ export default function ManageJobs(){
     }
 };
 const deleteJob = async (id)=>{
-    const response = await axios.delete("http://localhost:8000/api/delete_job/"+id);
+    const response = await axios.delete(`${API_URL}/delete_job/`+id);
     if( response.status===200){
         alert("job deleted successfully")
     }
