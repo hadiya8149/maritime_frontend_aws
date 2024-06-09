@@ -163,8 +163,6 @@ export const getAllAdmins = (req, res) => {
             });
             return;
         }
-        console.log('res')
-        console.log(res)
         res.json({
             success: true,
             data: result,
