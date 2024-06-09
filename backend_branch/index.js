@@ -5,7 +5,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
 import dotenv from 'dotenv';
-
+import servelss from "serverless-http"
 import  path from 'path';
 
 import userRoute from './routers/userRoute.js';
@@ -28,16 +28,18 @@ import progressRouter from './routers/progressRoute.js';
 dotenv.config();
 
 const app = express();
-
+// if (process.env.DEVELOPMENT){
+//   const corsOpts = {
+//     origin: '*', // Change this to your frontend URL in production
+//     credentials: true,
+//     methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
+//   };
+  
+//   // Apply CORS middleware
+//   app.use(cors(corsOpts));
+  
+// }
 // CORS options
-const corsOpts = {
-  origin: '*', // Change this to your frontend URL in production
-  credentials: true,
-  methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
-};
-
-// Apply CORS middleware
-app.use(cors(corsOpts));
 
 // Parse request body
 app.use(express.json());
@@ -88,8 +90,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start the server
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+// // Start the server
+
+// if(process.env.DEVELOPMENT){
+  // const PORT = process.env.PORT || 8000;
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}.`);
+// });
+// }
+
+export const handler = servelss(app);
