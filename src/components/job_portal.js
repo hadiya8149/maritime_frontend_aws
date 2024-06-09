@@ -8,6 +8,7 @@ import jobSearch from '../assets/img/illustrations/online-job-search-4836622-403
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils';
 import { useCallback } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 export default function Job_Portal() {
 
 
@@ -89,11 +90,12 @@ export default function Job_Portal() {
   return (
     <div className=''>
       <div style={{ padding: '16px', background: '#f1f3f7', height: '200px', margin: 'auto', marginTop: 'auto', borderRadius: '5px' }}>
-        <div className='mb-3  m-auto' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>
-          <input className='h-100 mr-3  form-control' onChange={(e) => setSearchQuery(e.target.value)} type='text' placeholder='Job Title' />
+        <div className='mb-3  m-auto input-group' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>
+          <input className='h-100   form-control' onChange={(e) => setSearchQuery(e.target.value)} type='text' placeholder='Job Title' />
+        <SearchIcon className='input-group-text' style={{height:'auto', width:'50px'}}/>
         </div>
         <label className='mr-3' >Location</label>
-        <select onChange={(e) =>{handleFilterChange(e)}}>
+        <select style={{backgroundColor:'white'}} onChange={(e) =>{handleFilterChange(e)}}>
           <option></option>
           <option name='islamabad' >Islamabad</option>
           <option name='karachi'>Karachi</option>

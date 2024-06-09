@@ -6,6 +6,7 @@ import programImage from '../assets/images.jpg'
 import React from 'react'
 import ProgramBanner from '../assets/598198350abe8-page-banners6.jpg';
 import { API_URL } from '../utils'
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function Programs(){
   const stdID = localStorage.getItem('std_id');
@@ -73,21 +74,27 @@ export default function Programs(){
   }, []);
 
     return (
-      <div className='d-flex '>
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light mt-7" style={{ width: '280px' }}>
+      <div className='d-flex ' style={{minHeight:'100vh'}}>
+      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light " style={{ width: '280px' }}>
   <span className="fs-4">Search Programs</span>
 
   <hr />
-  <input type="text" name='search' onChange={(e) => setSearchQuery(e.target.value)} placeholder="search" className="m-2" />
+<div className='input-group'>
+<input type="text" name='search' onChange={(e) => setSearchQuery(e.target.value)} placeholder="search" className="form-control" />
+  <SearchIcon className='input-group-text' style={{height:'auto', backgroundColor:'white', fonSize:
+  '16px', width:'40px'}}/>
+ 
+</div>
+  
   <ul className=" mb-auto" style={{listStyleType:'none', paddingLeft:'25px', textAlign:'left'}}>
  <li>Filter<hr/></li>
-<li><a className='nav-link link-primary'>Duration</a>
+<li><span>Duration</span>
 <select  onChange={(e)=>{handleFilterChange(e)}}  style={{    borderRadius: '5px'
     ,border:' 1px solid #ccc'
     ,padding:' 10px 15px'
     ,marginBottom: '15px'
     ,fontSize: '16px'
-    ,width: '100%'}}>
+    ,width: '100%', backgroundColor:'white'}}>
  <option></option>
     <option name='1'>1</option>
     <option name='2'>2</option>
@@ -101,7 +108,7 @@ export default function Programs(){
   </ul>
 </div>
 
-        <div id='CourseBanner' className='mt-10 overflow-hidden'>
+        <div id='CourseBanner' className=''>
         {filterPrograms(programs)&&(<h2>Search Results</h2>)}
 <div className='row row-cols-1 row-cols-md-3 g-4 m-auto'> 
       {filterPrograms(programs)&& filterPrograms(programs).map((dataObj)=>{
@@ -126,7 +133,7 @@ export default function Programs(){
 <hr className='w-100'/>
       </div>
         {search(programs)&&(<h2>Search results</h2>)}
-        <div className='row row-cols-1 row-cols-md-3 g-4 mb-7 m-auto' style={{padding:'16px'}}>
+        <div className='row row-cols-1 row-cols-md-3 g-4 m-auto' style={{padding:'16px'}}>
       
       {search(programs) && search(programs).map((dataObj) => {
 
@@ -159,7 +166,7 @@ return (
 })}
 
       </div>
-        <h1>Training Programs At Maritime Education System</h1>
+        <h1 className='text-center' style={{textAlign:'center'}}>Training Programs At Maritime Education System</h1>
         <h4 className='headline'>Explore new and Advanced Training Programs to upskill your Career.</h4>
    
         <div className='row row-cols-1 row-cols-md-3 g-4'>

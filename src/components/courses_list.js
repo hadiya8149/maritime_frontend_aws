@@ -3,6 +3,7 @@ import courseImage from '../assets/images.jpg'
 import React from 'react'
 import courseBanner from '../assets/study-w1880x1253.jpeg'
 import { API_URL } from '../utils';
+import SearchIcon from '@mui/icons-material/Search';
 
 import {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
@@ -70,22 +71,28 @@ export default function CoursesList() {
   }, []);
 
   return (
-    <div className='d-flex '   id="CourseBanner">
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light mt-7" style={{ width: '280px' }}>
+    <div className='d-flex 'style={{minHeight:'100vh'}}   id="CourseBanner">
+      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light " style={{ width: '280px' }}>
   <span className="fs-4">Search Courses</span>
 
   <hr />
-  <input type="text" placeholder="search" className="m-2" name='search' onChange={(e) => setSearchQuery(e.target.value)} />
+  <div className='input-group'>
+
+  <input type="text" placeholder="search" className="form-control" name='search' onChange={(e) => setSearchQuery(e.target.value)} />
+  <SearchIcon className='input-group-text' style={{height:'auto',width:'35px', backgroundColor:'white'}}/>
+ 
+ </div>
+  
   <ul className=" mb-auto" style={{listStyleType:'none', paddingLeft:'25px', textAlign:'left'}}>
  <li>Filter<hr/></li>
-<li><a className='nav-link link-primary'>Duration</a>
+<li><span>Duration</span>
 
 <select style={{    borderRadius: '5px'
     ,border:' 1px solid #ccc'
     ,padding:' 10px 15px'
     ,marginBottom: '15px'
     ,fontSize: '16px'
-    ,width: '100%'}} onChange={(e)=>{handleFilterChange(e)}} required>
+    ,width: '100%',backgroundColor:'white'}} onChange={(e)=>{handleFilterChange(e)}} required>
   <option></option>
     <option name='1'>1</option>
     <option name='2'>2</option>
@@ -99,8 +106,8 @@ export default function CoursesList() {
   </ul>
 </div>
     
-      <div className='courses  w-75 p-5' style={{marginTop:'3%',marginRight:'auto', marginLeft:'auto'}}>
-      <div className='mb-7'  style={{padding:'16px', margin:'auto', marginTop:'5%'}}>
+      <div className='courses  w-75 p-5' style={{marginTop:'',marginRight:'auto', marginLeft:'auto'}}>
+      <div className='mb-3'  style={{padding:'16px', margin:'auto', marginTop:'5%'}}>
 {filterCourses(courses)&&(<h2>Search Results</h2>)}
 <div className='row row-cols-1 row-cols-md-3 g-4'> 
       {filterCourses(courses)&& filterCourses(courses).map((dataObj)=>{

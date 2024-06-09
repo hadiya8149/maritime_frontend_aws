@@ -6,8 +6,8 @@ export default function Footer(){
           <div className="col-2">
             <h5>Job Portal</h5>  
             <ul className="nav flex-column">
-              <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Search Jobs</a></li>
-              <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Employers</a></li>
+              <li className="nav-item mb-2"><a href="/jobs" className="nav-link p-0 text-muted">Search Jobs</a></li>
+              <li className="nav-item mb-2"><a href="/jobseeker" className="nav-link p-0 text-muted">Candidates</a></li>
               <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
               <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
             </ul>
@@ -28,10 +28,10 @@ export default function Footer(){
             <h5>Education</h5>
             <ul className="nav flex-column">
               <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
-              <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">signup</a></li>
-              <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Student login</a></li>
-              <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Our Courses</a></li>
-              <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Our Training programs</a></li>
+              <li className="nav-item mb-2"><a href="/signup" className="nav-link p-0 text-muted">signup</a></li>
+              <li className="nav-item mb-2"><a href="/login" className="nav-link p-0 text-muted">Student login</a></li>
+              <li className="nav-item mb-2"><a href="/courses_list" className="nav-link p-0 text-muted">Our Courses</a></li>
+              <li className="nav-item mb-2"><a href="/programs" className="nav-link p-0 text-muted">Our Training programs</a></li>
     
             </ul>
           </div>

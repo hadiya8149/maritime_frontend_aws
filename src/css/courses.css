@@ -1,7 +1,3 @@
-.mb-20{
-    margin-bottom:20%;
-}
-
 .headline{
     text-align:center;
     font-weight: bold;
@@ -10,8 +6,9 @@
 a:hover{
     text-decoration: none;
 }
-#CourseBanner{
+/* #CourseBanner{
     background-image: url(../assets/img/illustrations/Category-bg.png);
-    background-size: cover; /* This is the key property */
+    background-size: cover; 
     background-repeat: none;
-}
+    width:100% 
+}*/
