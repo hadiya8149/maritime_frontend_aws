@@ -6,21 +6,20 @@ import {authenticateJwt} from '../middleware/authMiddleware.js'
 const trainingRouter = Router();
 
 // Create a new program
-trainingRouter.post('/program', authenticateJwt,createProgram);
+trainingRouter.post('/program',authenticateJwt, createProgram);
 
 // Get all programs
-// trainingRouter.get('/programs', async(req, res)=>{
-//     console.log('all programs')
-// });
+trainingRouter.get('/get_all_programs', getAllPrograms);
+
 
 // Get program by ID
-trainingRouter.get('/program/:id',authenticateJwt, getProgramById);
+trainingRouter.get('/program/:id', getProgramById);
 
 // Update program by ID
-trainingRouter.put('/update_program/:id',authenticateJwt, updateProgram);
+trainingRouter.put('/update_program/:id', authenticateJwt, updateProgram);
  
 // Delete program by ID 
-trainingRouter.delete('/program/:id', authenticateJwt,deleteProgram);
+trainingRouter.delete('/program/:id', authenticateJwt, deleteProgram);
 
 export default trainingRouter; 
  

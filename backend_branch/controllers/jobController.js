@@ -67,7 +67,6 @@ export const deleteJob = (req, res) => {
 // Get job by ID
 export const getJobById = (req, res) => {
     const jobId = req.params.id;
-
     const sql = `SELECT * FROM jobs WHERE job_id = ?`;
     const values = [jobId];
 

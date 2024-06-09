@@ -61,25 +61,22 @@ export const getProgramById = (req, res) => {
 
 // Get all programs
 export const getAllPrograms = (req, res, next) => {
-  console.log('all programs')
   const query = `SELECT * FROM trainingprograms`;
+  console.log('all courses')
   db.query(query, (error, results) => {
     if (error) {
-      console.log(error)
       res.status(500).json({
         success: false,
         error: 'Internal Server Error'
       });
+      return;
     }
 
     res.status(200).json({
       success: true,
-      data: results,
-      msg: "Fetch All training programs successfully."
-
+      data: results
     });
   });
-  next()
 };
 
 // Update program by ID

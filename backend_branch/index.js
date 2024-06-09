@@ -23,6 +23,7 @@ import messageRouter from './routers/messageRoutes.js';
 import notificationRouter from './routers/notificationRoutes.js';
 import resumeRoute from './routers/resumeRoutes.js';
 import progressRouter from './routers/progressRoute.js';
+import { authenticateJwt } from './middleware/authMiddleware.js';
 
 // Initialize dotenv for environment variables
 dotenv.config();
@@ -54,38 +55,40 @@ app.use(session({
 
 // Mount routes
 app.use('/api', 
-  userRoute, 
-  courseRouter, 
-  courseApplicationRouter, 
-  programApplicationRouter,
-  // trainingRouter,
-  adminRouter,
-  jobSeekerRouter,
-  jobApplicationRouter, 
-  employerRouter,
-  studentRouter,
-  jobRouter,
-  messageRouter,
-  notificationRouter,
-  resumeRoute,
-  progressRouter
-);
+trainingRouter,
+courseRouter, 
+jobRouter,
+adminRouter,
+userRoute,
+employerRouter,
+jobSeekerRouter,
+studentRouter,
+notificationRouter,
+messageRouter,
+progressRouter,
+jobApplicationRouter,
+courseApplicationRouter,
+programApplicationRouter,
+resumeRoute)
+
+
+
 app.use(express.static('public/data/uploads'))
 // 404 Error Handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
 // Global Error Handler
-// app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
   
-//   err.statusCode = err.statusCode || 500;
-//   err.message = err.message || 'Internal Server Error';
+  err.statusCode = err.statusCode || 500;
+  err.message = err.message || 'Internal Server Error';
   
-//   res.status(err.statusCode).json({
-//     message: err.message
-//   });
-// });
+  res.status(err.statusCode).json({
+    message: err.message
+  });
+});
 
 // // Start the server
 

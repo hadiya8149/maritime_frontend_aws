@@ -21,7 +21,7 @@ courseRouter.get('/view_course/:path', authenticateJwt, async(req, res)=>{
      }
 })
 // Get course by ID
-courseRouter.get('/course/:id',authenticateJwt, getCourseById);
+courseRouter.get('/course/:id', getCourseById);
 
 // Update course by ID
 courseRouter.put('/course/:id',upload,authenticateJwt, updateCourse);
