@@ -1,12 +1,10 @@
 import express from 'express';
-import cors from 'cors';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
 import dotenv from 'dotenv';
 import serverless from "serverless-http"
-import  path from 'path';
 
 import userRoute from './routers/userRoute.js';
 import courseRouter from './routers/courseRoute.js';
@@ -24,7 +22,7 @@ import notificationRouter from './routers/notificationRoutes.js';
 import resumeRoute from './routers/resumeRoutes.js';
 import progressRouter from './routers/progressRoute.js';
 import { authenticateJwt } from './middleware/authMiddleware.js';
-
+import UnauthorizedRouter from './routers/unauthorized.js';
 // Initialize dotenv for environment variables
 dotenv.config();
 const app = express();
@@ -53,6 +51,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
+
 // Mount routes
 app.use('/api', 
 trainingRouter,
@@ -69,7 +68,10 @@ progressRouter,
 jobApplicationRouter,
 courseApplicationRouter,
 programApplicationRouter,
-resumeRoute)
+resumeRoute,
+UnauthorizedRouter
+)
+
 
 
 
@@ -80,23 +82,25 @@ app.use(function(req, res, next) {
 });
 
 // Global Error Handler
-app.use((err, req, res, next) => {
+// app.use((err, req, res, next) => {
   
-  err.statusCode = err.statusCode || 500;
-  err.message = err.message || 'Internal Server Error';
+//   err.statusCode = err.statusCode || 500;
+//   err.message = err.message || 'Internal Server Error';
   
-  res.status(err.statusCode).json({
-    message: err.message
-  });
-});
+//   res.status(err.statusCode).json({
+//     message: err.message
+//   });
+// });
+
+
 
 // // Start the server
 
 // if(process.env.DEVELOPMENT){
-// const PORT = process.env.PORT || 8000;
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}.`);
-// }); 
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+}); 
 
 // }
-export const handler = serverless(app);
+// export const handler = serverless(app);

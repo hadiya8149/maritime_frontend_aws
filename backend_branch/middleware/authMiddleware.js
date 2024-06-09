@@ -6,9 +6,10 @@ export const authenticateJwt = async (req, res, next) => {
             !req.headers.authentication.startsWith('Bearer') ||
             (req.headers.authentication.split(' ').length !== 2)
         ) {
-            return res.status(403).json({
-                message: "Please provide token"
-            })
+            console.log('unauthorized')
+            
+            return res.redirect('/')
+            // next()
         }
         else {
             const secretkey = process.env.JWT_SECRET
