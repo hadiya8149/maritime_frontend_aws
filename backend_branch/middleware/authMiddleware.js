@@ -8,7 +8,7 @@ export const authenticateJwt = async (req, res, next) => {
         ) {
             console.log('unauthorized')
             
-            return res.send("unauthorized")
+            return res.redirect('/')
             // next()
         }
         else {
