@@ -1,5 +1,6 @@
 import express from 'express';
 import { createEmployer, deleteEmployer,getEmployerByUserId, getEmployerById, getAllEmployers, updateEmployer } from '../controllers/employerController.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const employerRouter = express.Router();
 

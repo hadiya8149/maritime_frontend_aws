@@ -152,6 +152,9 @@ export const getAdminById = (req, res) => {
 
 // Get all admins
 export const getAllAdmins = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1]
+    const mysecretkey = process.env.SECRET_CODE;
+
     const sql = `SELECT * FROM admins`;
 
     db.query(sql, (err, result) => {

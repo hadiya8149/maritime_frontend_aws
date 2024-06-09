@@ -1,6 +1,7 @@
 import express from 'express';
 import { db } from '../config/dbConnection.js';
 import { createNotification, getAllNotifications, sendNotificationToUser } from '../controllers/notificationController.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const notificationRouter = express.Router();
 

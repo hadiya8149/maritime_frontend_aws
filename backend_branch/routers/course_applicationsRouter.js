@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import {db} from '../config/dbConnection.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 
 const courseApplicationRouter = Router();
 
 //craete course
-courseApplicationRouter.post('/apply_for_course', (req,res)=>{
+courseApplicationRouter.post('/apply_for_course', authenticateJwt, (req,res)=>{
     const {std_id, course_id, program_id, AppDate, Status}=req.body.body
     console.log(req.body.body)
     const sql = `INSERT INTO applications_for_courses_and_programs (std_id, course_id, program_id, AppDate, Status) VALUES(?, ?, ?, ?, ?)`;
@@ -28,7 +29,7 @@ courseApplicationRouter.post('/apply_for_course', (req,res)=>{
 });
 
 // Get all courses
-courseApplicationRouter.get('/all_course_applications', (req, res)=>{
+courseApplicationRouter.get('/all_course_applications',authenticateJwt,  (req, res)=>{
     const sql = `SELECT * FROM applications_for_courses_and_programs WHERE course_id`;
 
     db.query(sql, (err, result) => {
@@ -46,7 +47,7 @@ courseApplicationRouter.get('/all_course_applications', (req, res)=>{
 });
 
 // Get course by student ID
-courseApplicationRouter.get('/course_application_by_std/:id', (req, res)=>{
+courseApplicationRouter.get('/course_application_by_std/:id',authenticateJwt,  (req, res)=>{
     const id = req.params.id;
     console.log(id)
     const sql = 'select courses.course_id, courses.course_name from applications_for_courses_and_programs inner join courses on applications_for_courses_and_programs.course_id=courses.course_id where std_id=?;'
@@ -73,12 +74,12 @@ courseApplicationRouter.get('/course_application_by_std/:id', (req, res)=>{
 
 
 // Update course application by ID
-courseApplicationRouter.put('/course_application/:id', (req, res)=>{
+courseApplicationRouter.put('/course_application/:id',authenticateJwt,  (req, res)=>{
 
 });
 
 // Delete course application by ID
-courseApplicationRouter.delete('/course_application/:id', (req, res)=>{
+courseApplicationRouter.delete('/course_application/:id',authenticateJwt,  (req, res)=>{
 
 });
 

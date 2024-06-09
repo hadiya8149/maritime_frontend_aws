@@ -2,6 +2,7 @@ import express from 'express';
 import { getAllMessages, sendMessage } from '../controllers/messageController.js';
 import { db } from '../config/dbConnection.js';
 const messageRouter = express.Router();
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 // Route to send a message from admin to a user
 messageRouter.post('/send_message', sendMessage);

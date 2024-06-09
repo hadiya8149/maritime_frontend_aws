@@ -1,6 +1,6 @@
 import express from 'express';
 import {db} from '../config/dbConnection.js';
-
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 // import { upload } from '../middleware/upload.js';
 // import { uploadResume } from '../controllers/resumeController.js';
 
@@ -19,7 +19,7 @@ const upload = multer({storage:storage})
 
 const resumeRoute = express.Router();
 
-resumeRoute.post('/upload_resume' , upload.single('file') , async(req, res) => {
+resumeRoute.post('/upload_resume' , upload.single('file') ,authenticateJwt, async(req, res) => {
     console.log(req.body)
     console.log(req.file)
     const { jobSeeker_id } = req.body;

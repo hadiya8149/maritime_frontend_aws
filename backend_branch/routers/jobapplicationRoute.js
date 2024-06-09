@@ -1,6 +1,8 @@
 import express from 'express';
 import { createJobApplication, deleteJobApplication, getJobApplicationsByJobId, getJobApplicationByApplicationId,getJobApplicationsByJobSeekerId, getAllJobApplications, updateJobApplication } from '../controllers/jobapplicationController.js';
 import { upload } from '../middleware/upload.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
+
 const jobApplicationRouter = express.Router();
 
 // Create job application by employer

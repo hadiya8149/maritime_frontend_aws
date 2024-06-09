@@ -1,5 +1,6 @@
 import express from 'express';
 import { createJobSeeker, deleteJobSeeker, getJobSeekerById, getJobSeekerByUserId, getAllJobSeekers, updateJobSeeker } from '../controllers/jobseekerController.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const jobSeekerRouter = express.Router();
 

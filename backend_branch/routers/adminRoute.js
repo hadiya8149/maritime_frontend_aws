@@ -1,5 +1,6 @@
 import express from 'express';
 import { createAdmin, deleteAdmin, getAdminById, getAllAdmins, updateAdmin } from '../controllers/adminController.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 const adminRouter = express.Router();
 
@@ -7,15 +8,15 @@ const adminRouter = express.Router();
 adminRouter.post('/create_admin', createAdmin);
 
 // Update admin
-adminRouter.put('/update_admin/:id', updateAdmin);
+adminRouter.put('/update_admin/:id', authenticateJwt, updateAdmin);
 
 // Delete admin
-adminRouter.delete('/delete_admin/:id', deleteAdmin);
+adminRouter.delete('/delete_admin/:id',authenticateJwt, deleteAdmin);
 
 // Get admin by ID
-adminRouter.get('/admin/:id', getAdminById);
+adminRouter.get('/admin/:id',authenticateJwt, getAdminById);
 
 // Get all admins
-adminRouter.get('/admins', getAllAdmins);
+adminRouter.get('/admins',authenticateJwt, getAllAdmins);
 
 export default adminRouter;

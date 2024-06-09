@@ -1,5 +1,6 @@
 import express from 'express';
 import { db } from "../config/dbConnection.js";
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 import { createJob, deleteJob, getJobById, getAllJobs, getJobByEmployerId, updateJob } from '../controllers/jobController.js';
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import {db} from '../config/dbConnection.js';
+import {authenticateJwt} from '../middleware/authMiddleware.js'
 
 
 const progressRouter = express.Router();

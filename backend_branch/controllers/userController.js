@@ -163,32 +163,13 @@ export const getUserById = async (req, res) => {
 // GET ALL USERS
 
 
-export const getAllUsers = async (req, res) => {
-    try {
-        db.query('SELECT * FROM users;', function (error, result, fields) {
-            if (error) throw error;
-            return res.status(200).send({
-                success: true,
-                data: result,
-                msg: "Fetch All users successfully"
-            })
-        });
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send({
-            msg: 'Internal Server Error'
-        });
-    }
-};
-
 
 
 
 // UPDATE USER
 export const updateUser = async (req, res) => {
     console.log(req.body)
-
+    
     const { username, email, password, role, user_age, user_gender } = req.body;
     const userId = req.params.id;
 

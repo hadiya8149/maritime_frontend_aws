@@ -1,24 +1,33 @@
-
+import jwt from 'jsonwebtoken'
 export const authenticateJwt = async (req, res, next) => {
-
     try {
-
         if (
             !req.headers.authentication ||
             !req.headers.authentication.startsWith('Bearer') ||
-            !req.headers.authentication.split(' ')[1]
-
+            (req.headers.authentication.split(' ').length !== 2)
         ) {
-            return res.status(200).json({
+            return res.status(403).json({
                 message: "Please provide token"
             })
         }
-        // else {
-        //     let token = req.headers.authentication.split(' ')[1];
-        //     console.log('Token is : ', token)
-        // }
+        else {
+            const secretkey = process.env.JWT_SECRET
+            const token = req.headers.authentication.split(' ')[1];
+            jwt.verify(token, secretkey, (err, authorized)=>{
+                if(err){
+                    res.sendStatus(403)
+                }
+                else{
 
-        next();
+                    req.token  = token;
+
+                    console.log("user authorized")
+                    next();
+                }
+            })
+        }
+        // decode then token and verify
+
     }
     catch (error) {
         console.log(error.meesage)
