@@ -109,9 +109,6 @@ input:hover {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
-.job-listing {
-  width: 50%;
-}
 
 #jobPortalImage {
   background-image: url(../assets/introduction-to-port-state-control-1.jpg);

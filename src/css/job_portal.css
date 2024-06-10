@@ -1,0 +1,83 @@
+.content-container{
+    margin-left: '250px';
+     margin-right: '250px';
+      margin-top: '25px' ;
+      display:flex;
+      min-height:100vh;
+}
+
+@media only screen and (max-width: 425px) {
+    .content-container{
+        flex-direction: column-reverse;
+
+    }
+    .job-description{
+        margin:auto;
+    }
+    .col{
+        flex:1 0 100%;
+        margin:auto;
+    }
+    .row{
+        margin:auto;
+    }
+}
+@media only screen and (max-width:768px) and (min-width:424px) {
+    .content-container{
+        flex-direction: column-reverse;
+
+    }
+    .job-description{
+        margin:auto;
+        margin-top:16px;
+    }
+    .col{
+        flex:1 0 50%;
+        margin:auto;
+    }
+    .row{
+        margin:auto;
+    }
+}
+@media only screen and (max-width:1024px) and (min-width:767px) {
+ .job-listing{
+    margin:auto;
+ }   
+ .col{
+    flex:1 0 40%;
+    margin:auto;
+ }
+ .job-description{
+    margin:auto;
+ }
+}
+@media only screen and (max-width:1440px) and (min-width:1024px) {
+.col{
+    flex:1 0 33.33%;
+}
+.job-listing{
+    margin:auto;
+}
+
+}
+.job-listing, .job-description, .content-container{
+    margin:auto
+}
+.content-container{
+    padding:16px;
+}
+@media only screen and (min-width:1440px)  {
+    .col{
+        width:33.33%;
+    }
+    .job-listing{
+        width:60%;
+    }
+    .job-description{
+        width:30%;
+        margin:auto;
+    }
+    .col.search-jobs-col ,.col.filtered-jobs{
+        width:auto;
+    }
+}

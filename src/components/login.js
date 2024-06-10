@@ -36,7 +36,8 @@ export  const Login=()=> {
         new Promise((resolve, reject) => {
             setTimeout(() => {
                 console.log(data)
-                if(data['status']===200){
+                // change the backend to give consistent status and data message response
+                if(data.data.succes===true){
                 const role = data['data'].user_role
                 console.log(role)
                 localStorage.setItem('authToken', data.data.token);

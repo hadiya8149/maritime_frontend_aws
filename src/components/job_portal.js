@@ -92,7 +92,7 @@ export default function Job_Portal() {
       <div style={{ padding: '16px', background: '#f1f3f7', height: '200px', margin: 'auto', marginTop: 'auto', borderRadius: '5px' }}>
         <div className='mb-3  m-auto input-group' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>
           <input className='h-100   form-control' onChange={(e) => setSearchQuery(e.target.value)} type='text' placeholder='Job Title' />
-        <SearchIcon className='input-group-text' style={{height:'auto', width:'50px'}}/>
+        <SearchIcon className='input-group-text' style={{height:'auto',backgroundColor:'white', width:'50px'}}/>
         </div>
         <label className='mr-3' >Location</label>
         <select style={{backgroundColor:'white'}} onChange={(e) =>{handleFilterChange(e)}}>
@@ -102,15 +102,15 @@ export default function Job_Portal() {
           <option name='lahore'>Lahore</option>
         </select>
       </div>
-      <div className='d-flex' style={{ marginLeft: '250px', marginRight: '250px', marginTop: '25px' }}>
+      <div className=' content-container container' >
 
-        <div className='' >
+        <div className='job-listing' >
 
         <div className='row row-cols-1 mt-3 row-cols-md-2 g-4 w-100'>
 {filterJobs(jobs)&& filterJobs(jobs).map((dataObj)=>{
   return(
-    <div>
-   <div className='col'>
+    <div className=''>
+   <div className='col filtered-jobs'>
     <div className="card mb-3" key={dataObj.job_id} style={{ boxShadow: " 0 4px 8px rgba(0, 0, 0, 0.15)", height: '300px' }}>
       <div className="card-body">
         <h5 className="card-title">{dataObj.job_title}</h5>
@@ -133,7 +133,7 @@ export default function Job_Portal() {
 
 {search(jobs) &&search(jobs).map((dataObj)=>{
   return(
-    <div className='col'>
+    <div className='col search-job-col'>
     <div className="card mb-3" key={dataObj.job_id} style={{ boxShadow: " 0 4px 8px rgba(0, 0, 0, 0.15)", height: '300px' }}>
       <div className="card-body">
         <h5 className="card-title">{dataObj.job_title}</h5>
@@ -181,7 +181,7 @@ export default function Job_Portal() {
             })}
           </div>
         </div>
-        <div className='w-100'>
+        <div className=' job-description'>
           <div className="card mb-3 p-3" style={{ width: '100%', float: 'left' }}>
             <div className="card-body">
 
