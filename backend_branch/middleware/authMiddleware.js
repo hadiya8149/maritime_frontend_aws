@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken'
 export const authenticateJwt = async (req, res, next) => {
     try {
+        console.log(req.headers.authentication.split(' '))
         if (
             !req.headers.authentication ||
             !req.headers.authentication.startsWith('Bearer') ||
             (req.headers.authentication.split(' ').length !== 2)
         ) {
-            console.log('unauthorized')
             
             return res.redirect('/')
             // next()

@@ -25,7 +25,6 @@ export const createStudent = (req, res) => {
 // Update student by ID
 export const updateStudent = async (req, res) => {
     const std_id =req.params.id
-   
     if (req.body.studentName){
         db.query('UPDATE students SET studentName=? WHERE std_id=?', [req.body.studentName, std_id], (err, result)=>{
             console.log(result)
@@ -51,6 +50,7 @@ export const updateStudent = async (req, res) => {
             console.log(result)
         })
     }
+    return res.status(200).json({msg:"Student updated successfully"})
 }
 
 
