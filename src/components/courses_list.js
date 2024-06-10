@@ -71,29 +71,28 @@ export default function CoursesList() {
   }, []);
 
   return (
-    <div className='d-flex 'style={{minHeight:'100vh'}}   id="CourseBanner">
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light " style={{ width: '280px' }}>
+    <div style={{minHeight:'100vh'}}   id="CourseBanner">
+      <div className="d-flex flex-column sidebar flex-shrink-0 p-3 bg-light " >
   <span className="fs-4">Search Courses</span>
 
   <hr />
-  <div className='input-group'>
-
-  <input type="text" placeholder="search" className="form-control" name='search' onChange={(e) => setSearchQuery(e.target.value)} />
-  <SearchIcon className='input-group-text' style={{height:'auto',width:'35px', backgroundColor:'white'}}/>
+<div className='input-group'>
+<input type="text" name='search' onChange={(e) => setSearchQuery(e.target.value)} placeholder="search" className="form-control" />
+  <SearchIcon className='input-group-text' style={{height:'auto', backgroundColor:'white', fonSize:
+  '16px', width:'40px'}}/>
  
- </div>
+</div>
   
   <ul className=" mb-auto" style={{listStyleType:'none', paddingLeft:'25px', textAlign:'left'}}>
  <li>Filter<hr/></li>
 <li><span>Duration</span>
-
-<select style={{    borderRadius: '5px'
+<select  onChange={(e)=>{handleFilterChange(e)}}  style={{    borderRadius: '5px'
     ,border:' 1px solid #ccc'
     ,padding:' 10px 15px'
     ,marginBottom: '15px'
     ,fontSize: '16px'
-    ,width: '100%',backgroundColor:'white'}} onChange={(e)=>{handleFilterChange(e)}} required>
-  <option></option>
+    ,width: '100%', backgroundColor:'white'}}>
+ <option></option>
     <option name='1'>1</option>
     <option name='2'>2</option>
     <option name='3'>3</option>
@@ -106,9 +105,10 @@ export default function CoursesList() {
   </ul>
 </div>
     
-      <div className='courses  w-75 p-5' style={{marginTop:'',marginRight:'auto', marginLeft:'auto'}}>
-      <div className='mb-3'  style={{padding:'16px', margin:'auto', marginTop:'5%'}}>
-{filterCourses(courses)&&(<h2>Search Results</h2>)}
+      <div className='courses   p-5'>
+      <div className='mb-3'  style={{padding:'16px', margin:'auto'}}>
+        {(filterCourses(courses) || search(courses)) && (<h2>Search Results</h2>)}
+{/* {filterCourses(courses)&&(<h2>Search Results</h2>)} */}
 <div className='row row-cols-1 row-cols-md-3 g-4'> 
       {filterCourses(courses)&& filterCourses(courses).map((dataObj)=>{
   return(
@@ -128,9 +128,8 @@ export default function CoursesList() {
       </div>
   )
 })}
-<hr className='w-100'/>
       </div>
-      {search(courses)&&(<h2>Search results</h2>)}
+
       <div className='row row-cols-1 row-cols-md-3 g-4'>
       
       {search(courses) && search(courses).map((dataObj) => {

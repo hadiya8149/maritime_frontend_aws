@@ -79,7 +79,7 @@ export default function Signup() {
                             </div>
                             <div className="mb-3 group">
                                 <input type="number" placeholder="age" className="form-control mr-3" id="InputAge" name='age' onChange={handleChange} aria-describedby="AgeHelp" min='18'required and max='70' />
-                                <select onChange={handleChange} className="w-100 mr-3" name='gender' required>
+                                <select onChange={handleChange} className=" w-100 mr-3 " name='gender' required>
                                     <option>Gender</option>
                                     <option >Female</option>
                                     <option>Male</option>

@@ -60,7 +60,7 @@ export default function Programs(){
   }
   const fetchData = async () => {
     try {
-        const response = await axios.get(`${API_URL}/programs`);
+        const response = await axios.get(`${API_URL}/get_all_programs`);
         if (response.status === 200) {
           console.log(response.data.data)
             setPrograms(response.data.data);
@@ -75,7 +75,7 @@ export default function Programs(){
 
     return (
       <div className='d-flex ' style={{minHeight:'100vh'}}>
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light " style={{ width: '280px' }}>
+      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar" style={{ width: '280px' }}>
   <span className="fs-4">Search Programs</span>
 
   <hr />
@@ -108,8 +108,8 @@ export default function Programs(){
   </ul>
 </div>
 
-        <div id='CourseBanner' className=''>
-        {filterPrograms(programs)&&(<h2>Search Results</h2>)}
+        <div  className='programs'>
+        {(filterPrograms(programs)|| search(programs))&&(<h2>Search Results</h2>)}
 <div className='row row-cols-1 row-cols-md-3 g-4 m-auto'> 
       {filterPrograms(programs)&& filterPrograms(programs).map((dataObj)=>{
   return(
@@ -132,7 +132,6 @@ export default function Programs(){
 })}
 <hr className='w-100'/>
       </div>
-        {search(programs)&&(<h2>Search results</h2>)}
         <div className='row row-cols-1 row-cols-md-3 g-4 m-auto' style={{padding:'16px'}}>
       
       {search(programs) && search(programs).map((dataObj) => {
