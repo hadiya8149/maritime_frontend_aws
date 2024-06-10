@@ -58,7 +58,7 @@ userRouter.post('/login', async (req, res) => {
                 } else {
                     // response is OutgoingMessage object that server response http request
 
-                    return res.json({ success: false, message: 'passwords do not match' });
+                    return res.status(401).json({ success: false, message: 'passwords do not match' });
                 }
             });
         }
