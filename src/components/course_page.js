@@ -4,6 +4,8 @@ import React from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import { API_URL } from '../utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CourseInfo(){
   const [course, setCourse]=useState()
@@ -28,7 +30,7 @@ export default function CourseInfo(){
     const response = await axios.post(`${API_URL}/progress`, body)
     console.log(response)
     if(response.status===200){
-      alert("Congratulations on completing the course")
+      toast.success("Congratulations you have completed the course")
     }
   }
   useEffect(()=>{
@@ -90,6 +92,7 @@ export default function CourseInfo(){
             })}
 
 </div>
+<ToastContainer/>
   </div>
     )
 }

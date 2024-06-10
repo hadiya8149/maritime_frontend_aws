@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminNavbar from './admin_navbar';
 import { API_URL } from '../utils';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function StudentsList() {
     const [users, setUsers] = useState([])
     const token = localStorage.getItem('authToken')
@@ -33,7 +36,7 @@ export default function StudentsList() {
             const response = await axios.delete(url, {headers:myHeaders});
             if (response.status === 200) {
                 // setUsers((prevUsers) => prevUsers.filter((user) => user.std_id !== user.std_id)); // Filter out deleted applicant
-                alert("Student delete successfully")
+                toast.success("Student delete successfully")
             }
         } catch (error) {
             console.error(error);
@@ -73,6 +76,7 @@ export default function StudentsList() {
 })}
            
             </div>
+            <ToastContainer/>
 
         </div>
 </div>

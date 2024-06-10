@@ -4,6 +4,9 @@ import React from 'react'
 import {useState, useEffect} from 'react';
 import axios from 'axios'
 import { API_URL } from '../utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import AdminNavbar from './admin_navbar';
 export default function ManageJobs(){
   const [jobs, setJobs] = useState([])
@@ -49,7 +52,7 @@ export default function ManageJobs(){
 const deleteJob = async (id)=>{
     const response = await axios.delete(`${API_URL}/delete_job/`+id, {headers:myHeaders});
     if( response.status===200){
-        alert("job deleted successfully")
+        toast.success("job deleted successfully")
     }
     else{
         console.log("error while deleing job")
@@ -63,7 +66,9 @@ function search(data) {
 }
 
   return (
- <div>w
+ <div>
+  <ToastContainer/>
+
 <AdminNavbar/>
 <div style={{ padding: '16px', background: '#f1f3f7', height: '200px', width: '80%', margin: 'auto', borderRadius: '5px' }}>
         <div className='mb-3  m-auto' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>

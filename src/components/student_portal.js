@@ -5,6 +5,8 @@ import { useEffect} from 'react'
 import courseIllustration from '../assets/img/illustrations/course_illustration.jpg'
 import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../utils.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function StudentPortal(){
     const navigate=useNavigate();
@@ -18,7 +20,7 @@ export default function StudentPortal(){
 
             }
             else{
-                alert("Please login as a student to gain access")
+                toast.warning("Please login as a student to gain access")
                 navigate('/')
             }
         
@@ -39,7 +41,7 @@ export default function StudentPortal(){
     return (
         
         <>
-    <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -60,6 +62,8 @@ export default function StudentPortal(){
     </div>
   </div>
 </nav>
+<ToastContainer/>
+
       <div className='container m-auto h-100 '>
         <h2>
             Welcome to Maritime student Portal

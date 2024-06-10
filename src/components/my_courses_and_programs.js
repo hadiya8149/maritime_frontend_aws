@@ -2,17 +2,26 @@ import msg_icon from '../assets/icons8-message-50.png'
 import React from 'react'
 import axios from 'axios'
 import { API_URL } from '../utils'
+import '../css/profile.css'
 import { useCallback, useEffect , useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+
 export default function MyCoursesAndPrograms() {
     const navigate = useNavigate()
     const [myCourses, setMyCourses] = useState([])
     const [myPrograms, setMyPrograms] = useState([])
     const std_id = localStorage.getItem('std_id')
+    const token = localStorage.getItem('authToken')
+    const myHeaders = new Headers()
+
+    useEffect(()=>{
+        myHeaders.append("authentication", `Bearer ${token}`)
+        
+    }, [])
 
     const fetchCourses = useCallback(async () => {
         try {
-            const response = await axios.get(`${API_URL}/course_application_by_std/`+std_id);
+            const response = await axios.get(`${API_URL}/course_application_by_std/`+std_id, {headers:myHeaders});
             if (response.status === 200) {
                 console.log(response.data.data)
                 setMyCourses(response.data.data)
@@ -23,7 +32,7 @@ export default function MyCoursesAndPrograms() {
     });
     const fetchPrograms = useCallback(async () => {
         try {
-            const response = await axios.get(`${API_URL}/program_application_by_std/${std_id}`);
+            const response = await axios.get(`${API_URL}/program_application_by_std/${std_id}`, {headers:myHeaders});
             if (response.status === 200) {
                 console.log(response.data.data)
                 setMyPrograms(response.data.data)
@@ -37,8 +46,8 @@ export default function MyCoursesAndPrograms() {
         fetchPrograms()
     }, []);
     return (
-        <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+        <div style={{minHeight:'100vh'}}>
+            <nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -63,13 +72,13 @@ export default function MyCoursesAndPrograms() {
       
                 <div>
 
+                <h4 className='text-center'> My Courses</h4>
 
-                    <div style={{padding:'16px', marginTop:'3%'}}>
-                    <h4 className='text-center'> My Courses</h4>
-<table className='table text-left'>
+                    <div id='table-container' style={{marginTop:'3%'}}>
+<table className='table text-left m-auto' id="myProgramsTable">
     <thead>
-    <tr><th>Course Name</th>
-    <th></th>
+    <tr className='table-info' ><th >Course Name</th>
+    <th  >Link</th>
     </tr>
         </thead>
         <tbody>
@@ -91,12 +100,12 @@ export default function MyCoursesAndPrograms() {
                     </div>
                     <hr />
                     <h4 className='text-center'>My Training Programs</h4>
-                    <div style={{padding:'16px', marginBottom:'5%'}}>
+                    <div id="table-container" style={{padding:'16px', marginBottom:'5%'}}>
 
-                    <table className='table text-left'>
+                    <table className='table text-left m-auto' id="myCoursesTable">
     <thead>
-    <tr><th>Course Name</th>
-    <th></th>
+    <tr className='table-info'><th>Course Name</th>
+    <th>Link</th>
     </tr>
         </thead>
         <tbody>
@@ -117,6 +126,6 @@ export default function MyCoursesAndPrograms() {
                 </div>
 
             </div>
-        </>
+        </div>
     )
 }

@@ -4,6 +4,8 @@ import React from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import { API_URL } from '../utils'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProgramInfo(){
   const [program, setProgram]=useState()
@@ -28,7 +30,7 @@ export default function ProgramInfo(){
     const response = await axios.post(`${API_URL}/progress`, body)
     console.log(response)
     if(response.status===200){
-      alert("Congratulations on completing the program")
+      toast.success("Congratulations on completing the program")
     }
   }
   useEffect(()=>{
@@ -37,6 +39,8 @@ export default function ProgramInfo(){
   }, [])
     return(      
         <div className="container " style={{marginTop:'10%'}}>
+          <ToastContainer/>
+
           <div className="">
             {program && program.map((programDetail)=>{
               return(

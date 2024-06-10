@@ -8,7 +8,7 @@ a:hover{
 }
 .sidebar{
     display:flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     flex-shrink: 0;
     padding:3px;
     background-color:light ;
@@ -96,7 +96,6 @@ select.select-duration{
     }
     .sidebar{
         width:220px;
-        display: block;
         
     }
     .search-input-group{

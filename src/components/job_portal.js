@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils';
 import { useCallback } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Job_Portal() {
 
 
@@ -71,10 +74,10 @@ export default function Job_Portal() {
     // fix backend const {} = req.body.body
     const response = await axios.post(`${API_URL}/create_job_application`, {body:data }, {headers:myHeaders})
     if (response.status=200){
-      alert("Applied to job successfully")
+      toast.success("Applied to job successfully")
     }
     else{
-      alert("please upload your resume in profile section")
+      toast.error("please upload your resume in profile section")
     }
   }
   function filterJobs(data){
@@ -101,6 +104,8 @@ export default function Job_Portal() {
   }
   return (
     <div className=''>
+      <ToastContainer/>
+
       <div style={{ padding: '16px', background: '#f1f3f7', height: '200px', margin: 'auto', marginTop: 'auto', borderRadius: '5px' }}>
         <div className='mb-3  m-auto input-group' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>
           <input className='h-100   form-control' onChange={(e) => setSearchQuery(e.target.value)} type='text' placeholder='Job Title' />
@@ -116,7 +121,7 @@ export default function Job_Portal() {
       </div>
       <div className=' content-container container' >
 
-        <div className='job-listing' >
+        <div className='job-listing ' >
 
         <div className='row row-cols-1 mt-3 row-cols-md-2 g-4 w-100'>
 {filterJobs(jobs)&& filterJobs(jobs).map((dataObj)=>{
@@ -129,12 +134,14 @@ export default function Job_Portal() {
         <h6 className="card-subtitle mb-2 text-muted">{dataObj.location}</h6>
         <hr />
         <p className="card-text">{dataObj.job_description}</p>
+        <div>
         <a onClick={() => {
           fetchJobDescription(dataObj.job_id);
-        }}
+        }} style={{width:'100%'}}
         >View</a>
+</div>
       </div>
-      <h6 className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
+      <p className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
       <a href="#" className="btn btn-primary mb-3 w-75 m-auto">Easy Apply</a>
 
     </div>
@@ -157,7 +164,7 @@ export default function Job_Portal() {
         }}
         >View</a>
       </div>
-      <h6 className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
+      <p className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
       <a href="#" className="btn btn-primary mb-3 w-75 m-auto">Easy Apply</a>
 
     </div>
@@ -174,27 +181,28 @@ export default function Job_Portal() {
               const jobID = job.job_id;
               return (
                 <div className='col'>
-                  <div className="card mb-3" key={job.job_id} style={{ boxShadow: " 0 4px 8px rgba(0, 0, 0, 0.15)", height: '300px' }}>
+                  <div className="card job-card mb-3" key={job.job_id} style={{ boxShadow: " 0 4px 8px rgba(0, 0, 0, 0.15)", height: '300px' }}>
                     <div className="card-body">
-                      <h5 className="card-title">{job.job_title}</h5>
+                      <h5 >{job.job_title}</h5>
                       <h6 className="card-subtitle mb-2 text-muted">{job.location}</h6>
                       <hr />
                       <p className="card-text">{job.job_description}</p>
                     
                     </div>
-                    <h6 className='text-center'>Deadline: {job.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
+                    <p className='text-center'>Deadline: {job.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
+                   <div>
                     <a href="#"  onClick={() => {
                         fetchJobDescription(jobID);
-                      }} className="btn btn-primary mb-3 w-75 m-auto">View</a>
-
+                      }} style={{width:'auto'}} className="btn btn-primary m-auto mb-3">View</a>
+</div>
                   </div>
                 </div>
               )
             })}
           </div>
         </div>
-        <div className=' job-description'>
-          <div className="card mb-3 p-3" style={{ width: '100%', float: 'left' }}>
+        <div className=' job-description '>
+          <div className="card job-card mb-3 p-3" style={{ width: '100%', float: 'left' }}>
             <div className="card-body">
 
               <h1>Job Description</h1>
@@ -205,9 +213,7 @@ export default function Job_Portal() {
               <div className="card-text">
                 <h5>Pay: {jobDetails.salary} Rs </h5>
                 <h5>Location: {jobDetails.location}</h5>
-                <div className='text-left mb-3'>
-                  <button className='btn btn-success mr-3' style={{ height: '50px' }} onClick={() => { applyForJob(jobDetails.job_id) }} >Apply Now</button>
-                </div>
+               
                 <div>
                   <h5>Full Job Description</h5>
                   <div>
@@ -222,6 +228,9 @@ export default function Job_Portal() {
 
                     <h5>Application Deadline : {jobDetails.ExpiryDate && jobDetails.ExpiryDate.toLocaleString().slice(0, 10).replace('T', ' ')}
                     </h5>
+                    <div className='text-left mb-3'>
+                  <button className='btn btn-success mr-3' style={{ height: '50px' }} onClick={() => { applyForJob(jobDetails.job_id) }} >Apply Now</button>
+                </div>
                   </div>
                 </div>
               </div>

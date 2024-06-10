@@ -5,13 +5,16 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { API_URL } from '../utils';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export  const Login=()=> {
+
+export const Login = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [user_id, setUser_id]=useState('')
+  const [user_id, setUser_id] = useState('')
+  const [flag, setFlag] = useState(false)
   function handlePassword(val) {
     setPassword(val.target.value)
   }
@@ -19,24 +22,24 @@ export  const Login=()=> {
     setEmail(val.target.value)
   }
   async function handleSubmit(event) {
-
+    setFlag(true)
     event.preventDefault()
 
     var requestOptions = {
       method: 'POST',
-        email:email,
-        password:password,
+      email: email,
+      password: password,
       redirect: 'follow',
-      withCredentials:true
+      withCredentials: true
     };
-    try{
-    await axios.post(`${API_URL}/login`,requestOptions).then(
-      (data)=>
-        new Promise((resolve, reject) => {
+    try {
+      await axios.post(`${API_URL}/login`, requestOptions).then(
+        (data) =>
+          new Promise((resolve, reject) => {
             setTimeout(() => {
-                console.log(data)
-                // change the backend to give consistent status and data message response
-                if(data['status']==200){
+              console.log(data)
+              // change the backend to give consistent status and data message response
+              if (data['status'] == 200) {
                 const role = data['data'].user_role
                 console.log(role)
                 localStorage.setItem('authToken', data.data.token);
@@ -44,86 +47,103 @@ export  const Login=()=> {
                 localStorage.setItem('user_id', data.data.user_id)
                 localStorage.setItem('username', data.data.username)
                 const token = localStorage.getItem('authToken')
-    
+
                 const myHeaders = new Headers()
                 myHeaders.append("authentication", `Bearer ${token}`)
                 setUser_id(data.data.user_id)
-                 if(data.data.user_role.toLowerCase() ==='student') {
-                  
-                  navigate('/student', {replace:true})
-                 }
-                 else if (data.data.user_role.toLowerCase()=='employer'){
+                if (data.data.user_role.toLowerCase() === 'student') {
+
+                  navigate('/student', { replace: true })
+                }
+                else if (data.data.user_role.toLowerCase() == 'employer') {
                   navigate('/employer')
-                 }
-                 else if (data.data.user_role=='Job Seeker'){
+                }
+                else if (data.data.user_role == 'Job Seeker') {
                   const user_id = localStorage.getItem('user_id')
-                  const fetchJobSeekerID = async()=>{
-                    const response = await axios.get(`${API_URL}/jobseeker_by_user_id/`+user_id, {headers:myHeaders})
-                    if (response.status===200){
+                  const fetchJobSeekerID = async () => {
+                    const response = await axios.get(`${API_URL}/jobseeker_by_user_id/` + user_id, { headers: myHeaders })
+                    if (response.status === 200) {
                       localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
                       navigate('/jobseeker')
 
                     }
                   }
-                  
-                  fetchJobSeekerID()
-                 }
-                 else if (data.data.user_role=='admin'){
-                  navigate('/admin')
-                 }
-              }
-            }, 1);
-          }),
-    
-    ).catch(function(error){
-      if (error.response.status==401){
-        alert("Invalid password. Please try again")
-      }
-      else if (error.response.status==404){
-        alert("user not found . Please signup")
-      }
-    })
-    
-  }
-  catch(err){
-    console.log(err)
-  }
-}
-  
-      
 
-  useEffect(()=>{
+                  fetchJobSeekerID()
+                }
+                else if (data.data.user_role == 'admin') {
+                  navigate('/admin')
+                }
+              }
+              
+            else{
+              setFlag(false)
+            }
+            }
+            , 1);
+          }),
+
+      ).catch(function (error) {
+        if (error.response.status == 401) {
+          toast.error("Invalid password. Please try again")
+        }
+        else if (error.response.status == 404) {
+          toast.error("user not found . Please signup")
+        }
+      })
+
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+
+
+  useEffect(() => {
     const user_id = localStorage.getItem('user_id')
-    if (user_id){
+    if (user_id) {
       navigate('/')
     }
+
   })
   return (
-    <div id="bannerImage" style={{width:'100%'}}>
-    <div className='container'>
 
-      <div className='m-auto form-container'>
-        <div className='card w-50 h-50'style={{background:'none', border:'none'}}>
-        <form id='loginForm' className='m-auto w-75' onSubmit={handleSubmit} >
-          <span id="form-heading">Login</span>
-          <div className="mb-3">
-            <input placeholder='Enter email' type="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" onChange={handleEmail} />
+    <div id="bannerImage" style={{ width: '100%' }}>
+      <div className='container'>
+        <ToastContainer />
+
+        <div className='m-auto form-container'>
+          <div className='card w-50 h-50' style={{ background: 'none', border: 'none' }}>
+            <form id='loginForm' className='m-auto w-75 text-center' onSubmit={handleSubmit} >
+              <span id="form-heading">Login</span>
+              <div className="mb-3">
+                <input placeholder='Enter email' type="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" onChange={handleEmail} />
+              </div>
+              <div className="mb-3">
+                <input placeholder='enter password' type="password" className="form-control" id="InputPassword" onChange={handlePassword} />
+              </div>
+              <div className="mb-3 ">
+                <a className='link-primary' href='/signup'>Don't have account? Signup Here</a>
+                <br />
+                <a className='link-primary' href='reset_password'>Reset password</a>
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={flag} >Submit</button>
+              {flag && (
+                <button class="btn " type="button" disabled={!flag}>
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span class="visually-hidden" role="status">Loading...</span>
+              </button>
+              )}
+              
+            </form>
           </div>
-          <div className="mb-3">
-            <input placeholder='enter password' type="password" className="form-control" id="InputPassword" onChange={handlePassword} />
-          </div>
-          <div className="mb-3 ">
-            <a className='link-primary' href='/signup'>Don't have account? Signup Here</a>
-            <br />
-            <a  className='link-primary' href='reset_password'>Reset password</a>
-          </div>
-          <button type="submit" className="btn btn-primary"  >Submit</button>
-        </form>
         </div>
-      </div>
 
-    </div>
-  {/* add footer here */}
+
+
+      </div>
+      {/* add footer here */}
     </div>
   )
 }

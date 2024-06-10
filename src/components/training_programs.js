@@ -8,6 +8,8 @@ import ProgramBanner from '../assets/598198350abe8-page-banners6.jpg';
 import { API_URL } from '../utils'
 import SearchIcon from '@mui/icons-material/Search';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Programs(){
   const stdID = localStorage.getItem('std_id');
   const [programs, setPrograms] = useState([])
@@ -41,7 +43,7 @@ export default function Programs(){
   
   const enrollProgram= async(id)=>{
     if(!stdID){
-      alert("Please login to enroll")
+      toast.warning("Please login to enroll")
     }
     else{
       const data={
@@ -53,7 +55,7 @@ export default function Programs(){
       }
       const response = await axios.post(`${API_URL}/apply_for_program`, {body:data})
       if (response.status===201){
-        alert("program enrolled successfully")
+        toast.success("program enrolled successfully")
       }
     }
 
@@ -74,7 +76,7 @@ export default function Programs(){
   }, []);
 
     return (
-      <div  style={{minHeight:'100vh'}}>
+      <div  style={{minHeight:'100vh'}} id="CourseBanner">
       <div className="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar" style={{ width: '280px' }}>
   <span className="fs-4">Search Programs</span>
 
@@ -174,7 +176,8 @@ return (
 
        {programs.map(program=>(
 <div className='col'>
-      <div key={program.program_id} className="card mb-3  m-auto" >
+
+      <div key={program.program_id} className="card mb-3" >
       <div className=''>
         <img className="card-img" src={programImage} alt="Card  cap"></img>
         <div className="card-body">
@@ -198,7 +201,8 @@ return (
         </div>
       <div className='mb-3'>
       </div>
-  
+      <ToastContainer/>
+
       </div>
     )
 }

@@ -69,7 +69,7 @@ export default function Profile() {
 }, []);
     return (
 <>
-<nav className="navbar navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+<nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -99,10 +99,10 @@ export default function Profile() {
                         <div className="card-body text-left">
                         <h5 className="card-title">Personal Details</h5>
 
-                            <h6>{profile.studentName}</h6>
-                            <h6>Student ID: {profile.studentIDNumber}</h6>
-                            <h6>First Name: {profile.first_name}</h6>
-                            <h6>Last Name: {profile.last_name}</h6>
+                            <p>{profile.studentName}</p>
+                            <p>Student ID: {profile.studentIDNumber}</p>
+                            <p>First Name: {profile.first_name}</p>
+                            <p>Last Name: {profile.last_name}</p>
 
                  
                             <p className="card-text">Gender: {profile.gender}</p>
@@ -121,29 +121,29 @@ export default function Profile() {
       </div>
       <div className="modal-body">
         <form className='m-auto w-100' onSubmit={()=>handleSubmit()}>
-        <div>       
-            <label htmlFor='#firstName'>First Name</label>
-            <input className='ml-5' type='text' name='first_name' id='firstName' />
+        <div className='row mb-3'>       
+            <label className='col-sm-4 col-form-label' htmlFor='#firstName'>First Name</label>
+            <input className='col-sm-8' type='text' name='first_name' id='firstName' />
             </div>
-            <div>       
-            <label htmlFor='#lastName'>Last Name</label>
-            <input   className='ml-5' name='last_name' onChange={handleChange}  type='text' id='LastName' />
+            <div className='row mb-3'>       
+            <label className='col-sm-4 col-form-label'  htmlFor='#lastName'>Last Name</label>
+            <input   className='col-sm-8' name='last_name' onChange={handleChange}  type='text' id='LastName' />
             </div>
-            <div>       
-            <label htmlFor='#studentName'>Student Name</label>
-            <input type='text' id='StudentName'  name='studentName' onChange={handleChange}/>
+            <div className='row mb-3'>       
+            <label className='col-sm-4 col-form-label' htmlFor='#studentName'>Full Name</label>
+            <input type='text' id='StudentName' className='col-sm-8'  name='studentName' onChange={handleChange}/>
             </div>
-           <div>       
-            <label htmlFor='#editNumber'>Contact No. </label>
-            <input  className='ml-5'  name='contact_no' onChange={handleChange} type='number' id='editNumber' />
+           <div className='row mb-3'>       
+            <label className='col-sm-4 col-form-label'  htmlFor='#editNumber'>Contact No. </label>
+            <input  className='col-sm-8'  name='contact_no' onChange={handleChange} type='tel' id='editNumber' />
             </div>
-<div>
-            <label htmlFor='#editAddress'>Address</label>
-            <input name='address'onChange={handleChange}  className='ml-5'  id='editAddress' type='text'/>
+<div className='row mb-3'>
+            <label className='col-sm-4 col-form-label' htmlFor='#editAddress'>Address</label>
+            <input name='address'onChange={handleChange}  className='col-sm-8'  id='editAddress' type='text'/>
             </div>
 <hr/>
-        <button type="button" className="btn bg-secondary" style={{color:'white'}} data-bs-dismiss="modal">Close</button>
-        <button type="submit" className="btn bg-primary"  style={{color:'white'}}>Save changes</button>
+        <button type="button" className="btn bg-secondary " style={{color:'white', marginRight:'16px'}} data-bs-dismiss="modal">Close</button>
+        <button type="submit" className="btn bg-primary "  style={{color:'white'}}>Save changes</button>
 
         </form>
       </div>
@@ -152,19 +152,19 @@ export default function Profile() {
   </div>
 </div>
                 </div>
-                <div className="right-side ml-3 ">
+                <div className='table-container col'>
                     <div><h4>Progress</h4>
                     Track your courses and programs progress here
 
+  
                             <div className='mb-3'>
-<table className='table  m-auto'>
+<table className='table' id='progressTable'>
   <thead>
-    <tr>
-      <th>Course id</th>
-      <th>Program Id</th>
-      <th>Progress</th>
-      <th>Completion Status</th>
-      <th>Date</th>
+    <tr  className='table-info' >
+      <th scope='col' className='pt-th'>Course id</th>
+      <th scope='col' className='pt-th' >Program Id</th>
+      <th scope='col' className='pt-th'>CompletionStatus</th>
+      <th scope='col' className='pt-th'>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -172,10 +172,10 @@ export default function Profile() {
   progress.length > 0 ? (
     progress.map((prog) => (
       <tr key={prog.ProgressID}>
-        <td>{prog.CourseID}</td>
-        <td>{prog.ProgramID}</td>
-        <td>{prog.CompletionStatus}</td>
-        <td>{prog.LastUpdatedDate}</td>
+        <td className='pt-cell' scope='col'>{prog.CourseID}</td>
+        <td className='pt-cell' scope='col'>{prog.ProgramID}</td>
+        <td className='pt-cell' scope='col'>{prog.CompletionStatus}</td>
+        <td className='pt-cell' scope='col'><time>{prog.LastUpdatedDate.toLocaleString().slice(0,19).replace('T', ' ')}</time></td>
       </tr>
     ))
   ) : (

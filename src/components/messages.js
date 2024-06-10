@@ -2,6 +2,9 @@ import AdminNavbar from './admin_navbar.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { API_URL } from '../utils.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function AdminMessages(){
   const token = localStorage.getItem('authToken')
   const myHeaders = new Headers()
@@ -109,6 +112,8 @@ export default function AdminMessages(){
 </div>
 </div>
         </div>
+        <ToastContainer/>
+
         <div className='mb-3'></div>
         </div>
     )

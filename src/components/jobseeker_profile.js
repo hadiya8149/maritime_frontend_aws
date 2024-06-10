@@ -1,4 +1,3 @@
-import '../css/profile.css'
 import msg_icon from '../assets/icons8-message-50.png'
 import '../css/jobseeker.css'
 import profile_image from '../assets/profile-icon-design-free-vector.jpg'
@@ -7,6 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import { API_URL } from '../utils'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function JobSeekerProfile() {
     const navigate = useNavigate();
     const token = localStorage.getItem('authToken')
@@ -101,10 +103,10 @@ export default function JobSeekerProfile() {
 
         console.log(response)
         if (response.status === 200) {
-            alert("Job seeker profile update successfully")
+            toast.info("Job seeker profile update successfully")
         }
         else {
-            alert("Could not update your profile.Please try again")
+            toast.warning("Could not update your profile.Please try again")
         }
     }
     function handleJobSeekerProfileChange(e) {
@@ -127,15 +129,15 @@ export default function JobSeekerProfile() {
             },{headers:myHeaders})
 
             if (response.status === 200) {
-                alert("Resume uploaded successfully")
+                toast.success("Resume uploaded successfully")
 
                 // You can also handle the response data here, if needed
             } else {
-                alert('Error uploading resume.');
+                toast.error('Error uploading resume.');
             }
         } catch (error) {
             console.error(error);
-            alert('An error occurred while uploading the resume.');
+            toast.error('An error occurred while uploading the resume.');
         }
         const response = await axios.put(`${API_URL}/update_jobseeker/` + jobSeeker_id, { resumeURL: file.name }, {headers:myHeaders}).then((result) => console.log(result))
             .catch((error) => console.error(error));
@@ -153,6 +155,8 @@ export default function JobSeekerProfile() {
     }, []);
     return (
         <div className='mb-10'>
+            <ToastContainer/>
+
             <nav className="navbar navbar-expand-lg bg-body-tertiary" >
                 <div className="container-fluid">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -210,23 +214,24 @@ export default function JobSeekerProfile() {
                     </div>
                 </div>
             </nav>
-            <div className="container profile-container" style={{ marginTop: '4%' }}>
-                <div className="left-side mr-3">
-                    <div className="card profile-card mb-3">
+            {/* <div className="" style={{ marginTop: '4%' }}>
+                <div className=''></div>
+                <div className="">
+                    <div className="card" id="profile-card">
                         <img src={profile_image} style={{ height: '100px', width: '100px' }} className="card-img-top m-auto" alt="..."></img>
 
                         <div className="card-body text-left mb-3">
 
                             <h5 className="card-title">Personal Details</h5>
-                            <div className="card-text">
+                            <div className="card-text " style={{textAlign:'left'}}>
 
-                                <h6>ID {profile.jobSeeker_id}</h6>
+                                <p >ID {profile.jobSeeker_id}</p >
 
-                                <h6>Username: {userProfile.username}</h6>
+                                <p >Username: {userProfile.username}</p >
 
-                                <h6>Email: {profile.email}</h6>
+                                <p >Email: {profile.email}</p >
 
-                                <h6>Age {userProfile.user_age}</h6>
+                                <p >Age {userProfile.user_age}</p >
                             </div>
                             <a href="#editDetails" data-bs-toggle="modal" data-target="#editDetails" className="btn btn-primary">Edit</a>
 
@@ -259,7 +264,7 @@ export default function JobSeekerProfile() {
                         </div>
 
                     </div>
-                    <div className="card resume-card" >
+                    <div className="" id="resume-card" >
                         <div className="card-body">
                             <div className="card-text">
                                 <h6>Resume</h6>
@@ -275,7 +280,8 @@ export default function JobSeekerProfile() {
                         </div>
                     </div>
                 </div>
-                <div className="right-side ml-3">
+                <div className="">
+                    <div>
                     <div className='jobseeker_profile_edit_div mb-3'>
                         <div className='w-50'>
                             <h4>Name: {profile.name}</h4>
@@ -312,7 +318,125 @@ export default function JobSeekerProfile() {
                         </div>
 
                     </div>
-                    <div className="modal fade" id="editJobSeeker" tabIndex="-1" aria-labelledby="editJobSeeker" aria-hidden="true">
+                    </div>
+                   
+                </div>
+                <div className=''></div>
+            </div> */}
+        <div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card profile-card">
+        <img src={profile_image} class="card-img-top mx-auto" alt="..." style={{height: "100px", width:"100px"}}/>
+        <div class="card-body" style={{textAlign:'left'}}>
+          <h5 class="card-title">Personal Details</h5>
+          <div class="card-text">
+            <p>ID: {profile.jobSeeker_id}</p>
+            <p>Username: {userProfile.username}</p>
+            <p>Email: {profile.email}</p>
+            <p>Age: {userProfile.user_age}</p>
+          </div>
+          <a href="#editDetails" data-bs-toggle="modal" data-bs-target="#editDetails" class="btn btn-primary">Edit</a>
+        </div>
+      </div>
+
+      <div class="modal fade" id="editDetails" tabindex="-1" aria-labelledby="editDetails" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Contact Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="m-auto w-100" onSubmit={() => handleSubmit()}>
+                <label for="#name">Username</label>
+                <input class="form-control" type="text" id="name" name="name" onChange={handleChange} />
+                <label for="#user_age">Age</label>
+                <input class="form-control" type="number" min="18" max="75" onChange={handleChange} name="user_age" />
+                <hr />
+                <div>
+                  <button type="button" class="btn btn-secondary" 
+                //   style="color: white; margin-right: 5px; width: 100px;"
+                   data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" 
+                //   style="color: white; width: 200px;"
+                  >Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card resume-card">
+        <div class="card-body">
+          <div class="card-text">
+            <h6>Resume</h6>
+            {profile.resumeURL && (
+              <a href="#" onClick={() => getpdf(profile.resumeURL)} class="mb-3 text-black">
+                {profile.resumeURL}
+              </a>
+            )}
+            <form onSubmit={uploadResume} id="resume_form">
+              <input onChange={(e) => setFile(e.target.files[0])} name="file" class="mb-3" type="file" accept="application/pdf" required />
+              <button class="btn btn-primary w-100" type="submit">Upload</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="jobseeker-profile">
+        <div class="d-flex justify-content-between  align-items-center mb-3">
+          <h4>Name: {profile.name}</h4>
+          <a class="btn" id="editprofilebtn" href="#editJobSeeker" role="button" data-bs-toggle="modal" data-bs-target="#editJobSeeker">
+            Edit Profile
+          </a>
+        </div>
+
+        <div style={{height:'100px'}}>
+          <h4  className='bg-light bg-gradient sections'>Experience</h4>
+          <div class="mb-3">
+            {profile.workExperience}
+          </div>
+        </div>
+
+        <div  style={{height:'100px'}}>
+          <h4 className='bg-light bg-gradien'>Education</h4>
+<div className='mb-3'>
+    {profile.education}
+</div>
+        </div>
+        <div  style={{height:'100px'}}>
+
+          <h4 className='bg-light bg-gradien'>Certifications & licenses</h4>
+<div className='mb-3'>
+    {profile.certifications}
+</div>
+        </div>
+        <div  style={{height:'100px'}}>
+
+          <h4 className='bg-light bg-gradien'>Skills</h4>
+<div className='mb-3'>
+    {profile.skills}
+</div>
+        </div>
+        <div  style={{height:'100px'}}>
+          <h4 className='bg-light bg-gradien rounded-5'>Languages</h4>
+<div className='mb-3'>
+    {profile.languages}
+</div>
+        </div>
+</div>
+</div>
+</div>
+</div>
+ <div className="modal fade" id="editJobSeeker" tabIndex="-1" aria-labelledby="editJobSeeker" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -342,9 +466,6 @@ export default function JobSeekerProfile() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
+</div>
     )
 }

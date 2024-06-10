@@ -4,6 +4,8 @@ import React from 'react'
 import courseBanner from '../assets/study-w1880x1253.jpeg'
 import { API_URL } from '../utils';
 import SearchIcon from '@mui/icons-material/Search';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
@@ -30,7 +32,7 @@ export default function CoursesList() {
   },[]);
   const enrollCourse= async(id)=>{
     if (!stdID){
-      alert("please login to enroll")
+      toast.warning("please login to continue")
     }
     else{
       const data={
@@ -42,7 +44,7 @@ export default function CoursesList() {
       }
       const response = await axios.post(`${API_URL}/apply_for_course`, {body:data})
       if (response.status===201){
-        alert("Course  enrolled successfully")
+        toast.success("Course  enrolled successfully")
       }
     }
     
@@ -116,7 +118,7 @@ export default function CoursesList() {
       <div className="card mb-3 m-auto">
         <div className=''>
           <img className="card-img" src={courseImage} alt="Card cap"></img>
-          <div className="card-body">
+          <div className="card-body text-left">
             <h5>{dataObj.course_name}</h5>
             <h6>Certificate</h6>
             <h6>Description: {dataObj.description}</h6>
@@ -195,7 +197,7 @@ return (
     <div className='mb-3'>
       
     </div>
-
+<ToastContainer/>
     </div>
 
 

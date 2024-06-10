@@ -5,6 +5,8 @@ import axios from 'axios'
 import React from 'react'
 import AdminNavbar from './admin_navbar';
 import { API_URL } from '../utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CoursesAndProgramsManagement(){
   const stdID = localStorage.getItem('std_id');
@@ -94,7 +96,7 @@ function handleEditProgramChange(e) {
     const response = await axios.post(`${API_URL}/course`, {body:courseForm}, {headers:myHeaders});
     console.log(response)
     if (response.status===201)
-      alert("Course created successfully")
+      toast.success("Course created successfully")
     }
 
   async function createProgram(){
@@ -102,19 +104,19 @@ function handleEditProgramChange(e) {
 const response = await axios.post(`${API_URL}/program`, {body:programForm}, {headers:myHeaders});
     console.log(response)
     if (response.status===201)
-      alert("Program created successfully")
+      toast.success("Program created successfully")
     }
     
   async function deleteCourse(id){
     const response = await axios.delete(`${API_URL}/course/`+id, {headers:myHeaders});
     if (response.status===200){
-      alert("course deleted successfully")
+      toast.success("course deleted successfully")
     }
   }
   async function deleteProgram(id){
     const response = await axios.delete(`${API_URL}/program/`+id, {headers:myHeaders});
     if (response.status===200){
-      alert("Program deleted successfully")
+      toast.success("Program deleted successfully")
     }
   }
   async function editCourse(){
@@ -128,7 +130,7 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm}, {hea
     }
     const response  = await axios.put(`${API_URL}/course/`+course_id, body, {headers:myHeaders} ).then((data)=>console.log(data)).catch((err)=>console.log(err))
     console.log(response)
-    alert('course update successfully') 
+    toast.success('course update successfully') 
   }
   async function editProgram(){
     const program_id = editProgramForm.program_id

@@ -8,6 +8,8 @@ import { API_URL } from '../utils';
 import ToggleButton from '@mui/material/ToggleButton';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function EmployerPortal() {
   const token = localStorage.getItem('authToken')
   const myHeaders = new Headers()
@@ -50,7 +52,7 @@ export default function EmployerPortal() {
                 if (data.status === 201) {
                   console.log(data.data.message)
                   console.log(data.data.result)
-                  alert("job created successfully")
+                  toast.success("job created successfully")
                 }
               }, 1);
             }),
@@ -161,6 +163,8 @@ useEffect(()=>{
           </div>
         </div>
       </nav>
+      <ToastContainer/>
+
       <div className='container m-auto p-5 '>
 
         <h2 style={{ marginBottom: '6%' }}>Welcome to Maritime Employer Management</h2>

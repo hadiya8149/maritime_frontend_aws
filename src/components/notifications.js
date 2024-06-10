@@ -2,6 +2,8 @@ import AdminNavbar from './admin_navbar.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { API_URL } from '../utils.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AdminNotifications(){
     const [notificationForm, setNotificationForm]=useState({
@@ -26,7 +28,7 @@ export default function AdminNotifications(){
   async function createNotification(){
     const response = await axios.post(`${API_URL}/sendnotification`, {body:notificationForm}, {headers:myHeaders})
     if(response.status===200){
-      alert("notification created successfully")
+      toast.success("notification created successfully")
     }
   }
     async function getNotifications(){
@@ -42,7 +44,10 @@ export default function AdminNotifications(){
     return(
         <div  style={{minHeight:'100vh'}}>
         <AdminNavbar/>
+        
         <div>
+        <ToastContainer/>
+
 <div className='d-flex' style={{background:'rgb(241, 243, 247)', height:'100',width:'75%' ,margin:'auto',padding:'16px', paddingTop:'5px', color:'black'}}>
 <h4 className='w-75 mt-4 ml-5'>Notifications</h4>
 <form className="row gx-3 gy-2 align-items-center   w-100" onSubmit={createNotification} style={{boxShadow:'none', background:'none'}}>

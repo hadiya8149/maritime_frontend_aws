@@ -5,6 +5,8 @@ import axios from 'axios';
 import React from 'react'
 import { API_URL } from '../utils.js';
 import '../css/signup.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup() {
     const [signupForm, setsignupForm] = useState({
@@ -30,7 +32,7 @@ export default function Signup() {
         const isPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,10}$/.test(signupForm.password);
         const isPassword2 = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,10}$/.test(signupForm.password1);
         if (isPassword !== isPassword2) {
-            alert("Passwords donot match");
+            toast.error("Passwords donot match");
 
         }
     }
@@ -45,7 +47,7 @@ export default function Signup() {
                         console.log(data)
                         if (data['status'] === 201) {
                             console.log(data)
-                            alert("user signed up successfully")
+                            toast.success("user signed up successfully")
                             
                         }
                     }, 1);
@@ -54,7 +56,7 @@ export default function Signup() {
         ).catch(function (error) {
             console.log(error)
         })
-        alert("user signed up")
+        toast.success("user signed up")
     }
 
 
@@ -99,6 +101,7 @@ export default function Signup() {
                             <button id='signupbtn' type="submit" className="btn btn-primary signup-btn btn-lg " style={{heihgt:'50px'}}>Signup</button>
                         </form>
                     </div>
+                    <ToastContainer/>
 
                 </div>
 

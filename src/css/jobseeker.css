@@ -8,7 +8,10 @@
     background-size: cover;
     width: 100%;
 }
-
+#profile-card, #resume-card{
+    height:auto;
+    width:250px;
+}
 .profile-container {
     display: flex;
 
@@ -22,6 +25,20 @@
     display: flex;
 
 }
+/* .sections{
+    background-image: var(--mdb-gradient);
+    background: #0277BD;
+    line-height: 2rem;
+    color: white;
+    text-align: center;
+    background-image: var(--mdb-gradient) !important;
+
+    box-sizing:border-box;
+    padding:rem;
+    border: radius 0.5rem, importan !important;
+    --mdb--bg-opacity: 1
+
+} */
 .EP12{
     border:1px solid grey;
     width:920px;
@@ -31,6 +48,7 @@
     display: block;
     padding:10px;
     margin-bottom:25px;
+    text-align:left;
 
 }
 /* media query for tablet */
@@ -96,9 +114,6 @@
     }
     .EP12{
         width:800px;
-    }
-    .w-50{
-        text-align: right;
     }
 }
 @media only screen and (min-width: 1441px) {

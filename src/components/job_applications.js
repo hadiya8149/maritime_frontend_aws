@@ -8,6 +8,8 @@ import jobImage from '../assets/onboared-laptop.jpg'
 import { API_URL } from '../utils'
 import ToggleButton from '@mui/material/ToggleButton';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function JobApplications(){
   const employer_id = localStorage.getItem('employer_id')
@@ -70,7 +72,7 @@ export default function JobApplications(){
                 setTimeout(() => {
                    if(data.status===200){
                     console.log(data.data.message)
-                    alert("Job deleted successfully!")
+                    toast.info("Job deleted successfully!")
                    }
                 }, 1);
               }),
@@ -90,7 +92,7 @@ export default function JobApplications(){
                  if(data.status===201){
                   console.log(data.data.message)
                   console.log(data.data.result)
-                  alert("job created successfully")
+                  toast.success("job created successfully")
                  }
               }, 1);
             }),
@@ -140,7 +142,7 @@ export default function JobApplications(){
               setTimeout(() => {
                  if(data.status===200){
                   console.log(data.data.message)
-                  alert("job Updated successfully")
+                  toast.info("job Updated successfully")
                  }
               }, 1);
             }),
@@ -161,7 +163,7 @@ export default function JobApplications(){
         setApplicants(response.data.data); // Update applicants directly
       } else {
         if (response.response) {
-          alert("No applicants found");
+          toast.info("No applicants found");
         }
       }
     } catch (err) {
@@ -186,7 +188,7 @@ async function deleteJobApplication(app){
   
   const response = await axios.delete(`${API_URL}/delete_job_application/`+id, {headers:myHeaders});
   if (response.status===200){
-    alert("job deleted successfully")
+    toast.success("job deleted successfully")
 
   }
   else{
@@ -291,6 +293,8 @@ async function deleteJobApplication(app){
     </div>
   </div>
 </nav>
+<ToastContainer/>
+
 <div style={{minHeight:'100vh'}}>
 
 <div>

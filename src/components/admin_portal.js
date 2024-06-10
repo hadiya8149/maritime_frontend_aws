@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
 import AdminNavbar from './admin_navbar';
 import { useNavigate } from 'react-router-dom'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function AdminPage(){
     const navigate=useNavigate();
     
@@ -8,7 +12,7 @@ export default function AdminPage(){
     useEffect(()=>{
         if (role !=='admin'){
             navigate('/')
-            alert("Unauthorized access")
+            toast.warning('unauthorized access')
         }
     })
     
@@ -19,6 +23,7 @@ export default function AdminPage(){
     <h2>Welcome to Admin Portal</h2>
    <div>
    </div>
+   <ToastContainer/>
 </div>
 </div>
 )   
