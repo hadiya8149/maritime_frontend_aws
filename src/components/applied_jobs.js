@@ -1,28 +1,37 @@
 import '../css/job.css';
 import React from 'react'
 import msg_icon from '../assets/icons8-message-50.png'
-
+import '../css/jobseeker.css'
 import { useCallback, useState, useEffect } from 'react';
 import axios from 'axios'
 import { API_URL } from '../utils';
 import { useNavigate } from 'react-router-dom';
 export default function AppliedJobs() {
-  
+  const token = localStorage.getItem('authToken')
   const navigate = useNavigate()
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
+  
   const user_id= localStorage.getItem('user_id')
   async function fetchMessages(){
+    
+  const myHeaders = new Headers()
+  myHeaders.append("authentication", `Bearer ${token}`)
     console.log(user_id)
-    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
+    console.log(myHeaders)
+    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
     console.log(response.data)
     setMessages(response.data)
   }
     const [myJobs, setmyJobs] = useState([])
     const jobSeeker_id = localStorage.getItem('jobSeeker_id')
+    
   const fetchData = async () => {
+    
+  const myHeaders = new Headers()
+  myHeaders.append("authentication", `Bearer ${token}`)
       try {
-          const response = await axios.get(`${API_URL}/applied_jobs_by_user/`+jobSeeker_id);
+          const response = await axios.get(`${API_URL}/applied_jobs_by_user/`+jobSeeker_id, {headers:myHeaders});
           if (response.status === 200) {
               setmyJobs(response.data.data);
           }
@@ -35,18 +44,22 @@ export default function AppliedJobs() {
   };
 
   async function getNotifications(){
-    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
+    
+  const myHeaders = new Headers()
+  myHeaders.append("authentication", `Bearer ${token}`)
+    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
     console.log(response)
     setNotifications(response.data)
 }
   useEffect(() => {
+    
       fetchData();
     getNotifications();
 fetchMessages()
   },[]);
     return (
         <div style={{marginBottom:'20%'}}>
-     <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{ marginTop: "5%" }}>
+     <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>

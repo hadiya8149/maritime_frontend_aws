@@ -169,11 +169,11 @@ return (
           Courses at Maritime education system
         </h1>
       <h4 className='headline '>Explore new and Advanced courses to begin your journey.</h4>
-      <div className='row row-cols-1 row-cols-md-3 g-4'>
+      <div className='row row-cols-1 row-cols-md-3 g-4'> 
       {courses.map(course =>{
         return(
           <div className='col'>
-      <div className="card mb-3 m-auto">
+      <div className="card mb-3 ">
         <div className=''>
           <img className="card-img" src={courseImage} alt="Card cap"></img>
           <div className="card-body">

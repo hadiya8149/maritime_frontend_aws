@@ -7,7 +7,6 @@ import { API_URL } from '../utils';
 
 
 export  const Login=()=> {
-
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('')
@@ -44,6 +43,10 @@ export  const Login=()=> {
                 localStorage.setItem('role', role);
                 localStorage.setItem('user_id', data.data.user_id)
                 localStorage.setItem('username', data.data.username)
+                const token = localStorage.getItem('authToken')
+    
+                const myHeaders = new Headers()
+                myHeaders.append("authentication", `Bearer ${token}`)
                 setUser_id(data.data.user_id)
                  if(data.data.user_role.toLowerCase() ==='student') {
                   
@@ -55,7 +58,7 @@ export  const Login=()=> {
                  else if (data.data.user_role=='Job Seeker'){
                   const user_id = localStorage.getItem('user_id')
                   const fetchJobSeekerID = async()=>{
-                    const response = await axios.get(`${API_URL}/jobseeker_by_user_id/`+user_id)
+                    const response = await axios.get(`${API_URL}/jobseeker_by_user_id/`+user_id, {headers:myHeaders})
                     if (response.status===200){
                       localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
                       navigate('/jobseeker')

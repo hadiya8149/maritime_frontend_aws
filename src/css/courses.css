@@ -54,7 +54,7 @@ select.select-duration{
         background-color: white;
      }
 }
-@media only screen and (max-width:768px){
+@media only screen and (max-width:768px) and (min-width:425px){
     .search-input-group{
         display:flex;
         width:100%;
@@ -63,7 +63,7 @@ select.select-duration{
         margin-left:25px;
         margin-right:25px;
     }
-    .col ,.box{
+    .col.course ,.box{
         width:100%;
       }
     .search-input-group>div{

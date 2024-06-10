@@ -8,6 +8,10 @@ import jobImage from '../assets/onboared-laptop.jpg'
 import { API_URL } from '../utils'
 export default function JobApplications(){
   const employer_id = localStorage.getItem('employer_id')
+  
+  const token = localStorage.getItem('authToken')
+  const myHeaders = new Headers()
+
   const [applications, setApplications]=useState([])
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
@@ -27,10 +31,13 @@ export default function JobApplications(){
   const [applicants, setApplicants]=useState([])
   const [msgForm, setMsgForm]=useState([])
   const [jobseeker_id, setJobseeker_id]=useState()
+  useEffect(()=>{
+    myHeaders.append('authentication',`Bearer ${token}`)
+  })
   async function fetchApplications(){
     console.log("fetching data")
     try{
-        axios.get(`${API_URL}/get_job_by_employer_id/`+employer_id)
+        axios.get(`${API_URL}/get_job_by_employer_id/`+employer_id, {headers:myHeaders})
         .then(
             (data)=>
             new Promise((resolve, reject) => {
@@ -53,7 +60,7 @@ export default function JobApplications(){
   }
   async function DeleteJob(id){
     console.log(id)
-    axios.delete(`${API_URL}/delete_job/`+id)
+    axios.delete(`${API_URL}/delete_job/`+id, {headers:myHeaders})
         .then(
             (data)=>
             new Promise((resolve, reject) => {
@@ -72,7 +79,7 @@ export default function JobApplications(){
   async function createJob(){
     console.log(jobForm)
     try{
-      await axios.post(`${API_URL}/create_job/`, {body:jobForm})
+      await axios.post(`${API_URL}/create_job/`, {body:jobForm},{headers:myHeaders})
       .then(
           (data)=>
           new Promise((resolve, reject) => {
@@ -146,7 +153,7 @@ export default function JobApplications(){
   }
   async function getApplicantsByJobId(id){
     try {
-      const response = await axios.get(`${API_URL}/applicants/` + id);
+      const response = await axios.get(`${API_URL}/applicants/` + id, {headers:myHeaders});
       if (response.status === 200) {
         setApplicants(response.data.data); // Update applicants directly
       } else {
@@ -160,7 +167,7 @@ export default function JobApplications(){
   };
   
   async function getNotifications(){
-    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
+    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
     console.log(response)
     setNotifications(response.data)
 }
@@ -168,13 +175,13 @@ export default function JobApplications(){
   const content = "Thank you for taking the time to apply. We regret to inform that we have moved with another applicant."
   
   const notificationType="reject";
-  const response = await axios.post(`${API_URL}/sendnotificationtouser/`+id, {content:content, notificationType:notificationType});
+  const response = await axios.post(`${API_URL}/sendnotificationtouser/`+id, {content:content, notificationType:notificationType}, {headers:myHeaders});
   console.log(response)
   }
 async function deleteJobApplication(app){
   const id=app.app_id
   
-  const response = await axios.delete(`${API_URL}/delete_job_application/`+id);
+  const response = await axios.delete(`${API_URL}/delete_job_application/`+id, {headers:myHeaders});
   if (response.status===200){
     alert("job deleted successfully")
 
@@ -201,13 +208,13 @@ async function deleteJobApplication(app){
       subject:msgForm.subject,
       body:msgForm.body,
       jobseeker_id:id
-    })
+    }, {headers:myHeaders})
     console.log(response)
 
   }
   async function fetchMessages(){
     console.log(user_id)
-    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
+    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
     console.log(response.data)
     setMessages(response.data)
   }
@@ -219,8 +226,8 @@ async function deleteJobApplication(app){
   },[])
 
     return (
-<div style={{minHeight:'100vh'}}>
-<nav className="navbar  navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+      <>
+      <nav className="navbar  navbar-expand-lg bg-body-tertiary w-100">
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -279,16 +286,21 @@ async function deleteJobApplication(app){
     </div>
   </div>
 </nav>
+<div style={{minHeight:'100vh'}}>
+
 <div>
 
 <h3>Jobs created</h3>
 <div className='m-auto'>
+<div className='row row-cols-1 mt-3 row-cols-md-2 g-4 w-100'>
+
 {applications.map(application => {
  const jobId =application.job_id;
+
  return(
 
-<div key={application.job_id}>
-     <div className="card mb-3 w-50 m-auto">
+<div className='col job-col' key={application.job_id}>
+     <div className="card my-jobs mb-3 m-auto">
 <div className="card-body">
 <h5 className="card-title">{application.job_title}</h5>
 <h6 className="card-subtitle mb-2 text-muted">{application.location}</h6>
@@ -315,13 +327,14 @@ async function deleteJobApplication(app){
 })}
 </div>
 </div>
+</div>
 <div id='applicants' className='mb-3'>
 <h3>Applicants</h3>
-<table className='table w-75 m-auto' >
+<table className='table m-auto' >
   <thead>
     <tr><td>Applicant id</td>
-    <td>Resume URL</td>
-    <td>Application Date</td>
+    <td >Resume URL</td>
+    <td >Application Date</td>
     <td>Message</td>
     <td></td>
     <td></td>
@@ -333,10 +346,10 @@ async function deleteJobApplication(app){
       <td>
       {application.jobSeeker_id}
       </td>
-      <td>
+      <td id="resume_url_th">
       <a style={{color:'blue', textDecoration:'underline'}} onClick={()=>getpdf(application.ResumeURL)} >{application.ResumeURL}</a>
       </td>
-      <td>
+      <td id='appDate'>
       {application.AppDate.toLocaleString().slice(0,19).replace('T', ' ')}
       </td>
       <td>
@@ -383,15 +396,15 @@ async function deleteJobApplication(app){
           </div>
           <div className="mb-3">
             <label htmlFor="editlocation" className="form-label">Location</label>
-            <input  type='text' id='editlocation' required name='location' value={editJobForm.location}  onChange={handleEditChange} />
+            <input  type='text' className='form-control' id='editlocation' required name='location' value={editJobForm.location}  onChange={handleEditChange} />
           </div>
           <div className="mb-3">
             <label htmlFor="editsalary" className="form-label">Salary</label>
-            <input  type='text' id='editsalary' required name="salary" value={editJobForm.salary} onChange={handleEditChange} />
+            <input  type='text'  className='form-control' id='editsalary' required name="salary" value={editJobForm.salary} onChange={handleEditChange} />
           </div>
-          <div className="mb-3">
+          <div className="mb-3 text-left">
             <label htmlFor="editdeadline" className="form-label">Deadline to apply</label>
-            <input  type='text' id='editdeadline' required name='ExpiryDate'value={editJobForm.ExpiringDate} onChange={handleEditChange} />
+            <input  type='text' id='editdeadline' className='form-control' required name='ExpiryDate'value={editJobForm.ExpiringDate} onChange={handleEditChange} />
           </div>
             <label htmlFor="postingDate" className="form-label" style={{fontSize:'14px'}}>Posting Date { new Date().toISOString().slice(0,19).replace('T', ' ')}</label>
             <br/>
@@ -442,5 +455,7 @@ async function deleteJobApplication(app){
           </div>
         </div>
 </div>
+</>
+
     )
 }

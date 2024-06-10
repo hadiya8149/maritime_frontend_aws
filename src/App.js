@@ -34,7 +34,7 @@ function App() {
   return (
     <BrowserRouter>
 
-    <div className='App' style={{minHeight:'100%'}}>
+    <div className='App'>
     <Navbar />
 
       <Routes>

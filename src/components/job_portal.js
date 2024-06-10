@@ -17,6 +17,13 @@ export default function Job_Portal() {
   const jobSeeker_id = localStorage.getItem('jobSeeker_id')
   const [jobDetails, setJobDetails] = useState([])
   const [searchQuery, setSearchQuery] = useState([])
+  const token = localStorage.getItem('authToken')
+  const myHeaders = new Headers()
+
+  // const authToken = localStorage.getItem('authToken')
+  useEffect(()=>{
+      
+  }, [])
   function search(data) {
     if (searchQuery.length > 1)
       return data.filter((job) =>
@@ -48,7 +55,9 @@ export default function Job_Portal() {
     }
   };
   const applyForJob = async (id) => {
-    const res = await axios.get(`${API_URL}/jobseeker/`+jobSeeker_id);
+    myHeaders.append("authentication", `Bearer ${token}`)
+    console.log(`${API_URL}/jobseeker${jobSeeker_id}`)
+    const res = await axios.get(`${API_URL}/jobseeker/${jobSeeker_id}` , {headers:myHeaders});
       const resume_url = res.data.data.resumeURL;
     const data = {
       jobSeeker_id: jobSeeker_id,
@@ -57,7 +66,10 @@ export default function Job_Portal() {
       Status: 'pending',
       ResumeURL: resume_url
     }
-    const response = await axios.post(`${API_URL}/create_job_application`, { body: data })
+    console.log(`${API_URL}/create_job_application`)
+    console.log(data)
+    // fix backend const {} = req.body.body
+    const response = await axios.post(`${API_URL}/create_job_application`, {body:data }, {headers:myHeaders})
     if (response.status=200){
       alert("Applied to job successfully")
     }

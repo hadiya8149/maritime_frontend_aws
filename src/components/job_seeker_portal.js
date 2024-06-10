@@ -4,9 +4,10 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { API_URL } from '../utils';
-
+import '../css/jobseeker.css'
 export default function JobSeekerPortal() {
     const navigate=useNavigate()
+    const token = localStorage.getItem('authToken')
     const [notifications, setNotifications]=useState([])
     const role = localStorage.getItem('role')
     useEffect(() => {
@@ -27,16 +28,19 @@ export default function JobSeekerPortal() {
     const user_id = localStorage.getItem('user_id')
     const [appliedJobs, setAppliedJobs] = useState([])
     const jobseekerID = localStorage.getItem('jobSeeker_id')
+    
+    const myHeaders = new Headers()
+    myHeaders.append("authentication", `Bearer ${token}`)
  const [messages, setMessages]=useState([])
     async function fetchMessages(){
       console.log(user_id)
-      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
       console.log(response.data)
       setMessages(response.data)
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id);
+            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id,{headers:myHeaders});
             if (response.status === 200) {
                 // Update state immediately
                 setAppliedJobs(response.data.data);
@@ -46,7 +50,7 @@ export default function JobSeekerPortal() {
         }
     }
     async function getNotifications(){
-        const response = await axios.get(`${API_URL}notification_by_user_id/`+user_id)
+        const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
         console.log(response)
         setNotifications(response.data)
     }
@@ -55,9 +59,9 @@ export default function JobSeekerPortal() {
         fetchMessages()
     },[])
     return (
-        <div >
+        <div  className='jobseeker-portal-div'>
   
-            <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{ marginTop: "5%" }}>
+            <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -114,7 +118,7 @@ export default function JobSeekerPortal() {
                     </div>
                 </div>
             </nav>
-            <div className='container m-auto '>
+            <div className='container m-auto  '>
                 <h2>
                     Welcome to Maritime Job Seeker Portal
                 </h2>
@@ -130,6 +134,7 @@ export default function JobSeekerPortal() {
 <li>Get notified about job activities</li>
                 </ul>
                 </div>
+              
 
             </div>
 

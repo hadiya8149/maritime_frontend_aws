@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../utils';
 
 export default function EmployerPortal() {
-  
+  const token = localStorage.getItem('authToken')
+  const myHeaders = new Headers()
+
   const user_id = localStorage.getItem('user_id')
   const navigate=useNavigate('')
   const employer_id=localStorage.getItem('employer_id')
@@ -15,9 +17,12 @@ export default function EmployerPortal() {
   const role = localStorage.getItem('role')
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
+  useEffect(()=>{
+    myHeaders.append('authentication',`Bearer ${token}`)
+  })
   async function fetchMessages(){
     console.log(user_id)
-    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
+    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
     console.log(response.data)
     setMessages(response.data)
   }
@@ -35,7 +40,7 @@ export default function EmployerPortal() {
   async function createJob() {
     console.log(jobForm)
     try {
-      await axios.post(`${API_URL}/create_job`, { body: jobForm })
+      await axios.post(`${API_URL}/create_job`, { body: jobForm }, {headers:myHeaders})
         .then(
           (data) =>
             new Promise((resolve, reject) => {
@@ -59,7 +64,7 @@ export default function EmployerPortal() {
 
   
   async function fetchEmployerId() {
-    const response = await axios.get(`${API_URL}/employer_by_user_id/` + user_id)
+    const response = await axios.get(`${API_URL}/employer_by_user_id/` + user_id, {headers:myHeaders})
     // console.log(response)
     console.log(response.data.data)
     localStorage.setItem('employer_id', response.data.data.employer_id)
@@ -71,7 +76,7 @@ export default function EmployerPortal() {
     }))
   }
   async function getNotifications(){
-    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
+    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
     console.log(response)
     setNotifications(response.data)
 }
@@ -92,8 +97,8 @@ useEffect(()=>{
   }
 }, [])
   return (
-    <div className='h-100'>
-      <nav className="navbar  navbar-expand-lg bg-body-tertiary" style={{ marginTop: '5%' }}>
+    <div style={{minHeight:'80vh'}}>
+      <nav className="navbar  navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -114,7 +119,7 @@ useEffect(()=>{
                 <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon}alt='msg dropdown' className='msg_icon'></img></a>
                 <ul className="dropdown-menu messaages" style={{width:'500px'}}>
                                 {messages.length === 0 ? (
-      <li className="">No notifications</li>
+      <li className="">No Messages</li>
     ) : (
       messages.map((message) => (
         <li key={message.message_id} >

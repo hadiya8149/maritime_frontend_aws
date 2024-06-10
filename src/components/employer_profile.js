@@ -1,5 +1,6 @@
 import '../css/profile.css'
 import '../css/messages.css'
+import '../css/employer.css'
 import {useState, useEffect, useCallback} from 'react'
 import msg_icon from '../assets/icons8-message-50.png'
 import axios from 'axios'
@@ -9,18 +10,22 @@ import { API_URL } from '../utils';
 
 import profile_image from '../assets/profile-icon-design-free-vector.jpg'
 export default function EmployerProfile() {
-
+  const [enableEdit, setEnableEdit]=useState(false)
     const [profile, setProfile]=useState([])
     const navigate = useNavigate()
     const [editProfile, setEditProfile]=useState([])
     const employer_id=localStorage.getItem('employer_id')
   const [notifications, setNotifications]=useState([])
   const user_id = localStorage.getItem('user_id')
-
+  const token = localStorage.getItem('authToken')
+  const myHeaders = new Headers()
+  useEffect(()=>{
+    myHeaders.append('authentication',`Bearer ${token}`)
+  })
   const [messages, setMessages]=useState([])
     async function fetchMessages(){
       console.log(user_id)
-      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
       console.log(response.data)
       setMessages(response.data)
     }
@@ -28,7 +33,7 @@ export default function EmployerProfile() {
         try {
             const employer_id = localStorage.getItem("employer_id")
 
-            const response = await axios.get(`${API_URL}/employer/`+employer_id);
+            const response = await axios.get(`${API_URL}/employer/`+employer_id, {headers:myHeaders});
             if (response.status === 200) {
               console.log(response.data.data)
               setProfile(response.data.data)
@@ -39,7 +44,7 @@ export default function EmployerProfile() {
     }, []);
     async function handleSubmit(){
       const response = await axios.put(`${API_URL}/update_employer/`+employer_id, 
-      {body:editProfile})
+      {body:editProfile}, {headers:myHeaders})
       console.log("respnose", response)
     }
     function handleChange(e){
@@ -50,7 +55,7 @@ export default function EmployerProfile() {
       }))
     }
     async function getNotifications(){
-      const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id)
+      const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id,{headers:myHeaders})
       console.log(response)
       setNotifications(response.data)
   }
@@ -61,7 +66,7 @@ export default function EmployerProfile() {
 },[]);
     return (
         <div style={{minHeight:'100vh'}}>
-                        <nav className="navbar  navbar-expand-lg bg-body-tertiary" style={{marginTop:'5%'}}>
+                        <nav className="navbar  navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -117,92 +122,73 @@ export default function EmployerProfile() {
     </div>
   </div>
 </nav>
-            <div className="container d-flex mt-10">
-                <div className="left-side mr-3">
-                    <div className="card mb-3" style={{ width: '300px', height: '300px' }}>
-                        <div className="card-body">
+
+<div className='container' style={{display:'flex', justifyContent:'center',minHeight:'80vh', alignItems:'center'}} >
+           <div className='card'>
+  <div className='row'>
+            <div className='col-sm  p-0' >
+
+                  <div className='card gradient-custom'>
+                  <div className="card-body" >
                             
                             <img src={profile_image} style={{ height: '100px', width: '100px' }} className="card-img" alt="..."></img>
-                            <div className='mb-3'></div>
-                                <h5 className="card-title">Personal Details</h5>
+                            <div className='mb-3' style={{color:'white'}}>
+                                <h3 style={{color:'white'}}>Personal Details</h3>
 
-                            <h6>username{profile.username}</h6>
-                            <div className="card-text text-left">
-                                <h6>Employer id : {profile.employer_id}</h6>
+                            <h4 style={{color:'white'}} >username{profile.username}</h4>
+                            <div>
+                                <h4  style={{color:'white'}}>Employer id : {profile.employer_id}</h4>
                               
-                            <h6>Email: {profile.email}</h6>
-
+                            <h4  style={{color:'white'}}>Email: {profile.email}</h4>
+                            </div>
                             </div>
                         </div>
-                    </div>
-      
-                   
-                </div>
-                <div className="right-side ml-3">
-                
-                    <div>
-                       <h4>Company Details</h4>
-                       <div className="card" style={{ width: '920px' }}>
-  <div className="card-body">
-      <div className="card-text">
-        <h6>Name: {profile.company_name}</h6>
-        <h6>Description: {profile.description}</h6>
 
-        <h6>Location : {profile.location}</h6>
-        <h6>Employees : {profile.company_size}</h6>
-        <div style={{textAlign:'left'}}>
-          <span >Website: </span><a className='link link-primary' href={profile.company_website}>{profile.company_website}</a>
-        </div>
-        <div className='text-left'>
-            <span>Contact email </span>
-          <a className='card-link link-info' href={profile.contact_email}>{profile.contact_email}</a>
-       <div>
-       <a  href="#editEmployerDetails" data-bs-toggle="modal" data-target="#editEmployerDetails"   className=" card-link btn btn-primary text-left">Edit</a>
+                  </div>
+            </div>
+<div className='col p-0'>
+<div className='card company' style={{border:'0px'}}>
+<div className="">
+      <div className="">
+      <form className='m-auto w-100' onSubmit={handleSubmit}>
+        <h4>Company info</h4>
+           <input className='form-control' type='text' disabled={!enableEdit} placeholder='Company Name' defaultValue={profile.company_name}  onChange={handleChange} name='company_name'></input>
+           <textarea className='form-control'  placeholder='Description '  disabled={!enableEdit} defaultValue={profile.description}onChange={handleChange} name='description'></textarea>
+           <input className='form-control' type='text' placeholder="Company Website" disabled={!enableEdit}  defaultValue={profile.company_website} onChange={handleChange} name='company_website'></input>
 
-       </div>
+           <h4>Contact Details</h4>
+           <input className='form-control' type='email' placeholder="Your email" defaultValue={profile.email}  disabled={!enableEdit} onChange={handleChange} name='email'></input>
 
-        <div className="modal fade" id="editEmployerDetails" tabIndex="-1" aria-labelledby="editEmployerDetails" aria-hidden="true">
-  <div className="modal-dialog modal-dialog-centered">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title">Edit Details</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div className="modal-body">
-        <form className='m-auto w-100' onSubmit={handleSubmit}>
-           <input className='form-control' type='text' placeholder='Company Name'  onChange={handleChange} name='company_name'></input>
-           <input className='form-control' type='email' placeholder="Your email" onChange={handleChange} name='email'></input>
+<input className='form-control' type='email' placeholder="Company email" defaultValue={profile.contact_email}  disabled={!enableEdit} onChange={handleChange} name='contact_email'></input>
 
-           <input className='form-control' type='email' placeholder="Company email" onChange={handleChange} name='contact_email'></input>
-           <input className='form-control' type='number' placeholder="Company number" onChange={handleChange} name='contact_number'></input>
-           <input className='form-control' type='text' placeholder="Company Website" onChange={handleChange} name='company_website'></input>
-           <input className='form-control' type='number' placeholder="Company Size"  onChange={handleChange} name='company_size'></input>
+          <div className='text-left mb-3' style={{ fontStyle:'italic' , textAlign:'left',color:'black', fontSize: '1.5rem',
+    fontWeight: '700px'}}>+92({profile.contact_number})</div>
+           <input className='form-control' type='number'  disabled={!enableEdit}  placeholder="Company number" defaultValue={profile.contact_number} onChange={handleChange} name='contact_number'></input>
+          <h4>Company size</h4>
+           <input className='form-control' type='number'  disabled={!enableEdit}  placeholder="Company Size" defaultValue={profile.company_size} onChange={handleChange} name='company_size'></input>
+<h4>Location</h4>
+<hr/>
+<div>
 
-           <input className='form-control' type='text' placeholder='Location' onChange={handleChange} name='location'></input>
-           <textarea className='form-control'  placeholder='Description' onChange={handleChange} name='description'></textarea>
+</div>
+           <input className='form-control' type='text' placeholder='Location' disabled={!enableEdit}  defaultValue={profile.location} onChange={handleChange} name='location'></input>
 
 
 <hr/>
 <div>
-<button type="button" className="btn bg-secondary" style={{color:'white', marginRight:'5px', width:'100px'}} data-bs-dismiss="modal">Close</button>
+<button type="button" className="btn bg-info" onClick={()=>{setEnableEdit(true)}} style={{color:'white', marginRight:'5px', width:'100px'}} >Edit</button>
         <button type="submit" className="btn bg-primary"  style={{color:'white', width:'200px'}}>Save changes</button>
 
 </div>
     
         </form>
-      </div>
-    </div>
-  </div>
-      </div>
 
-    </div>
-
-
-        </div>
-  </div>
 </div>
-                    </div>
-                </div>
+           </div>
+            </div>
+            </div>
+            </div>
+            </div>
             </div>
             </div>
     )

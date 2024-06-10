@@ -4,6 +4,7 @@ import { useState } from 'react';
 import React from 'react'
 import axios from 'axios'
 import { API_URL } from '../utils';
+import '../css/jobseeker.css'
 export default function JobSeekerApplications(){
     const jobSeeker_id = localStorage.getItem('jobSeeker_id');
     const user_id = localStorage.getItem('user_id')
@@ -22,7 +23,7 @@ export default function JobSeekerApplications(){
     }
     return (
         <>
-           <nav className="navbar navbar-expand-lg bg-body-tertiary" style={{ marginTop: "5%" }}>
+           <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>

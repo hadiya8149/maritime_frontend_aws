@@ -1,0 +1,116 @@
+.jobseeker-portal-div {
+    min-height: 100vh;
+}
+
+.jobseeker-portal-bg {
+    background-image: url(../assets/img/illustrations/online-job-search-4836622-4032953.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+
+.profile-container {
+    display: flex;
+
+}
+
+.card {
+    width: 300px
+}
+
+.jobseeker_profile_edit_div {
+    display: flex;
+
+}
+.EP12{
+    border:1px solid grey;
+    width:920px;
+    border-width:1px;
+    border-radius:8px;
+    /* height:121px; */
+    display: block;
+    padding:10px;
+    margin-bottom:25px;
+
+}
+/* media query for tablet */
+@media only screen and (max-width: 768px) and (min-width:424px) {
+    .profile-container {
+        flex-direction: column;
+
+    }
+
+    .card {
+        width: auto;
+    }
+
+    #resume_form {
+        height: auto;
+    }
+
+    .jobseeker_profile_edit_div {
+        flex-direction: column-reverse;
+    }
+    .EP12{
+        width:auto;
+        margin:auto;
+        margin-right:5px;
+    }
+    .right-side{
+        display: block;
+        width:auto;
+    }
+    #editprofilebtn{
+        display: inline-block; /* Ensures proper behavior within lines of text */
+        padding: 10px 20px; /* Adjust padding as desired */
+        border: 1px solid #ccc; /* Basic border */
+        border-radius: 5px; /* Rounded corners */
+        color: white; /* Inherit from inline style */
+        background-color: #337ab7;
+        margin-top:16px;
+        font-weight: bold; /* Emphasize button text */
+        text-decoration: none; /* Remove underline from link */
+        cursor: pointer; /* Indicate clickable behavior */
+        transition: all 0.2s ease-in-out; /* Smooth hover effects */
+      
+    }
+    .w-50{
+        text-align:left;
+    }
+} 
+@media only screen and  (max-width:1024px) and (min-width: 769px) {
+    .card{
+       width:300px;
+    }
+    .EP12{
+        width:600px;
+    }
+    .w-50{
+        text-align: right;
+    }
+
+}
+@media only screen and  (max-width:1440px) and (min-width: 1025px) {
+    .profile-container{
+        margin:auto;
+    }
+    .EP12{
+        width:800px;
+    }
+    .w-50{
+        text-align: right;
+    }
+}
+@media only screen and (min-width: 1441px) {
+    .profile-container{
+        padding:16px;
+    }
+    .w-50{
+        text-align: right;
+    }
+}
+#editprofilebtn{
+    background-color: #337ab7;
+    color:white;
+
+}

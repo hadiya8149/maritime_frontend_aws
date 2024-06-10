@@ -74,7 +74,7 @@ export default function Programs(){
   }, []);
 
     return (
-      <div className='d-flex ' style={{minHeight:'100vh'}}>
+      <div  style={{minHeight:'100vh'}}>
       <div className="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar" style={{ width: '280px' }}>
   <span className="fs-4">Search Programs</span>
 
@@ -108,9 +108,11 @@ export default function Programs(){
   </ul>
 </div>
 
-        <div  className='programs'>
+        <div  className='programs p-5'>
+        <div className='mb-3'  style={{padding:'16px', margin:'auto'}}>
+
         {(filterPrograms(programs)|| search(programs))&&(<h2>Search Results</h2>)}
-<div className='row row-cols-1 row-cols-md-3 g-4 m-auto'> 
+<div className='row row-cols-1 row-cols-md-3 g-4 '> 
       {filterPrograms(programs)&& filterPrograms(programs).map((dataObj)=>{
   return(
 <div className='col'>
@@ -130,9 +132,8 @@ export default function Programs(){
       </div>
   )
 })}
-<hr className='w-100'/>
       </div>
-        <div className='row row-cols-1 row-cols-md-3 g-4 m-auto' style={{padding:'16px'}}>
+        <div className='row row-cols-1 row-cols-md-3 g-4' style={{padding:'16px'}}>
       
       {search(programs) && search(programs).map((dataObj) => {
 
@@ -165,6 +166,7 @@ return (
 })}
 
       </div>
+      </div>
         <h1 className='text-center' style={{textAlign:'center'}}>Training Programs At Maritime Education System</h1>
         <h4 className='headline'>Explore new and Advanced Training Programs to upskill your Career.</h4>
    
@@ -172,7 +174,7 @@ return (
 
        {programs.map(program=>(
 <div className='col'>
-      <div key={program.program_id} className="card mb-5 d-flex" style={{  margin:'25px' }}>
+      <div key={program.program_id} className="card mb-3  m-auto" >
       <div className=''>
         <img className="card-img" src={programImage} alt="Card  cap"></img>
         <div className="card-body">
