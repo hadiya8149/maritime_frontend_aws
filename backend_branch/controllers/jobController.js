@@ -25,8 +25,8 @@ export const  createJob =async (req, res) => {
 
 // Update job by ID
 export const updateJob = async (req, res) => {
-    const {job_id, job_title, job_description, requirements, location, salary, ExpiryDate } = req.body.body;
-    console.log("req.body",req.body.body)
+    const {job_id, job_title, job_description, requirements, location, salary, ExpiryDate } = req.body;
+    console.log("req.body",req.body)
     const sql = `UPDATE jobs SET job_title = ?, job_description = ?, requirements = ?, location = ?, salary = ?, ExpiryDate = ? WHERE job_id = ?`;
     const values = [job_title, job_description, requirements, location, salary, ExpiryDate, job_id];
 
