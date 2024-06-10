@@ -13,7 +13,7 @@ export default function AdminPage(){
     })
     
     return (
-<div className='h-100'>
+<div style={{minHeight:'100vh'}}>
 <AdminNavbar/>
 <div>
     <h2>Welcome to Admin Portal</h2>

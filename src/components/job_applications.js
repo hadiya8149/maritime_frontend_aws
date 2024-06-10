@@ -6,6 +6,9 @@ import '../css/employer.css'
 import { useNavigate } from 'react-router-dom'
 import jobImage from '../assets/onboared-laptop.jpg'
 import { API_URL } from '../utils'
+import ToggleButton from '@mui/material/ToggleButton';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+
 export default function JobApplications(){
   const employer_id = localStorage.getItem('employer_id')
   
@@ -229,9 +232,11 @@ async function deleteJobApplication(app){
       <>
       <nav className="navbar  navbar-expand-lg bg-body-tertiary w-100">
   <div className="container-fluid">
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
+  <button className="navbar-toggler " type="button"  data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className=""><ToggleButton  value="left" aria-label="left aligned" >
+              <FormatAlignJustifyIcon/>
+              </ToggleButton></span>
+          </button>
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav">
         <li className="nav-item">

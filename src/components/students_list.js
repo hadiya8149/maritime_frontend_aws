@@ -4,10 +4,16 @@ import AdminNavbar from './admin_navbar';
 import { API_URL } from '../utils';
 export default function StudentsList() {
     const [users, setUsers] = useState([])
-    
+    const token = localStorage.getItem('authToken')
+    const myHeaders = new Headers()
+
+    useEffect(()=>{
+     myHeaders.append('authentication', `Bearer ${token}`)
+ 
+    })
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_URL}/students`);
+            const response = await axios.get(`${API_URL}/students`, {headers:myHeaders});
             if (response.status === 200) {
                 setUsers(response.data.data);
                 console.log(response)
@@ -24,7 +30,7 @@ export default function StudentsList() {
     async function deleteUser(userID) {
         try {
             const url = `${API_URL}/delete_student/` + userID;
-            const response = await axios.delete(url);
+            const response = await axios.delete(url, {headers:myHeaders});
             if (response.status === 200) {
                 // setUsers((prevUsers) => prevUsers.filter((user) => user.std_id !== user.std_id)); // Filter out deleted applicant
                 alert("Student delete successfully")
@@ -34,7 +40,7 @@ export default function StudentsList() {
         }
     }
     return (
-<div className=''>
+<div style={{minHeight:'100vh'}}>
 <AdminNavbar/>
 
 <div className='container m-auto mt-5'>

@@ -8,7 +8,15 @@ export default function AdminNotifications(){
       content:"",
       user_id:""
     })
+
     const [notifications, setNotifications]=useState([])
+    const token = localStorage.getItem('authToken')
+    const myHeaders = new Headers()
+
+    useEffect(()=>{
+     myHeaders.append('authentication', `Bearer ${token}`)
+ 
+    })
     function handleFormChange(e){
       const { name, value } = e.target;
       setNotificationForm(prevData => ({
@@ -16,13 +24,13 @@ export default function AdminNotifications(){
       }))
   }
   async function createNotification(){
-    const response = await axios.post(`${API_URL}/sendnotification`, {body:notificationForm})
+    const response = await axios.post(`${API_URL}/sendnotification`, {body:notificationForm}, {headers:myHeaders})
     if(response.status===200){
       alert("notification created successfully")
     }
   }
     async function getNotifications(){
-      const response = await axios.get(`${API_URL}/notifications`);
+      const response = await axios.get(`${API_URL}/notifications`, {headers:myHeaders});
       if(response.status===200){
       setNotifications(response.data.Data)
       }
@@ -32,7 +40,7 @@ export default function AdminNotifications(){
     },[])
    
     return(
-        <div >
+        <div  style={{minHeight:'100vh'}}>
         <AdminNavbar/>
         <div>
 <div className='d-flex' style={{background:'rgb(241, 243, 247)', height:'100',width:'75%' ,margin:'auto',padding:'16px', paddingTop:'5px', color:'black'}}>

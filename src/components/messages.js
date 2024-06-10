@@ -3,6 +3,13 @@ import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { API_URL } from '../utils.js';
 export default function AdminMessages(){
+  const token = localStorage.getItem('authToken')
+  const myHeaders = new Headers()
+
+  useEffect(()=>{
+   myHeaders.append('authentication', `Bearer ${token}`)
+
+  })
   const user_id = localStorage.getItem("user_id")
     const [messageForm, setMessageForm]=useState({
       content:"",
@@ -23,9 +30,9 @@ export default function AdminMessages(){
   //   }
   // }
     async function getMessages(){
-      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id);
+      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
       if(response.status===200){
-      console.log(response.data.data)
+      console.log(response)
         setMessages(response.data)
       }
     }
@@ -45,7 +52,7 @@ export default function AdminMessages(){
         body:msgForm.body,
         receiver_id:receiverID,
         Timestamp:new Date().toISOString().slice(0,19).replace('T', ' ')
-      })
+      }, {headers:myHeaders})
       console.log(response)
   
     }

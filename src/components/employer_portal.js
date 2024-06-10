@@ -5,6 +5,8 @@ import React from 'react'
 import '../css/employer.css'
 import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../utils';
+import ToggleButton from '@mui/material/ToggleButton';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 
 export default function EmployerPortal() {
   const token = localStorage.getItem('authToken')
@@ -100,8 +102,10 @@ useEffect(()=>{
     <div style={{minHeight:'80vh'}}>
       <nav className="navbar  navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
+        <button className="navbar-toggler " type="button"  data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className=""><ToggleButton  value="left" aria-label="left aligned" >
+              <FormatAlignJustifyIcon/>
+              </ToggleButton></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">

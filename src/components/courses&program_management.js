@@ -1,5 +1,5 @@
 import '../css/courses.css';
-
+import '../css/manage_courses&programs.css'
 import {useState, useEffect} from 'react';
 import axios from 'axios'
 import React from 'react'
@@ -14,9 +14,34 @@ export default function CoursesAndProgramsManagement(){
   const [editProgramForm, setEditProgramForm]=useState([])
   const [courseForm, setCourseForm]=useState([])
   const [programForm, setProgramForm]=useState([])
+  const token = localStorage.getItem("authToken")
+  const myHeaders = new Headers()
+  const [selectedCourse, setSelectedCourse] = useState()
+  const [selectedProgram, setSelectedProgram]=useState()
+  useEffect(()=>{
+  myHeaders.append('authentication', `Bearer ${token}`)
+
+ })
+ 
+ function updateSelectedCourse(id){
+  setSelectedCourse(id)
+
+
+  const selectedCourseData = courses.find((course) => course.course_id === id);
+  setEditCourseForm(selectedCourseData)
+
+  console.log(editCourseForm)
+ }
+ function updateSelectedProgram(id){
+  setSelectedProgram(id)
+  const selectedProgramData = programs.find((program) => program.program_id === id);
+  setEditProgramForm(selectedProgramData)
+
+  console.log(editProgramForm)
+ }
   const fetchData = async () => {
     try {
-        const response = await axios.get(`${API_URL}/programs`);
+        const response = await axios.get(`${API_URL}/get_all_programs`);
         if (response.status === 200) {
           console.log(response.data.data)
             setPrograms(response.data.data);
@@ -49,6 +74,7 @@ function handleEditCourseChange(e) {
   setEditCourseForm(prevData => ({
       ...prevData, [name]: value
   }))
+  console.log(editCourseForm)
 }
 function handleProgramChange(e) {
   const { name, value } = e.target;
@@ -64,7 +90,8 @@ function handleEditProgramChange(e) {
   }))
 }
   async function createCourse(){
-    const response = await axios.post(`${API_URL}/course`, {body:courseForm});
+    console.log(courseForm)
+    const response = await axios.post(`${API_URL}/course`, {body:courseForm}, {headers:myHeaders});
     console.log(response)
     if (response.status===201)
       alert("Course created successfully")
@@ -72,20 +99,20 @@ function handleEditProgramChange(e) {
 
   async function createProgram(){
     console.log(programForm)
-const response = await axios.post(`${API_URL}/program`, {body:programForm});
+const response = await axios.post(`${API_URL}/program`, {body:programForm}, {headers:myHeaders});
     console.log(response)
     if (response.status===201)
       alert("Program created successfully")
     }
     
   async function deleteCourse(id){
-    const response = await axios.delete(`${API_URL}/course/`+id);
+    const response = await axios.delete(`${API_URL}/course/`+id, {headers:myHeaders});
     if (response.status===200){
       alert("course deleted successfully")
     }
   }
   async function deleteProgram(id){
-    const response = await axios.delete(`${API_URL}/program/`+id);
+    const response = await axios.delete(`${API_URL}/program/`+id, {headers:myHeaders});
     if (response.status===200){
       alert("Program deleted successfully")
     }
@@ -99,7 +126,7 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
       duration:editCourseForm.duration_months,
       instructor:editCourseForm.instructor,  
     }
-    const response  = await axios.put(`${API_URL}/course/`+course_id, body ).then((data)=>console.log(data)).catch((err)=>console.log(err))
+    const response  = await axios.put(`${API_URL}/course/`+course_id, body, {headers:myHeaders} ).then((data)=>console.log(data)).catch((err)=>console.log(err))
     console.log(response)
     alert('course update successfully') 
   }
@@ -112,7 +139,7 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
       duration:editProgramForm.duration_months,
       trainer:editProgramForm.trainer,  
     }
-    const response  = await axios.put(`${API_URL}/update_program/`+program_id, body ).then((data)=>console.log(data)).catch((err)=>console.log(err))
+    const response  = await axios.put(`${API_URL}/update_program/`+program_id, body , {headers:myHeaders}).then((data)=>console.log(data)).catch((err)=>console.log(err))
     if(response.status===200){
       console.log(response)
     }    
@@ -149,40 +176,39 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
 </div>
 
 <div><button type='submit' className='btn btn-primary' >Create Course</button></div>
-
+{/*  */}
 </form>
-<form id='UpdateCourse' className='m-auto' onSubmit={editCourse}>
+
+<div className="modal fade" id="editCourseModal" tabIndex="-1" aria-labelledby="editCourseModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="postJobModalLabel">Post a Job</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+              <form id='UpdateCourse' className='m-auto' onSubmit={editCourse}>
 <div className='mb-3'>
-<select className='mr-3' name='course_id' onChange={handleEditCourseChange}>
-  <option>course id</option>
-  {courses.map((course)=>{
-  return(
-  <option name={course.course_id} key={course.course_id}>
-{course.course_id}
-  </option>
-)  })}
-</select>
-<input onChange={handleEditCourseChange} className=''name='course_name' id='courseName' placeholder='course name' type='text' />
-
-</div>
-
-
-<div className='mb-3'>
-<textarea onChange={handleEditCourseChange}  className='form-control' id='courseDescription' placeholder='description' name='description' type='text' />
-
+<input type='number' value={selectedCourse}></input>
+<input onChange={handleEditCourseChange} defaultValue={editCourseForm.course_name}  className=''name='course_name' id='courseName' placeholder='course name' type='text' />
 </div>
 <div className='mb-3'>
-
+<textarea onChange={handleEditCourseChange}  defaultValue={editCourseForm.description}  className='form-control' id='courseDescription' placeholder='description' name='description' type='text' />
 </div>
 <div className='mb-3'>
-  <input onChange={handleEditCourseChange}  name='duration_months' placeholder='Months duration' className="mr-3" id='courseDuration'max='6' type='text' />
-
-<input onChange={handleEditCourseChange}  name='instructor' id='courseInstructor' placeholder='instructor' type='text' />
-
+</div>
+<div className='mb-3'>
+  <input onChange={handleEditCourseChange}  defaultValue={editCourseForm.duration_months} name='duration_months' placeholder='Months duration' className="mr-3" id='courseDuration'max='6' type='text' />
+<input onChange={handleEditCourseChange}   defaultValue={editCourseForm.instructor} name='instructor' id='courseInstructor' placeholder='instructor' type='text' />
 </div>
 <div><button  className='btn btn-primary' >Edit Course</button></div>
 
 </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
 </div>
 <div className='m-auto'>
 <table  className='m-auto table w-75'>
@@ -215,13 +241,13 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
 
   </td>
   <td className='col-4 overflow-auto'>
-  <h6>{course.description}</h6>
+  <p style={{textAlign:'left'}}>{course.description}</p>
 
 
   </td>
   <td>
-<button className='mt-3 btn btn-danger ' onClick={()=>deleteCourse(course.course_id)}>Delete</button>
-
+<button className='mr-3 btn btn-danger ' onClick={()=>deleteCourse(course.course_id)}>Delete</button>
+<a className='btn btn-info' onClick={()=>updateSelectedCourse(course.course_id)} href="#editCourseModal" data-bs-toggle="modal" data-target="#editCourseModal" >Edit course</a>
   </td>
 
   </tr>
@@ -255,34 +281,41 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
           </div>
           <div><button type='submit' className='btn btn-primary'>Create Program</button></div>
         </form>
-        <form className='m-auto' style={{width:''}} onSubmit={editProgram}>
+      
+    </div>
+    <div className='m-auto'>
+
+      
+<div className="modal fade" id="editProgramModal" tabIndex="-1" aria-labelledby="editProgramModal" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="postJobModalLabel">Post a Job</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+              <form className='m-auto' style={{width:''}} onSubmit={editProgram}>
           <div className='mb-3'>
-            <select name='program_id' className='mr-3' onChange={handleEditProgramChange}>
-  <option>Program id</option>
-  {programs.map((program)=>{
-  return(
-  <option name={program.program_id} key={program.program_id}>
-{program.program_id}
-  </option>
-)  })}
-</select>
-          <input     onChange={handleEditProgramChange} name='program_name'  placeholder='Program name' id='programName' type='text' />
+<input type='number' readOnly={true} value={selectedProgram}></input>
+          <input     onChange={handleEditProgramChange} name='program_name'defaultValue={editProgramForm.program_name}  placeholder='Program name' id='programName' type='text' />
 
           </div>
           <div className='mb-3'>
-          <textarea onChange={handleEditProgramChange}  className='form-control'   name='description'  placeholder='description' id='programDescriptionName' type='text' />
+          <textarea onChange={handleEditProgramChange}  className='form-control' defaultValue={editProgramForm.description}  name='description'  placeholder='description' id='programDescriptionName' type='text' />
 
           </div>
           <div className='mb-3'>
-          <input onChange={handleProgramChange}   className='mr-3'  name='duration_months'  placeholder='Months duration' id='programDuration' max='6' type='text' />
-          <input onChange={handleProgramChange}   className=''  name='trainer' placeholder='trainer' id='programTrainer' type='text' />
+          <input onChange={handleEditProgramChange}   className='mr-3'  name='duration_months' defaultValue={editProgramForm.duration_months} placeholder='Months duration' id='programDuration' max='6' type='text' />
+          <input onChange={handleEditProgramChange}   className=''  name='trainer' placeholder='trainer' defaultValue={editProgramForm.trainer} id='programTrainer' type='text' />
 
           </div>
       
           <div><button type='submit' className='btn btn-primary'>Edit Program</button></div>
         </form>
-    </div>
-    <div className='m-auto'>
+              </div>
+            </div>
+          </div>
+        </div>
 <table  className='m-auto table w-75'>
 <thead><tr>
   <th>program id</th>
@@ -293,7 +326,7 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
     <th>
       Descriptoin
     </th>
-    <th>Delete</th>
+    <th>Action</th>
     </tr></thead>
 
     <tbody>
@@ -313,12 +346,13 @@ const response = await axios.post(`${API_URL}/program`, {body:programForm});
 
   </td>
   <td className='col-4 overflow-auto'>
-  <h6>{program.description}</h6>
+  <p   style={{textAlign:'left'}}>{program.description}</p>
 
 
   </td>
   <td>
-<button className='mt-3 btn btn-danger ' onClick={()=>deleteProgram(program.program_id)}>Delete</button>
+<button className=' mr-3 btn btn-danger ' onClick={()=>deleteProgram(program.program_id)}>Delete</button>
+<a className='btn btn-info' onClick={()=>updateSelectedProgram(program.program_id)} href="#editProgramModal" data-bs-toggle="modal" data-target="#editProgramModal" >Edit</a>
 
   </td>
 

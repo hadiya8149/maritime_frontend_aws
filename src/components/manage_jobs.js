@@ -7,49 +7,19 @@ import { API_URL } from '../utils';
 import AdminNavbar from './admin_navbar';
 export default function ManageJobs(){
   const [jobs, setJobs] = useState([])
-  const [editJobForm, setEditJobForm]=useState({})
   const [jobDetails ,setJobDetails]=useState([])
   const [searchQuery, setSearchQuery]=useState('')
-  function handleEditChange(e) {
-    const { name, value } = e.target;
-    setEditJobForm(prevData => ({
-        ...prevData, [name]: value
-    }))
-  }
+  const token = localStorage.getItem('authToken')
+  const myHeaders = new Headers()
+
+  useEffect(()=>{
+   myHeaders.append('authentication', `Bearer ${token}`)
+
+  })
 
 
-  async function editJob(id){
 
-    setEditJobForm(editJobForm);
- 
-  }
-  async function submitEditJobForm(id){
-    try{
-      const response = await axios.put(`${API_URL}/update_job/`+id, {body:editJobForm})
-      .then(
-          (data)=>
-          new Promise((resolve, reject) => {
-              setTimeout(() => {
-                 if(data.status===200){
-                  console.log(data.data.message)
-                  alert("job Updated successfully")
-                 }
-              }, 1);
-            }),
-      )
-      .catch((err) => {
-          if(err.response) console.log("this is error.response.dat",err.response.data);
-      })        ;
-    }
-    catch(e){
-        console.log(e)
-    }
 
-  }
-  useEffect(() => {
-    console.log(editJobForm);
-    // Place any logic here that depends on the updated editJobForm state
-  }, [editJobForm]);
   const fetchData = async () => {
       try {
           const response = await axios.get(`${API_URL}/jobs`);
@@ -61,11 +31,7 @@ export default function ManageJobs(){
           console.error(error);
       }
   };
-  const editJobDetails = async (data)=>{
-    setEditJobForm(data)
-    console.log(editJobForm)
-  }
-    
+   
   useEffect(() => {
       fetchData();
   }, []);
@@ -81,7 +47,7 @@ export default function ManageJobs(){
     }
 };
 const deleteJob = async (id)=>{
-    const response = await axios.delete(`${API_URL}/delete_job/`+id);
+    const response = await axios.delete(`${API_URL}/delete_job/`+id, {headers:myHeaders});
     if( response.status===200){
         alert("job deleted successfully")
     }
@@ -97,9 +63,9 @@ function search(data) {
 }
 
   return (
- <div>
+ <div>w
 <AdminNavbar/>
-<div style={{ padding: '16px', background: '#f1f3f7', height: '200px', width: '80%', margin: 'auto', marginTop: 'auto', borderRadius: '5px' }}>
+<div style={{ padding: '16px', background: '#f1f3f7', height: '200px', width: '80%', margin: 'auto', borderRadius: '5px' }}>
         <div className='mb-3  m-auto' style={{ padding: '16px', width: '80%', height: '100px', background: '#ffffff', marginTop: 'auto' }}>
           <input className='h-100 mr-3  form-control' onChange={(e) => setSearchQuery(e.target.value)} type='text' placeholder='search' />
 
@@ -148,7 +114,7 @@ function search(data) {
           <p className="card-text">{job.job_description}</p>
           
         </div>
-        <h6 className='text-center'>Deadline: {job.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
+        <p className='text-center'>Deadline: {job.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
         <a href="#"  onClick={() => {
             fetchJobDescription(jobID);
           }}  className="btn btn-primary mb-3 w-75 m-auto">View</a>
@@ -173,10 +139,7 @@ function search(data) {
 {jobDetails.job_description}
               <h5>Pay: {jobDetails.salary} Rs </h5>  
               <h5>Location: {jobDetails.location}</h5>
-              <div className='d-flex mb-3'>
-              <a  className="btn btn-info  m-auto w-50 mr-3" onClick={()=>{editJobDetails(jobDetails)}} href="#editJobModal" data-bs-toggle="modal" data-target="#editJobModal" >Edit Job</a>
-                <button className='btn btn-danger w-25 m-auto' onClick={()=>{deleteJob(jobDetails.job_id)}} >Delete job</button>
-          </div>
+              
           <div>
               <h5>Full Job Description</h5>
               <div>
@@ -197,7 +160,9 @@ function search(data) {
               </div>
           </div>
                   </div>
-          
+                  <div className='d-flex mb-3'>
+                <button className='btn btn-danger w-25 m-auto' onClick={()=>{deleteJob(jobDetails.job_id)}} >Delete job</button>
+          </div>
             </div>
           </div>
 
@@ -208,47 +173,7 @@ function search(data) {
     </div>
 
 </div>
-<div  className="modal fade" id="editJobModal" tabIndex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
-  <div className="modal-dialog modal-dialog-centered">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="editJobModalLabel">Edit Job</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div className="modal-body">
-        <form onSubmit={()=>{submitEditJobForm(editJobForm.job_id)}}>
-          <div className="mb-3">
-            <label htmlFor="editJobTitle" className="form-label"></label>
-            <input type="text" className="form-control" id="editJobTitle" name='job_title' value={editJobForm.job_title} onChange={handleEditChange} required />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="editjobDescription" className="form-label">Job Description</label>
-            <textarea  className="form-control" id="editjobDescription" name='job_description'value={editJobForm.job_description}  onChange={handleEditChange} rows="3" required></textarea>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="editjobDescription" className="form-label">Requirements</label>
-            <textarea className="form-control" id="editjobDescription" rows="3" name='requirements' value={editJobForm.requirements}  onChange={handleEditChange} required></textarea>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="editlocation" className="form-label">Location</label>
-            <input  type='text' id='editlocation' required name='location' value={editJobForm.location}  onChange={handleEditChange} />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="editsalary" className="form-label">Salary</label>
-            <input  type='text' id='editsalary' required name="salary" value={editJobForm.salary} onChange={handleEditChange} />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="editdeadline" className="form-label">Deadline to apply</label>
-            <input  type='text' id='editdeadline' required name='ExpiryDate'value={editJobForm.ExpiringDate} onChange={handleEditChange} />
-          </div>
-            <label htmlFor="postingDate" className="form-label" style={{fontSize:'14px'}}>Posting Date { new Date().toISOString().slice(0,19).replace('T', ' ')}</label>
-            <br/>
-          <button type="submit" onClick={()=>submitEditJobForm(editJobForm)}  className="btn btn-primary">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+
 
         </div>
         </div>
