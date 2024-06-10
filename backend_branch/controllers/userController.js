@@ -43,22 +43,22 @@ export const createUser = async (req, res) => {
         // Usage:
         try {
             const result = await insertUser(userInsertQuery, userInsertParams);
-            console.log("inserted result data", result)
             const userId = result.insertId
+            console.log("user_id", userId)
             switch (role.toLowerCase()) {
                 case 'admin':
-                    await insertAdmin(userId, username, password, email);
+                    await insertAdmin(userId, username);
                     break;
                 case 'student':
                     console.log("inserting studetn")
-                    await insertStudent(userId, username, password, email);
+                    await insertStudent(userId, username, gender);
                     break;
                 case 'employer':
                     console.log('inserting employer')
-                    await insertEmployer(userId, username, password, email);
+                    await insertEmployer(userId, username, email);
                     break;
                 case 'job seeker':
-                    await insertJobseeker(userId, username, password, email);
+                    await insertJobseeker(userId, username,email);
                     break;
                 default:
                     // Handle unsupported role
@@ -93,7 +93,7 @@ export const createUser = async (req, res) => {
 
 // Function to insert admin data into the admins table THERE CAN;T BE MULTIOPLE ADMINS
 const insertAdmin = async (username,email, password) => {
-    const adminInsertQuery = 'INSERT INTO admins (user_id,username,email, password, email) VALUES (?, ?,?)';
+    const adminInsertQuery = 'INSERT INTO admins (user_id,username) VALUES (?,?)';
     await db.query(adminInsertQuery, [userId, username, password, email]);
 };
 
@@ -191,7 +191,9 @@ export const updateUser = async (req, res) => {
         }
         if(password){
             const pass_query = 'UPDATE users SET password=? where user_id=?'
-            const values = [pass_query, userId];
+            const encryptedPassword = await bcrypt.hash(password, saltRounds)
+
+            const values = [encryptedPassword, userId];
             db.query(pass_query, values, (err, result)=>{
                 if(!err){
                     console.log(result)
@@ -202,7 +204,7 @@ export const updateUser = async (req, res) => {
                 }
             })
         }
-        if(!!user_age){
+        if(user_age){
             const age_query = 'UPDATE users SET user_age=? where user_id=?'
             const values = [user_age, userId];
             db.query(age_query, values, (err, result)=>{
@@ -211,7 +213,6 @@ export const updateUser = async (req, res) => {
                 }
                 
                 else{
-                    throw err;
                     res.status(400)
                 }
             })
@@ -229,35 +230,12 @@ export const updateUser = async (req, res) => {
             })
         }
 
-        // Update the user profile in the corresponding role table
-        switch (role.toLowerCase()) {
-            case 'admin':
-                await updateAdmin(userId, username, password, email);
-                break;
-            case 'student':
-                await updateStudent(userId, username, password, email);
-                break;
-            case 'employer':
-                await updateEmployer(userId, username, password, email);
-                break;
-            case 'job seeker':
-                await updateJobseeker(userId, username, password, email);
-                break;
-            default:
-                break;
-        }
 
-        // Commit the transaction
-        await db.commit();
-
-        return res.status(200).send({
+        return res.status(200).json({
             success: true,
             msg: "User profile updated successfully!"
         });
     } catch (error) {
-        // Rollback the transaction if an error occurs
-        await db.rollback();
-
         return res.status(500).send({
             msg: "Internal Server Error"
         });

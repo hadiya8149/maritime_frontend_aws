@@ -26,16 +26,17 @@ export const createJobSeeker = (req, res) => {
 
 // Update job seeker by ID
 export const updateJobSeeker =async (req, res) => {
+    console.log('updating job seeker')
     const jobSeekerId = req.params.id;
     const { user_id, name, email, resumeURL, skills, workExperience, education, certifications, languages } = req.body;
 
     async function updateTable(col, value){
         const sql = `UPDATE jobseekers SET ${col} =? WHERE jobSeeker_id=?;`
-        db.query(sql, [value,jobSeekerId], (err,result)=>{
+        await db.query(sql, [value,jobSeekerId], (err,result)=>{
             if(err){
                 throw err
             }
-            return result
+            console.log(result)
         })
     }
     if (name){
@@ -68,7 +69,7 @@ export const updateJobSeeker =async (req, res) => {
 
     }
 
-    return res.status(200)
+    res.status(200).json({msg:'update successfully'})
 };
 
 

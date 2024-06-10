@@ -14,7 +14,7 @@ jobSeekerRouter.put('/update_jobseeker/:id', updateJobSeeker);
 jobSeekerRouter.delete('/delete_jobseeker/:id', deleteJobSeeker);
 
 // Get job seeker by ID
-jobSeekerRouter.get('/jobseeker/:id', getJobSeekerById);
+jobSeekerRouter.get('/jobseeker/:id', getJobSeekerById); 
 jobSeekerRouter.get('/jobseeker_by_user_id/:id', getJobSeekerByUserId);
 
 // Get all job seekers

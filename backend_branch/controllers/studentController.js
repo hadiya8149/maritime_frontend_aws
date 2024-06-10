@@ -24,30 +24,30 @@ export const createStudent = (req, res) => {
 
 // Update student by ID
 export const updateStudent = async (req, res) => {
-    const {editProfile}=req.body
     const std_id =req.params.id
-    if (editProfile.studentName){
-        db.query('UPDATE students SET studentName=? WHERE std_id=?', [editProfile.studentName, std_id], (err, result)=>{
+   
+    if (req.body.studentName){
+        db.query('UPDATE students SET studentName=? WHERE std_id=?', [req.body.studentName, std_id], (err, result)=>{
             console.log(result)
         })
     }
-    if (editProfile.first_name){
-        db.query('UPDATE students SET first_name=? WHERE std_id=?', [editProfile.first_name, std_id], (err, result)=>{
+    if (req.body.first_name){
+        db.query('UPDATE students SET first_name=? WHERE std_id=?', [req.body.first_name, std_id], (err, result)=>{
             console.log(result)
         })
     }
-    if (editProfile.last_name){
-        db.query('UPDATE students SET last_name=? WHERE std_id=?', [editProfile.last_name, std_id], (err, result)=>{
+    if (req.body.last_name){
+        db.query('UPDATE students SET last_name=? WHERE std_id=?', [req.body.last_name, std_id], (err, result)=>{
             console.log(result)
         })
     }
-    if (editProfile.address){
-        db.query('UPDATE students SET address=? WHERE std_id=?', [editProfile.address, std_id], (err, result)=>{
+    if (req.body.address){
+        db.query('UPDATE students SET address=? WHERE std_id=?', [req.body.address, std_id], (err, result)=>{
             console.log(result)
         })
     }
-    if (editProfile.contact_no){
-        db.query('UPDATE students SET contact_no=? WHERE std_id=?', [editProfile.contact_no, std_id], (err, result)=>{
+    if (req.body.contact_no){
+        db.query('UPDATE students SET contact_no=? WHERE std_id=?', [req.body.contact_no, std_id], (err, result)=>{
             console.log(result)
         })
     }
