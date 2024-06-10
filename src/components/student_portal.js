@@ -10,6 +10,7 @@ export default function StudentPortal(){
     const navigate=useNavigate();
     const user_id = localStorage.getItem('user_id');
     const user_role = localStorage.getItem('role');
+    const token= localStorage.getItem('authToken')
     useEffect(()=>{
       
             if(user_role && user_role.toLowerCase()==='student'){
@@ -24,7 +25,11 @@ export default function StudentPortal(){
         
     })
     async function  fetchStdID(){
-        const response = await  axios.get(`${API_URL}/student_by_user_id/`+user_id);
+      const myHeaders = new Headers()
+      myHeaders.append('authentication', `Bearer ${token}`)
+
+      const headers = {authentication:`Bearer ${token}`}
+        const response = await  axios.get(`${API_URL}/student_by_user_id/${user_id}`,{headers:myHeaders});
         console.log(response)
         if (response.status === 200) {
             console.log(response.data.data.user_id)

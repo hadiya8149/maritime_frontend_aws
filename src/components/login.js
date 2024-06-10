@@ -37,7 +37,7 @@ export  const Login=()=> {
             setTimeout(() => {
                 console.log(data)
                 // change the backend to give consistent status and data message response
-                if(data.data.succes===true){
+                if(data['status']==200){
                 const role = data['data'].user_role
                 console.log(role)
                 localStorage.setItem('authToken', data.data.token);
@@ -46,6 +46,7 @@ export  const Login=()=> {
                 localStorage.setItem('username', data.data.username)
                 setUser_id(data.data.user_id)
                  if(data.data.user_role.toLowerCase() ==='student') {
+                  
                   navigate('/student', {replace:true})
                  }
                  else if (data.data.user_role.toLowerCase()=='employer'){

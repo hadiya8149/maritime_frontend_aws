@@ -11,6 +11,8 @@ export default function Profile() {
     const [progress, setProgress]=useState([])
     const [profile, setProfile]=useState([])
     const std_id = localStorage.getItem('std_id')
+    const token = localStorage.getItem('authToken')
+
     const [editProfile, setEditProfile]=useState({
       studentName:'',
       first_name:'',
@@ -18,11 +20,13 @@ export default function Profile() {
       contact_no:'',
       address:''
     })
-    
+    const myHeaders = new Headers()
+      myHeaders.append('authentication', `Bearer ${token}`)
+    // fix response data from get student by user id
     const fetchProfile = useCallback(async () => {
-    
+      
       try {
-            const response = await axios.get(`${API_URL}/student/`+std_id);
+            const response = await axios.get(`${API_URL}/student/${std_id}`, {headers:myHeaders});
             if (response.status === 200) {
                 console.log(response) 
               setProfile(response.data.data)
@@ -34,7 +38,7 @@ export default function Profile() {
     }, [std_id]);
     const fetchProgress = async () => {
         try {
-            const response = await axios.get(`${API_URL}/progress/`+std_id);
+            const response = await axios.get(`${API_URL}/progress/${std_id}`,{headers:myHeaders});
             if (response.status === 200) {
               console.log(response.data.data)
               setProgress(response.data.data)
@@ -55,7 +59,7 @@ export default function Profile() {
     }
     async function handleSubmit(e){
       console.log(editProfile)
-      await axios.put(`${API_URL}/update_student/`+std_id, {editProfile}).then((response) => response.text())
+      await axios.put(`${API_URL}/update_student/${std_id}`,{headers:myHeaders}, {editProfile}).then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
     }
@@ -164,24 +168,26 @@ export default function Profile() {
     </tr>
   </thead>
   <tbody>
-    {progress && progress.map((prog)=>{
-      return(
+  {progress ? (
+  progress.length > 0 ? (
+    progress.map((prog) => (
       <tr key={prog.ProgressID}>
-  <td>{prog.CourseID}</td>
-
-  <td>
-      {prog.ProgramID}
-  </td>
-  <td>
-      {prog.CompletionStatus}
-  </td>
-  <td>
-      {prog.LastUpdatedDate}
-  </td>
-</tr>
-      )
-    })}
-
+        <td>{prog.CourseID}</td>
+        <td>{prog.ProgramID}</td>
+        <td>{prog.CompletionStatus}</td>
+        <td>{prog.LastUpdatedDate}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="4">No progress made yet. Courses or programs you have completed will appear here.</td>
+    </tr>
+  )
+) : (
+  <tr>
+    <td colSpan="4">No progress data available.</td>
+  </tr>
+)}
 
   </tbody>
 </table>
