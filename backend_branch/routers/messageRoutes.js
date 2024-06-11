@@ -8,7 +8,7 @@ messageRouter.use(authenticateJwt)
 messageRouter.post('/send_message', sendMessage);
 // route to send a message from employer to jobseeker
 
-messageRouter.post('/send_message_to_jobSeeker/:id', authenticateJwt,async(req, res)=>{
+messageRouter.post('/send_message_to_jobSeeker/:id',async(req, res)=>{
     const {jobseeker_id,body,subject }=req.body
     const sender_id = req.params.id
     console.log(req.body, req.params)
@@ -35,14 +35,14 @@ messageRouter.post('/send_message_to_jobSeeker/:id', authenticateJwt,async(req, 
 
 messageRouter.get('/messages' ,getAllMessages);
 
-messageRouter.get('/message_by_user_id/:id', async(req, res)=>{
+messageRouter.get('/message_by_user_id/:id', (req, res)=>{
     const user_id = req.params.id;
-    
+    console.log('get message by user id')
     const sql = 'select subject, body, Timestamp , users.email FROM messages LEFT JOIN users on messages.sender_id = users.user_id WHERE messages.sender_id=? OR messages.receiver_id=?;';
     db.query(sql, [user_id, user_id], (err, result)=>{
         if(!err){
             console.log(result)
-            res.status(200).json(result)
+            res.status(200).json({data:result})
         }
     })
 })

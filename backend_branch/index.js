@@ -42,7 +42,7 @@ const app = express();
 // Parse request body
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 // Initialize session and cookie parser middleware
 app.use(cookieParser());
 app.use(session({
@@ -77,6 +77,7 @@ UnauthorizedRouter
 
 app.use(express.static('public/data/uploads'))
 app.use(function(req, res, next) {
+  console.log(res, req.headers)
   res.status(404).json({ message: 'Not Found' });
 });
 
@@ -84,7 +85,7 @@ app.use(function(req, res, next) {
 app.use((err, req, res, next) => {
   console.error(err); // Log the error for debugging purposes
 
-  // const statusCode = err.statusCode || 500;
+  const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
 
   res.status(statusCode).json({ message });
@@ -95,10 +96,10 @@ app.use((err, req, res, next) => {
 // // Start the server
 
 // if(process.env.DEVELOPMENT){
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-}); 
+// const PORT = process.env.PORT || 8000;
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}.`);
+// }); 
 
 // }
-// export const handler = serverless(app); 
+export const handler = serverless(app); 
