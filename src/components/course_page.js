@@ -33,7 +33,7 @@ export default function CourseInfo(){
       maxBodyLength: Infinity,
       url: `${API_URL}/progress`,
       headers: {
-        "authentication": `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       data : data

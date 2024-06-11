@@ -22,7 +22,7 @@ export default function EmployerProfile() {
   const token = localStorage.getItem('authToken')
   const myHeaders = new Headers()
   useEffect(()=>{
-    myHeaders.append('authentication',`Bearer ${token}`)
+    myHeaders.append('Authorization',`Bearer ${token}`)
   })
   const [messages, setMessages]=useState([])
     async function fetchMessages(){
@@ -54,7 +54,7 @@ export default function EmployerProfile() {
         maxBodyLength: Infinity,
         url: `${API_URL}/update_employer/${employer_id}`,
         headers: { 
-          'authentication': `Bearer ${token}`, 
+          'Authorization': `Bearer ${token}`, 
           'Content-Type': 'application/x-www-form-urlencoded', 
         },
         data : data

@@ -59,7 +59,7 @@ const token = localStorage.getItem('authToken')
         maxBodyLength: Infinity,
         url: `${API_URL}/apply_for_program`,
         headers: {
-          "authentication": `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: data

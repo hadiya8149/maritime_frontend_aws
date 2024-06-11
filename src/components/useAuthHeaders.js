@@ -7,7 +7,7 @@ function useAuthHeaders(token) {
     if (token) {
         console.log(token)
       const myHeaders = new Headers();
-      myHeaders.append('authentication', `Bearer ${token}`);
+      myHeaders.append('Authorization', `Bearer ${token}`);
       setHeaders(myHeaders);
       console.log(headers, myHeaders)
     } else {

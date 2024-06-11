@@ -22,7 +22,7 @@ export default function EmployerPortal() {
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
   useEffect(()=>{
-    myHeaders.append('authentication',`Bearer ${token}`)
+    myHeaders.append('Authorization',`Bearer ${token}`)
   })
   async function fetchMessages(){
     console.log(user_id)

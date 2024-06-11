@@ -107,7 +107,7 @@ export default function CoursesAndProgramsManagement() {
       maxBodyLength: Infinity,
       url: `${API_URL}/course`,
       headers: {
-        'authentication': `Bearer ${getToken()}`,
+        'Authorization': `Bearer ${getToken()}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       data: data
@@ -138,7 +138,7 @@ export default function CoursesAndProgramsManagement() {
       maxBodyLength: Infinity,
       url: `${API_URL}/program/`,
       headers: {
-        'authentication': `Bearer ${getToken()}`,
+        'Authorization': `Bearer ${getToken()}`,
       },
       data : data
     };
@@ -226,7 +226,7 @@ export default function CoursesAndProgramsManagement() {
       </ul>
       <div className="tab-content" id="myTabContent">
         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-          <div className='d-flex' style={{ padding: '25px', marginBottom: '25px', marginLeft: 'auto', marginRight: 'auto', width: '75%' }}>
+          <div className='' style={{ padding: '25px', marginBottom: '25px', marginLeft: 'auto', marginRight: 'auto' }}>
             <form className='m-auto ' onSubmit={createCourse} id="CreateCourse">
 
               <div className='mb-3'>

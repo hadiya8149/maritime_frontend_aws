@@ -41,7 +41,7 @@ export default function JobSeekerProfile() {
 
     // const authToken = localStorage.getItem('authToken')
     useEffect(() => {
-        myHeaders.append("authentication", `Bearer ${token}`)
+        myHeaders.append("Authorization", `Bearer ${token}`)
 
     }, [])
     async function fetchMessages() {
@@ -95,7 +95,7 @@ export default function JobSeekerProfile() {
             maxBodyLength: Infinity,
             url: `${API_URL}/update_user/${user_id}`,
             headers: {
-                'authentication': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             data: data
@@ -128,7 +128,7 @@ export default function JobSeekerProfile() {
             maxBodyLength: Infinity,
             url: 'https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/api/update_jobseeker/1',
             headers: { 
-              'authentication': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRXMGJtMUdpQmJzYTQ4dlVwM0k1VWNPaWM1YXgwZk44VDF3TEtzUXNxWTNSRHdxMU5Nb05SYSIsInVzZXJuYW1lIjoiQWxpIiwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjozLCJpYXQiOjE3MTgwNzczMTIsImV4cCI6MTcxODA5ODkxMn0.R2bPqgctJPhjZnW17RLdFSaME22sToQ-AWU4as2TRjU', 
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRXMGJtMUdpQmJzYTQ4dlVwM0k1VWNPaWM1YXgwZk44VDF3TEtzUXNxWTNSRHdxMU5Nb05SYSIsInVzZXJuYW1lIjoiQWxpIiwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjozLCJpYXQiOjE3MTgwNzczMTIsImV4cCI6MTcxODA5ODkxMn0.R2bPqgctJPhjZnW17RLdFSaME22sToQ-AWU4as2TRjU', 
               'Content-Type': 'application/x-www-form-urlencoded', 
               'Cookie': 'connect.sid=s%3ALPsR1zAcMYj7dy4kpGfm-QUPrZvRXemo.ookZAV43fMEIh6FlZi5Flf89fy3mG7ibwVb9pdEAsf0'
             },

@@ -50,7 +50,7 @@ export default function CoursesList() {
         maxBodyLength: Infinity,
         url: `${API_URL}/apply_for_course`,
         headers: {
-          "authentication": `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: data

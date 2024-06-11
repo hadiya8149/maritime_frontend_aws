@@ -16,7 +16,7 @@ export default function AppliedJobs() {
   async function fetchMessages(){
     
   const myHeaders = new Headers()
-  myHeaders.append("authentication", `Bearer ${token}`)
+  myHeaders.append("Authorization", `Bearer ${token}`)
     console.log(user_id)
     console.log(myHeaders)
     const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
@@ -29,7 +29,7 @@ export default function AppliedJobs() {
   const fetchData = async () => {
     
   const myHeaders = new Headers()
-  myHeaders.append("authentication", `Bearer ${token}`)
+  myHeaders.append("Authorization", `Bearer ${token}`)
       try {
           const response = await axios.get(`${API_URL}/applied_jobs_by_user/`+jobSeeker_id, {headers:myHeaders});
           if (response.status === 200) {
@@ -46,7 +46,7 @@ export default function AppliedJobs() {
   async function getNotifications(){
     
   const myHeaders = new Headers()
-  myHeaders.append("authentication", `Bearer ${token}`)
+  myHeaders.append("Authorization", `Bearer ${token}`)
     const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
     console.log(response)
     setNotifications(response.data)

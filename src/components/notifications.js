@@ -16,7 +16,7 @@ export default function AdminNotifications(){
     const myHeaders = new Headers()
 
     useEffect(()=>{
-     myHeaders.append('authentication', `Bearer ${token}`)
+     myHeaders.append('Authorization', `Bearer ${token}`)
  
     })
     function handleFormChange(e){
@@ -36,7 +36,7 @@ export default function AdminNotifications(){
       maxBodyLength: Infinity,
       url: 'https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/api/sendnotification',
       headers: { 
-        'authentication': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphcmFAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMTAkUjd4OXZrWExxcG1hai9SRndjSHJSdXRqVWpFTTluMzlpVmpXckY4YVRQa0hORW9ESlpnY1MiLCJ1c2VybmFtZSI6IlphcmEiLCJyb2xlIjoiZW1wbG95ZXIiLCJ1c2VyX2lkIjo0LCJpYXQiOjE3MTgwOTIwODgsImV4cCI6MTcxODExMzY4OH0.gb4hfuErY8uBG5h7N2Ki0faJlkVjhgwZmp-xRXi3rmI', 
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphcmFAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMTAkUjd4OXZrWExxcG1hai9SRndjSHJSdXRqVWpFTTluMzlpVmpXckY4YVRQa0hORW9ESlpnY1MiLCJ1c2VybmFtZSI6IlphcmEiLCJyb2xlIjoiZW1wbG95ZXIiLCJ1c2VyX2lkIjo0LCJpYXQiOjE3MTgwOTIwODgsImV4cCI6MTcxODExMzY4OH0.gb4hfuErY8uBG5h7N2Ki0faJlkVjhgwZmp-xRXi3rmI', 
         'Content-Type': 'application/x-www-form-urlencoded', 
         'Cookie': 'connect.sid=s%3AzQGTVLYvxEhspYm8B8k6HBvQFNignxfI.yntLFQLUXwFuvd02ZQO31XtYUER6W7YRsheZQ98smUU'
       },

@@ -37,7 +37,7 @@ export default function JobApplications(){
   const [msgForm, setMsgForm]=useState([])
   const [jobseeker_id, setJobseeker_id]=useState()
   useEffect(()=>{
-    myHeaders.append('authentication',`Bearer ${token}`)
+    myHeaders.append('Authorization',`Bearer ${token}`)
   })
   async function fetchApplications(){
     console.log("fetching data")

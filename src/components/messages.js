@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_URL } from '../utils.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-axios.defaults.headers.common['Authentication'] = `Bearer ${localStorage.getItem('authToken')}`;
+// axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('authToken')}`;
 
 export default function AdminMessages(){
 
@@ -12,7 +12,7 @@ export default function AdminMessages(){
   const myHeaders = new Headers()
 
   useEffect(()=>{
-    myHeaders.append('authentication', `Bearer ${token}`)
+    myHeaders.append('Authorization', `Bearer ${token}`)
 
   })
   const user_id = localStorage.getItem("user_id")
@@ -68,7 +68,7 @@ export default function AdminMessages(){
         body:msgForm.body,
         receiver_id:receiverID,
         Timestamp:new Date().toISOString().slice(0,19).replace('T', ' ')
-      }, {headers:{'authentication': `Bearer ${token}`}})
+      }, {headers:{'Authorization': `Bearer ${token}`}})
       console.log(response)
   
     }

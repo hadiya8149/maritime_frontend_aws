@@ -61,7 +61,7 @@ export default function Job_Portal() {
   const applyForJob = async (id) => {
     
     const res = await axios.get(`${API_URL}/jobseeker/${jobSeeker_id}` ,{headers: { 
-      'authentication': `Bearer ${token}`, 
+      'Authorization': `Bearer ${token}`, 
       'Content-Type': 'application/x-www-form-urlencoded'}}
     );
     const resume_url = res.data.data.resumeURL;
@@ -78,7 +78,7 @@ export default function Job_Portal() {
       maxBodyLength: Infinity,
       url: `${API_URL}/create_job_application`,
       headers: { 
-        'authentication': `Bearer ${token}`, 
+        'Authorization': `Bearer ${token}`, 
         'Content-Type': 'application/x-www-form-urlencoded', 
       },
       data : data

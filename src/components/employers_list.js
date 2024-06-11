@@ -11,7 +11,7 @@ export default function EmployersList() {
     const myHeaders = new Headers()
 
    useEffect(()=>{
-    myHeaders.append('authentication', `Bearer ${token}`)
+    myHeaders.append('Authorization', `Bearer ${token}`)
 
    })
     const fetchData = async () => {

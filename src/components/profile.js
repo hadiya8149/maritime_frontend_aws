@@ -21,7 +21,7 @@ export default function Profile() {
       address:''
     })
     const myHeaders = new Headers()
-      myHeaders.append('authentication', `Bearer ${token}`)
+      myHeaders.append('Authorization', `Bearer ${token}`)
     // fix response data from get student by user id
     const fetchProfile = useCallback(async () => {
       

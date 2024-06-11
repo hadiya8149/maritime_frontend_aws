@@ -30,7 +30,7 @@ export default function JobSeekerPortal() {
     const jobseekerID = localStorage.getItem('jobSeeker_id')
     
     const myHeaders = new Headers()
-    myHeaders.append("authentication", `Bearer ${token}`)
+    myHeaders.append("Authorization", `Bearer ${token}`)
  const [messages, setMessages]=useState([])
     async function fetchMessages(){
       console.log(user_id)

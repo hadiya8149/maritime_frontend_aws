@@ -15,7 +15,7 @@ export default function MyCoursesAndPrograms() {
     const myHeaders = new Headers()
 
     useEffect(()=>{
-        myHeaders.append("authentication", `Bearer ${token}`)
+        myHeaders.append("Authorization", `Bearer ${token}`)
         
     }, [])
 

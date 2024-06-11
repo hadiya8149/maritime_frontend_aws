@@ -49,7 +49,7 @@ export const Login = () => {
                 const token = localStorage.getItem('authToken')
 
                 const myHeaders = new Headers()
-                myHeaders.append("authentication", `Bearer ${token}`)
+                myHeaders.append("Authorization", `Bearer ${token}`)
                 setUser_id(data.data.user_id)
                 if (data.data.user_role.toLowerCase() === 'student') {
 

@@ -28,9 +28,9 @@ export default function StudentPortal(){
     })
     async function  fetchStdID(){
       const myHeaders = new Headers()
-      myHeaders.append('authentication', `Bearer ${token}`)
+      myHeaders.append('Authorization', `Bearer ${token}`)
 
-      const headers = {authentication:`Bearer ${token}`}
+      const headers = {Authorization:`Bearer ${token}`}
         const response = await  axios.get(`${API_URL}/student_by_user_id/${user_id}`,{headers:myHeaders});
         console.log(response)
         if (response.status === 200) {
