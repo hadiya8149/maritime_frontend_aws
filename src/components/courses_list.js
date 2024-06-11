@@ -38,29 +38,41 @@ export default function CoursesList() {
     }
     else{
       const body={
-        body:{
+   
           std_id:stdID,
           course_id:id,
           program_id: null,
           AppDate:new Date().toISOString().slice(0,19).replace('T', ' '),
-          Status: 'pending'
-      
-        }
-          
+          Status: 'pending'    
       }
       myHeaders.append("authentication", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRXMGJtMUdpQmJzYTQ4dlVwM0k1VWNPaWM1YXgwZk44VDF3TEtzUXNxWTNSRHdxMU5Nb05SYSIsInVzZXJuYW1lIjoiQWxpIiwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjozLCJpYXQiOjE3MTgwODE1MDgsImV4cCI6MTcxODEwMzEwOH0.9DaT9AWGkt-X7vn2bJBPQ2WYSCvdGA0C1Q4-jW6nFJE`)
       myHeaders.append('content-type', 'text/json')
-      const response = await axios.post(`${API_URL}/apply_for_course`, body, {
+      const requestOptions = {
+        body: body,
+        redirect: "follow"
+      };
+      // const response = await axios.post(`${API_URL}/apply_for_course`, requestOptions, {
+      //   headers: {
+      //     "authentication": `Bearer ${token}`,
+      //     'content-type': 'text/json'
+      //   }
+      // }).then((data) => console.log(data))
+      // .catch((err) => console.log(err));
+      //   if (response.status===201){
+      //   toast.success("Course  enrolled successfully")
+      // }
+      axios({
+        method: 'post',
+        url:`${API_URL}/apply_for_course`,
+        
+        data:body,
         headers: {
           "authentication": `Bearer ${token}`,
           'content-type': 'text/json'
         }
-      }).then((data) => console.log(data))
-      .catch((err) => console.log(err));
-        if (response.status===201){
-        toast.success("Course  enrolled successfully")
-      }
+      }).then((data)=>console.log("axios direct post", data)).catch((err)=>(console.log(err)))
     }
+    
     
   }
   function search(data){
