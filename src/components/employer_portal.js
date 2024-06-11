@@ -22,9 +22,13 @@ export default function EmployerPortal() {
   const [notifications, setNotifications]=useState([])
   const [messages, setMessages]=useState([])
   useEffect(()=>{
-    myHeaders.append('Authorization',`Bearer ${token}`)
+    myHeaders.append('Authorization',`Bearer ${getToken()}`)
   })
+  function getToken(){
+    return localStorage.getItem('authToken')
+  }
   async function fetchMessages(){
+
     console.log(user_id)
     const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
     console.log(response.data)
@@ -43,6 +47,7 @@ export default function EmployerPortal() {
 
   async function createJob() {
     console.log(jobForm)
+    
     try {
       await axios.post(`${API_URL}/create_job`, { body: jobForm }, {headers:myHeaders})
         .then(
@@ -127,7 +132,7 @@ useEffect(()=>{
                                 {messages.length === 0 ? (
       <li className="">No Messages</li>
     ) : (
-      messages.map((message) => (
+      messages.data.map((message) => (
         <li key={message.message_id} >
           {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
           <hr/>

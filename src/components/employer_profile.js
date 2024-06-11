@@ -118,7 +118,7 @@ export default function EmployerProfile() {
                                 {messages.length === 0 ? (
       <li className="">No Messages</li>
     ) : (
-      messages.map((message) => (
+      messages.data.map((message) => (
         <li key={message.message_id} >
           {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
           <hr/>

@@ -10,7 +10,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import qs from 'qs'
 export default function JobApplications(){
   const employer_id = localStorage.getItem('employer_id')
   
@@ -81,30 +81,25 @@ export default function JobApplications(){
             if(err.response) console.log("this is error.response.dat",err.response.data);
         });
   }
+  function getToken(){
+    return localStorage.getItem('authToken')
+  }
+  let data = qs.stringify({
+    'job_title':jobForm.job_title,
+    'job_description':jobForm.job_description,
+    'requirements':jobForm.requirements,
+    'location':jobForm.location,
+    'salary':jobForm.salary,
+    'employer_id':employer_id, //only for test purpose,
+    'PostingDate': new Date().toISOString().slice(0,10),
+    'ExpiryDate': jobForm.ExpiryDate
+  })
   async function createJob(){
-    console.log(jobForm)
-    try{
-      await axios.post(`${API_URL}/create_job/`, {body:jobForm},{headers:myHeaders})
-      .then(
-          (data)=>
-          new Promise((resolve, reject) => {
-              setTimeout(() => {
-                 if(data.status===201){
-                  console.log(data.data.message)
-                  console.log(data.data.result)
-                  toast.success("job created successfully")
-                 }
-              }, 1);
-            }),
-      )
-      .catch((err) => {
-          if(err.response) console.log("this is error.response.dat",err.response.data);
-      })        ;
-    }
-    catch(e){
-        console.log(e)
-    }
-      }
+    await axios.post(`${API_URL}/create_job`, jobForm,{headers:{
+      "Authorization":`Bearer ${localStorage.getItem('authToken')}`
+    }})
+    
+  }
   function handleChange(e) {
     const { name, value } = e.target;
     setJobForm(prevData => ({
@@ -257,7 +252,7 @@ async function deleteJobApplication(app){
                                 {messages.length === 0 ? (
       <li className="">No notifications</li>
     ) : (
-      messages.map((message) => (
+      messages.data.map((message) => (
         <li key={message.message_id} >
           {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
           <hr/>

@@ -178,10 +178,26 @@ export default function CoursesAndProgramsManagement() {
     }
   // }
   async function deleteProgram(id) {
-    const response = await axios.delete(`${API_URL}/program/` + id);
-    if (response.status === 200) {
-      toast.success("Program deleted successfully")
-    }
+    let config = {
+      method: 'delete',
+      maxBodyLength: Infinity,
+      url: `${API_URL}/program/${id}`,
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    };
+    
+    axios.request(config)
+      .then((response) => {
+        if (response.status === 201) {
+          toast.success("program deleted successfully")
+        }
+      })
+      .catch((error) => {
+
+        console.log(error);
+      });
   }
   async function editCourse() {
     const course_id = editCourseForm.course_id
@@ -218,18 +234,38 @@ export default function CoursesAndProgramsManagement() {
 
   }
   async function editProgram() {
-    const program_id = editProgramForm.program_id
-    const body = {
-      program_id: editProgramForm.program_id,
-      program_name: editProgramForm.program_name,
-      description: editProgramForm.description,
-      duration: editProgramForm.duration_months,
-      trainer: editProgramForm.trainer,
-    }
-    const response = await axios.put(`${API_URL}/update_program/` + program_id, body, { headers: myHeaders }).then((data) => console.log(data)).catch((err) => console.log(err))
-    if (response.status === 200) {
-      console.log(response)
-    }
+    const program_id = editProgramForm.program_id;
+    const data = qs.stringify({
+      'program_id': editProgramForm.program_id,
+      'program_name': editProgramForm.program_name,
+      'description': editProgramForm.description,
+      'duration': editProgramForm.duration_months,
+      'instructor': editProgramForm.instructor,
+    })
+    // const response = await axios.put(`${API_URL}/program/` + program_id, {data: data}, { headers: myHeaders }).then((data) => console.log(data)).catch((err) => console.log(err))
+    
+    let config = {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: `${API_URL}/program/${program_id}`,
+      headers: { 
+        'Authorization': `Bearer ${getToken()}`, 
+        'Content-Type': 'application/x-www-form-urlencoded', 
+      },
+      data : data
+    };
+    
+    await axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      debugger;
+    })
+    .catch((error) => {
+      console.log(error);
+      debugger;
+    });
+    
+
   }
   return (
     <div>
