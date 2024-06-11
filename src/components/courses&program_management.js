@@ -156,13 +156,13 @@ export default function CoursesAndProgramsManagement() {
     let config = {
       method: 'delete',
       maxBodyLength: Infinity,
-      url: `${API_URL}/course${id}`,
+      url: `${API_URL}/course/${id}`,
       headers: {
         'Authorization': `Bearer ${getToken()}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       }
     };
-    // const response = await axios.delete(`${API_URL}/course/` + id);
+    
     axios.request(config)
       .then((response) => {
         if (response.status === 201) {
