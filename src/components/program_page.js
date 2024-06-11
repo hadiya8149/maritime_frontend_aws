@@ -6,32 +6,48 @@ import { useParams } from 'react-router-dom'
 import { API_URL } from '../utils'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import qs from 'qs'
 export default function ProgramInfo(){
   const [program, setProgram]=useState()
   const{id}=useParams();
+  const stdID = localStorage.getItem('std_id')
+
+  const token = localStorage.getItem('authToken')
   async function getProgramInfo(){
     const response = await axios.get(`${API_URL}/program/`+id)
     console.log(response.data.data)
     setProgram(response.data.data)
   }
-  const stdID = localStorage.getItem('std_id')
-  async function createProgress(data){
-    const body={
-      std_id: stdID,
-      ProgramID: data.program_id,
-      ProgramID: null,
-      ProgressPercentage:100,
-      CompletionStatus:'Completed',
-      LastUpdatedDate:new Date().toISOString().slice(0,19).replace('T', ' ')
-
-    }
-    console.log(data)
-    const response = await axios.post(`${API_URL}/progress`, body)
-    console.log(response)
-    if(response.status===200){
-      toast.success("Congratulations on completing the program")
-    }
+  async function createProgress(program_data){
+    let data = qs.stringify({
+      'std_id': stdID,
+      'courseID': null,
+      'programID': program_data.program_id,
+      'ProgressPercentage': 100,
+      'CompletionStatus': 'Completed',
+      'LastUpdatedDate':  new Date().toISOString().slice(0,19).replace('T', ' ')
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API_URL}/progress`,
+      headers: {
+        "authentication": `Bearer ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      if(response.status===200){
+        toast.success("Congratulations you have completed the Program")
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
   useEffect(()=>{
     console.log(id)

@@ -11,6 +11,7 @@ import { useCallback } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import qs from 'qs';
 
 export default function Job_Portal() {
 
@@ -58,27 +59,43 @@ export default function Job_Portal() {
     }
   };
   const applyForJob = async (id) => {
-    myHeaders.append("authentication", `Bearer ${token}`)
-    console.log(`${API_URL}/jobseeker${jobSeeker_id}`)
-    const res = await axios.get(`${API_URL}/jobseeker/${jobSeeker_id}` , {headers:myHeaders});
-      const resume_url = res.data.data.resumeURL;
-    const data = {
-      jobSeeker_id: jobSeeker_id,
-      job_id: id,
-      AppDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
-      Status: 'pending',
-      ResumeURL: resume_url
-    }
-    console.log(`${API_URL}/create_job_application`)
-    console.log(data)
-    // fix backend const {} = req.body.body
-    const response = await axios.post(`${API_URL}/create_job_application`, {body:data }, {headers:myHeaders})
-    if (response.status=200){
-      toast.success("Applied to job successfully")
-    }
-    else{
-      toast.error("please upload your resume in profile section")
-    }
+    
+    const res = await axios.get(`${API_URL}/jobseeker/${jobSeeker_id}` ,{headers: { 
+      'authentication': `Bearer ${token}`, 
+      'Content-Type': 'application/x-www-form-urlencoded'}}
+    );
+    const resume_url = res.data.data.resumeURL;
+    let data = qs.stringify({
+      'jobSeeker_id': jobSeeker_id,
+      'job_id': id,
+      'AppDate':  new Date().toISOString().slice(0, 19).replace('T', ' '),
+      'Status': 'pending',
+      'ResumeURL': resume_url
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API_URL}/create_job_application`,
+      headers: { 
+        'authentication': `Bearer ${token}`, 
+        'Content-Type': 'application/x-www-form-urlencoded', 
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      if(response.status==201){
+        toast.success("Successfuly applied to job")
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
+   
+ 
   }
   function filterJobs(data){
     if (filterQuery){

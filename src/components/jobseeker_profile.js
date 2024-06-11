@@ -7,6 +7,7 @@ import React from 'react'
 import { API_URL } from '../utils'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
+import qs from 'qs';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function JobSeekerProfile() {
@@ -39,20 +40,20 @@ export default function JobSeekerProfile() {
     const myHeaders = new Headers()
 
     // const authToken = localStorage.getItem('authToken')
-    useEffect(()=>{
+    useEffect(() => {
         myHeaders.append("authentication", `Bearer ${token}`)
-        
+
     }, [])
     async function fetchMessages() {
-        
+
         console.log(user_id)
-        const response = await axios.get(`${API_URL}/message_by_user_id/` + user_id, {headers:myHeaders});
+        const response = await axios.get(`${API_URL}/message_by_user_id/` + user_id, { headers: myHeaders });
         console.log(response.data)
         setMessages(response.data)
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id,{headers:myHeaders});
+            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id, { headers: myHeaders });
             if (response.status === 200) {
                 // Update state immediately
                 setAppliedJobs(response.data.data);
@@ -63,12 +64,12 @@ export default function JobSeekerProfile() {
     }
 
     const fetchUserProfile = async () => {
-        const response = await axios.get(`${API_URL}/user/` + user_id, {headers:myHeaders})
+        const response = await axios.get(`${API_URL}/user/` + user_id, { headers: myHeaders })
         setUserProfile(response.data.data)
     }
     const fetchProfile = async () => {
         try {
-            const response = await axios.get(`${API_URL}/jobseeker/` + jobseekerID, {headers:myHeaders});
+            const response = await axios.get(`${API_URL}/jobseeker/` + jobseekerID, { headers: myHeaders });
             if (response.status === 200) {
                 console.log(response.data.data)
                 setProfile(response.data.data)
@@ -78,15 +79,37 @@ export default function JobSeekerProfile() {
         }
     };
     async function getNotifications() {
-        const response = await axios.get(`${API_URL}/notification_by_user_id/` + user_id, {headers:myHeaders})
+        const response = await axios.get(`${API_URL}/notification_by_user_id/` + user_id, { headers: myHeaders })
         console.log(response)
         setNotifications(response.data)
     }
 
     async function handleSubmit() {
+        let data = qs.stringify({
+            'user_age': editUser.user_age,
+            'user_name': editUser.username,
+            '': ''
+        });
+        let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `${API_URL}/update_user/${user_id}`,
+            headers: {
+                'authentication': `Bearer ${token}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            data: data
+        };
+        axios.request(config)
+            .then((response) => {
+                if (response.status === 200) {
+                    toast.success("success")
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
-        const response = await axios.put(`${API_URL}/update_user/` + user_id, { user_age: editUser.user_age, username: editUser.username }, {headers:myHeaders})
-        console.log("respnose", response)
     }
     function handleChange(e) {
         e.preventDefault()
@@ -96,19 +119,31 @@ export default function JobSeekerProfile() {
         }))
     }
     async function handleJobSeekerProfileSubmit() {
-        debugger;
-
-        const response = await axios.put(`${API_URL}/update_jobseeker/` + jobSeeker_id, editjobSeekerProfile, {headers:myHeaders}).then((result) => console.log(result))
-            .catch((error) => console.error(error));
-
-        console.log(response)
-        if (response.status === 200) {
-            toast.info("Job seeker profile update successfully")
+        let data = qs.stringify({
+            'name': 'sara hadiya' 
+          });
+          
+          let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: 'https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/api/update_jobseeker/1',
+            headers: { 
+              'authentication': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRXMGJtMUdpQmJzYTQ4dlVwM0k1VWNPaWM1YXgwZk44VDF3TEtzUXNxWTNSRHdxMU5Nb05SYSIsInVzZXJuYW1lIjoiQWxpIiwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjozLCJpYXQiOjE3MTgwNzczMTIsImV4cCI6MTcxODA5ODkxMn0.R2bPqgctJPhjZnW17RLdFSaME22sToQ-AWU4as2TRjU', 
+              'Content-Type': 'application/x-www-form-urlencoded', 
+              'Cookie': 'connect.sid=s%3ALPsR1zAcMYj7dy4kpGfm-QUPrZvRXemo.ookZAV43fMEIh6FlZi5Flf89fy3mG7ibwVb9pdEAsf0'
+            },
+            data : data
+          };
+          
+          axios.request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         }
-        else {
-            toast.warning("Could not update your profile.Please try again")
-        }
-    }
+
     function handleJobSeekerProfileChange(e) {
         e.preventDefault()
         const { name, value } = e.target;
@@ -126,7 +161,7 @@ export default function JobSeekerProfile() {
         try {
             const response = await axios.post(`${API_URL}/upload_resume`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
-            },{headers:myHeaders})
+            }, { headers: myHeaders })
 
             if (response.status === 200) {
                 toast.success("Resume uploaded successfully")
@@ -139,7 +174,11 @@ export default function JobSeekerProfile() {
             console.error(error);
             toast.error('An error occurred while uploading the resume.');
         }
-        const response = await axios.put(`${API_URL}/update_jobseeker/` + jobSeeker_id, { resumeURL: file.name }, {headers:myHeaders}).then((result) => console.log(result))
+
+
+
+
+        const response = await axios.put(`${API_URL}/update_jobseeker/` + jobSeeker_id, { resumeURL: file.name }, { headers: myHeaders }).then((result) => console.log(result))
             .catch((error) => console.error(error));
         fetchProfile()
     };
@@ -155,7 +194,7 @@ export default function JobSeekerProfile() {
     }, []);
     return (
         <div className='mb-10'>
-            <ToastContainer/>
+            <ToastContainer />
 
             <nav className="navbar navbar-expand-lg bg-body-tertiary" >
                 <div className="container-fluid">
@@ -323,149 +362,149 @@ export default function JobSeekerProfile() {
                 </div>
                 <div className=''></div>
             </div> */}
-        <div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card profile-card">
-        <img src={profile_image} class="card-img-top mx-auto" alt="..." style={{height: "100px", width:"100px"}}/>
-        <div class="card-body" style={{textAlign:'left'}}>
-          <h5 class="card-title">Personal Details</h5>
-          <div class="card-text">
-            <p>ID: {profile.jobSeeker_id}</p>
-            <p>Username: {userProfile.username}</p>
-            <p>Email: {profile.email}</p>
-            <p>Age: {userProfile.user_age}</p>
-          </div>
-          <a href="#editDetails" data-bs-toggle="modal" data-bs-target="#editDetails" class="btn btn-primary">Edit</a>
-        </div>
-      </div>
-
-      <div class="modal fade" id="editDetails" tabindex="-1" aria-labelledby="editDetails" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Contact Details</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form class="m-auto w-100" onSubmit={() => handleSubmit()}>
-                <label for="#name">Username</label>
-                <input class="form-control" type="text" id="name" name="name" onChange={handleChange} />
-                <label for="#user_age">Age</label>
-                <input class="form-control" type="number" min="18" max="75" onChange={handleChange} name="user_age" />
-                <hr />
-                <div>
-                  <button type="button" class="btn btn-secondary" 
-                //   style="color: white; margin-right: 5px; width: 100px;"
-                   data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" 
-                //   style="color: white; width: 200px;"
-                  >Save Changes</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="card resume-card">
-        <div class="card-body">
-          <div class="card-text">
-            <h6>Resume</h6>
-            {profile.resumeURL && (
-              <a href="#" onClick={() => getpdf(profile.resumeURL)} class="mb-3 text-black">
-                {profile.resumeURL}
-              </a>
-            )}
-            <form onSubmit={uploadResume} id="resume_form">
-              <input onChange={(e) => setFile(e.target.files[0])} name="file" class="mb-3" type="file" accept="application/pdf" required />
-              <button class="btn btn-primary w-100" type="submit">Upload</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <div class="jobseeker-profile">
-        <div class="d-flex justify-content-between  align-items-center mb-3">
-          <h4>Name: {profile.name}</h4>
-          <a class="btn" id="editprofilebtn" href="#editJobSeeker" role="button" data-bs-toggle="modal" data-bs-target="#editJobSeeker">
-            Edit Profile
-          </a>
-        </div>
-
-        <div style={{height:'100px'}}>
-          <h4  className='bg-light bg-gradient sections'>Experience</h4>
-          <div class="mb-3">
-            {profile.workExperience}
-          </div>
-        </div>
-
-        <div  style={{height:'100px'}}>
-          <h4 className='bg-light bg-gradien'>Education</h4>
-<div className='mb-3'>
-    {profile.education}
-</div>
-        </div>
-        <div  style={{height:'100px'}}>
-
-          <h4 className='bg-light bg-gradien'>Certifications & licenses</h4>
-<div className='mb-3'>
-    {profile.certifications}
-</div>
-        </div>
-        <div  style={{height:'100px'}}>
-
-          <h4 className='bg-light bg-gradien'>Skills</h4>
-<div className='mb-3'>
-    {profile.skills}
-</div>
-        </div>
-        <div  style={{height:'100px'}}>
-          <h4 className='bg-light bg-gradien rounded-5'>Languages</h4>
-<div className='mb-3'>
-    {profile.languages}
-</div>
-        </div>
-</div>
-</div>
-</div>
-</div>
- <div className="modal fade" id="editJobSeeker" tabIndex="-1" aria-labelledby="editJobSeeker" aria-hidden="true">
-                        <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Edit Profile</h5>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="card profile-card">
+                            <img src={profile_image} className="card-img-top mx-auto" alt="..." style={{ height: "100px", width: "100px" }} />
+                            <div className="card-body" style={{ textAlign: 'left' }}>
+                                <h5 className="card-title">Personal Details</h5>
+                                <div className="card-text">
+                                    <p>ID: {profile.jobSeeker_id}</p>
+                                    <p>Username: {userProfile.username}</p>
+                                    <p>Email: {profile.email}</p>
+                                    <p>Age: {userProfile.user_age}</p>
                                 </div>
-                                <div className="modal-body">
-                                    <form className='m-auto w-100' onSubmit={handleJobSeekerProfileSubmit}>
-                                        <input className='form-control' type='text' placeholder='Name' onChange={handleJobSeekerProfileChange} name='name'></input>
-                                        <input className='form-control' type='email' placeholder='email' onChange={handleJobSeekerProfileChange} name='email'></input>
-                                        <input className='form-control' type='text' placeholder='workExperience' onChange={handleJobSeekerProfileChange} name='workExperience'></input>
-                                        <input className='form-control' type='text' placeholder='Degree' onChange={handleJobSeekerProfileChange} name='education'></input>
-                                        <input className='form-control' type='text' placeholder="certifications" onChange={handleJobSeekerProfileChange} name='certifications'></input>
-                                        <input className='form-control' type='text' placeholder="skills" onChange={handleJobSeekerProfileChange} name='skills'></input>
-                                        <input className='form-control' type='text' placeholder="languages" onChange={handleJobSeekerProfileChange} name='languages'></input>
+                                <a href="#editDetails" data-bs-toggle="modal" data-bs-target="#editDetails" className="btn btn-primary">Edit</a>
+                            </div>
+                        </div>
 
-                                        <hr />
-                                        <div>
-                                            <button type="button" className="btn bg-secondary" style={{ color: 'white', marginRight: '5px', width: '100px' }} data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" className="btn bg-primary" style={{ color: 'white', width: '200px' }}>Save changes</button>
-
-                                        </div>
-
-                                    </form>
+                        <div className="modal fade" id="editDetails" tabIndex="-1" aria-labelledby="editDetails" aria-hidden="true">
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Edit Contact Details</h5>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <form className="m-auto w-100" onSubmit={() => handleSubmit()}>
+                                            <label htmlFor="#name">Username</label>
+                                            <input className="form-control" type="text" id="name" name="name" onChange={handleChange} />
+                                            <label htmlFor="#user_age">Age</label>
+                                            <input className="form-control" type="number" id='user_age' min="18" max="75" onChange={handleChange} name="user_age" />
+                                            <hr />
+                                            <div>
+                                                <button type="button" className="btn btn-secondary"
+                                                    //   style="color: white; margin-right: 5px; width: 100px;"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" className="btn btn-primary"
+                                                //   style="color: white; width: 200px;"
+                                                >Save Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-</div>
+
+                    <div className="col-md-6">
+                        <div className="card resume-card">
+                            <div className="card-body">
+                                <div className="card-text">
+                                    <h6>Resume</h6>
+                                    {profile.resumeURL && (
+                                        <a href="#" onClick={() => getpdf(profile.resumeURL)} className="mb-3 text-black">
+                                            {profile.resumeURL}
+                                        </a>
+                                    )}
+                                    <form onSubmit={uploadResume} id="resume_form">
+                                        <input onChange={(e) => setFile(e.target.files[0])} name="file" className="mb-3" type="file" accept="application/pdf" required />
+                                        <button className="btn btn-primary w-100" type="submit">Upload</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-12">
+                        <div className="jobseeker-profile">
+                            <div className="d-flex justify-content-between  align-items-center mb-3">
+                                <h4>Name: {profile.name}</h4>
+                                <a className="btn" id="editprofilebtn" href="#editJobSeeker" role="button" data-bs-toggle="modal" data-bs-target="#editJobSeeker">
+                                    Edit Profile
+                                </a>
+                            </div>
+
+                            <div style={{ height: '100px' }}>
+                                <h4 className='bg-light bg-gradient sections'>Experience</h4>
+                                <div className="mb-3">
+                                    {profile.workExperience}
+                                </div>
+                            </div>
+
+                            <div style={{ height: '100px' }}>
+                                <h4 className='bg-light bg-gradien'>Education</h4>
+                                <div className='mb-3'>
+                                    {profile.education}
+                                </div>
+                            </div>
+                            <div style={{ height: '100px' }}>
+
+                                <h4 className='bg-light bg-gradien'>Certifications & licenses</h4>
+                                <div className='mb-3'>
+                                    {profile.certifications}
+                                </div>
+                            </div>
+                            <div style={{ height: '100px' }}>
+
+                                <h4 className='bg-light bg-gradien'>Skills</h4>
+                                <div className='mb-3'>
+                                    {profile.skills}
+                                </div>
+                            </div>
+                            <div style={{ height: '100px' }}>
+                                <h4 className='bg-light bg-gradien rounded-5'>Languages</h4>
+                                <div className='mb-3'>
+                                    {profile.languages}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade" id="editJobSeeker" tabIndex="-1" aria-labelledby="editJobSeeker" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Edit Profile</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <form className='m-auto w-100' onSubmit={handleJobSeekerProfileSubmit}>
+                                <input className='form-control' type='text' placeholder='Name' onChange={handleJobSeekerProfileChange} name='name'></input>
+                                <input className='form-control' type='email' placeholder='email' onChange={handleJobSeekerProfileChange} name='email'></input>
+                                <input className='form-control' type='text' placeholder='workExperience' onChange={handleJobSeekerProfileChange} name='workExperience'></input>
+                                <input className='form-control' type='text' placeholder='Degree' onChange={handleJobSeekerProfileChange} name='education'></input>
+                                <input className='form-control' type='text' placeholder="certifications" onChange={handleJobSeekerProfileChange} name='certifications'></input>
+                                <input className='form-control' type='text' placeholder="skills" onChange={handleJobSeekerProfileChange} name='skills'></input>
+                                <input className='form-control' type='text' placeholder="languages" onChange={handleJobSeekerProfileChange} name='languages'></input>
+
+                                <hr />
+                                <div>
+                                    <button type="button" className="btn bg-secondary" style={{ color: 'white', marginRight: '5px', width: '100px' }} data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" className="btn btn-primary" style={{ color: 'white', width: '200px' }}>Save changes</button>
+
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }

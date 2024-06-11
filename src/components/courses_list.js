@@ -6,225 +6,225 @@ import { API_URL } from '../utils';
 import SearchIcon from '@mui/icons-material/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import {useState, useEffect, useCallback} from 'react'
+import qs from 'qs'
+import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 export default function CoursesList() {
   const [courses, setCourses] = useState([])
   const stdID = localStorage.getItem('std_id')
-  const [filterQuery, setFilterQuery]=useState()
-  const [searchQuery, setSearchQuery]=useState([])
+  const [filterQuery, setFilterQuery] = useState()
+  const [searchQuery, setSearchQuery] = useState([])
   const token = localStorage.getItem('authToken')
-  const myHeaders  = new Headers();
-  function handleFilterChange(e){
+  const myHeaders = new Headers();
+  function handleFilterChange(e) {
     setFilterQuery(e.target.value)
     console.log("filter", filterQuery)
   }
-  
-  const fetchData = useCallback(async () => {
-      try {
-          const response = await axios.get(`${API_URL}/courses`);
-          if (response.status === 200) {
-              setCourses(response.data.data);
-          }
-      } catch (error) {
-          console.error(error);
-      }
 
-  },[]);
-  const enrollCourse= async(id)=>{
-    if (!stdID){
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/courses`);
+      if (response.status === 200) {
+        setCourses(response.data.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+  }, []);
+  const enrollCourse = async (id) => {
+    if (!stdID) {
       toast.warning("please login to continue")
     }
-    else{
-      const body={
-   
-          std_id:stdID,
-          course_id:id,
-          program_id: null,
-          AppDate:new Date().toISOString().slice(0,19).replace('T', ' '),
-          Status: 'pending'    
-      }
-      myHeaders.append("authentication", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRXMGJtMUdpQmJzYTQ4dlVwM0k1VWNPaWM1YXgwZk44VDF3TEtzUXNxWTNSRHdxMU5Nb05SYSIsInVzZXJuYW1lIjoiQWxpIiwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjozLCJpYXQiOjE3MTgwODE1MDgsImV4cCI6MTcxODEwMzEwOH0.9DaT9AWGkt-X7vn2bJBPQ2WYSCvdGA0C1Q4-jW6nFJE`)
-      myHeaders.append('content-type', 'text/json')
-      const requestOptions = {
-        body: body,
-        redirect: "follow"
-      };
-      // const response = await axios.post(`${API_URL}/apply_for_course`, requestOptions, {
-      //   headers: {
-      //     "authentication": `Bearer ${token}`,
-      //     'content-type': 'text/json'
-      //   }
-      // }).then((data) => console.log(data))
-      // .catch((err) => console.log(err));
-      //   if (response.status===201){
-      //   toast.success("Course  enrolled successfully")
-      // }
-      axios({
+    else {
+      let data = qs.stringify({
+        'AppDate': new Date().toISOString().slice(0, 19).replace('T', ' '),
+        'Status': '"pending"',
+        'course_id': id,
+        'program_id': 'null',
+        'std_id': stdID
+      });
+
+      let config = {
         method: 'post',
-        url:`${API_URL}/apply_for_course`,
-        
-        data:body,
+        maxBodyLength: Infinity,
+        url: `${API_URL}/apply_for_course`,
         headers: {
           "authentication": `Bearer ${token}`,
-          'content-type': 'text/json'
-        }
-      }).then((data)=>console.log("axios direct post", data)).catch((err)=>(console.log(err)))
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: data
+      };
+      const response = await axios.request(config)
+        .then((response) => {
+          console.log(response)
+          if (response.data.success) {
+            toast.success("Course enrolled successfully")
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log(response)
     }
-    
-    
+
+
   }
-  function search(data){
-    if(searchQuery.length>1)
-    return data.filter((course)=>
-      course.course_name.toLowerCase().includes(searchQuery.toLowerCase()));
+  function search(data) {
+    if (searchQuery.length > 1)
+      return data.filter((course) =>
+        course.course_name.toLowerCase().includes(searchQuery.toLowerCase()));
   }
-  function filterCourses(data){
-    if (filterQuery){
+  function filterCourses(data) {
+    if (filterQuery) {
       console.log(filterQuery, "filter query")
-      console.log("data",data)
-      console.log(data.filter((obj)=>{
-        return obj.duration_months===filterQuery;
+      console.log("data", data)
+      console.log(data.filter((obj) => {
+        return obj.duration_months === filterQuery;
       }))
-      return data.filter((obj)=>{
-        return obj.duration_months===filterQuery;
+      return data.filter((obj) => {
+        return obj.duration_months === filterQuery;
       })
-        
+
     }
-    
+
   }
   useEffect(() => {
-      fetchData();
-      
-    },[]);
+    fetchData();
+
+  }, []);
 
   return (
-    <div style={{minHeight:'100vh'}}   id="CourseBanner">
+    <div style={{ minHeight: '100vh' }} id="CourseBanner">
+      <ToastContainer />
+
       <div className="d-flex flex-column sidebar flex-shrink-0 p-3 bg-light " >
-  <span className="fs-4">Search Courses</span>
+        <span className="fs-4">Search Courses</span>
 
-  <hr />
-<div className='input-group'>
-<input type="text" name='search' onChange={(e) => setSearchQuery(e.target.value)} placeholder="search" className="form-control" />
-  <SearchIcon className='input-group-text' style={{height:'auto', backgroundColor:'white', fonSize:
-  '16px', width:'40px'}}/>
- 
-</div>
-  
-  <ul className=" mb-auto" style={{listStyleType:'none', paddingLeft:'25px', textAlign:'left'}}>
- <li>Filter<hr/></li>
-<li><span>Duration</span>
-<select  onChange={(e)=>{handleFilterChange(e)}}  style={{    borderRadius: '5px'
-    ,border:' 1px solid #ccc'
-    ,padding:' 10px 15px'
-    ,marginBottom: '15px'
-    ,fontSize: '16px'
-    ,width: '100%', backgroundColor:'white'}}>
- <option></option>
-    <option name='1'>1</option>
-    <option name='2'>2</option>
-    <option name='3'>3</option>
-    <option name='4'>4</option>
-    <option name='5'>5</option>
-    <option name='6'>6</option>
-</select>
-</li>
+        <hr />
+        <div className='input-group'>
+          <input type="text" name='search' onChange={(e) => setSearchQuery(e.target.value)} placeholder="search" className="form-control" />
+          <SearchIcon className='input-group-text' style={{
+            height: 'auto', backgroundColor: 'white', fonSize:
+              '16px', width: '40px'
+          }} />
 
-  </ul>
-</div>
-    
+        </div>
+
+        <ul className=" mb-auto" style={{ listStyleType: 'none', paddingLeft: '25px', textAlign: 'left' }}>
+          <li>Filter<hr /></li>
+          <li><span>Duration</span>
+            <select onChange={(e) => { handleFilterChange(e) }} style={{
+              borderRadius: '5px'
+              , border: ' 1px solid #ccc'
+              , padding: ' 10px 15px'
+              , marginBottom: '15px'
+              , fontSize: '16px'
+              , width: '100%', backgroundColor: 'white'
+            }}>
+              <option></option>
+              <option name='1'>1</option>
+              <option name='2'>2</option>
+              <option name='3'>3</option>
+              <option name='4'>4</option>
+              <option name='5'>5</option>
+              <option name='6'>6</option>
+            </select>
+          </li>
+
+        </ul>
+      </div>
+
       <div className='courses   p-5'>
-      <div className='mb-3'  style={{padding:'16px', margin:'auto'}}>
-        {(filterCourses(courses) || search(courses)) && (<h2>Search Results</h2>)}
-{/* {filterCourses(courses)&&(<h2>Search Results</h2>)} */}
-<div className='row row-cols-1 row-cols-md-3 g-4'> 
-      {filterCourses(courses)&& filterCourses(courses).map((dataObj)=>{
-  return(
-<div className='col'>
-      <div className="card mb-3 m-auto">
-        <div className=''>
-          <img className="card-img" src={courseImage} alt="Card cap"></img>
-          <div className="card-body text-left">
-            <h5>{dataObj.course_name}</h5>
-            <h6>Certificate</h6>
-            <h6>Description: {dataObj.description}</h6>
-            <h6> Duration : {dataObj.duration_months} months</h6>
-            <button  className="btn btn-success"onClick={()=>enrollCourse(dataObj.course_id)}>Enroll</button>
+        <div className='mb-3' style={{ padding: '16px', margin: 'auto' }}>
+          {(filterCourses(courses) || search(courses)) && (<h2>Search Results</h2>)}
+          {/* {filterCourses(courses)&&(<h2>Search Results</h2>)} */}
+          <div className='row row-cols-1 row-cols-md-3 g-4'>
+            {filterCourses(courses) && filterCourses(courses).map((dataObj) => {
+              return (
+                <div className='col'>
+                  <div className="card mb-3 m-auto">
+                    <div className=''>
+                      <img className="card-img" src={courseImage} alt="Card cap"></img>
+                      <div className="card-body text-left">
+                        <h5>{dataObj.course_name}</h5>
+                        <h6>Certificate</h6>
+                        <h6>Description: {dataObj.description}</h6>
+                        <h6> Duration : {dataObj.duration_months} months</h6>
+                        <button className="btn btn-success" onClick={() => enrollCourse(dataObj.course_id)}>Enroll</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className='row row-cols-1 row-cols-md-3 g-4'>
+
+            {search(courses) && search(courses).map((dataObj) => {
+
+              return (
+
+                <div className="box">
+
+                  <div className='col'>
+                    <div className="card">
+                      <div style={{ padding: '4px' }}>
+
+                        <div className="card-body text-left">
+                          <h4 className='card-title'>Course ID: {dataObj.course_id}</h4>
+
+                          <h5>{dataObj.course_name}</h5>
+                          <h6>Certificate</h6>
+                          <h6>Description: {dataObj.description}</h6>
+                          <h6> Duration : {dataObj.duration_months} months</h6>
+                          <button className="btn btn-success " onClick={() => enrollCourse(dataObj.course_id)}>Enroll</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+
+              );
+
+            })}
+
           </div>
         </div>
-      </div>
-      </div>
-  )
-})}
-      </div>
 
-      <div className='row row-cols-1 row-cols-md-3 g-4'>
-      
-      {search(courses) && search(courses).map((dataObj) => {
-
-return (
-
-  <div className="box">
-
-          <div className='col'>
-      <div className="card">
-        <div style={{padding:'4px'}}>
-          
-          <div className="card-body text-left">
-          <h4 className='card-title'>Course ID: {dataObj.course_id}</h4>
-          
-            <h5>{dataObj.course_name}</h5>
-            <h6>Certificate</h6>
-            <h6>Description: {dataObj.description}</h6>
-            <h6> Duration : {dataObj.duration_months} months</h6>
-            <button  className="btn btn-success "onClick={()=>enrollCourse(dataObj.course_id)}>Enroll</button>
-          </div>
-        </div>
-      </div>
-      </div>
-
-
-</div>
-
-);
-
-})}
-
-      </div>
-      </div>
-
-      <h1>
+        <h1>
           Courses at Maritime education system
         </h1>
-      <h4 className='headline '>Explore new and Advanced courses to begin your journey.</h4>
-      <div className='row row-cols-1 row-cols-md-3 g-4'> 
-      {courses.map(course =>{
-        return(
-          <div className='col'>
-      <div className="card mb-3 ">
-        <div className=''>
-          <img className="card-img" src={courseImage} alt="Card cap"></img>
-          <div className="card-body">
-            <h5>{course.course_name}</h5>
-            <h6>Certificate</h6>
-            <h6>Description: {course.description}</h6>
-            <h6> Duration : {course.duration_months} months</h6>
-            <button  className="btn btn-success"onClick={()=>enrollCourse(course.course_id)}>Enroll</button>
-          </div>
+        <h4 className='headline '>Explore new and Advanced courses to begin your journey.</h4>
+        <div className='row row-cols-1 row-cols-md-3 g-4'>
+          {courses.map(course => {
+            return (
+              <div className='col'>
+                <div className="card mb-3 ">
+                  <div className=''>
+                    <img className="card-img" src={courseImage} alt="Card cap"></img>
+                    <div className="card-body">
+                      <h5>{course.course_name}</h5>
+                      <h6>Certificate</h6>
+                      <h6>Description: {course.description}</h6>
+                      <h6> Duration : {course.duration_months} months</h6>
+                      <button className="btn btn-success" onClick={() => enrollCourse(course.course_id)}>Enroll</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
-      </div>
-      </div>
-      )
-      })}
-</div>
 
       </div>
-      
-    <div className='mb-3'>
-      
-    </div>
-<ToastContainer/>
+
+      <div className='mb-3'>
+
+      </div>
     </div>
 
 

@@ -5,33 +5,50 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import { API_URL } from '../utils';
 import { ToastContainer, toast } from 'react-toastify';
+import qs from 'qs';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function CourseInfo(){
   const [course, setCourse]=useState()
   const{id}=useParams();
+  const token = localStorage.getItem('authToken')
   async function getCourseInfo(){
     const response = await axios.get(`${API_URL}/course/`+id)
     console.log(response.data.data)
     setCourse(response.data.data)
   }
   const stdID = localStorage.getItem('std_id')
-  async function createProgress(data){
-    const body={
-      std_id: stdID,
-      CourseID: data.course_id,
-      ProgramID: null,
-      ProgressPercentage:100,
-      CompletionStatus:'Completed',
-      LastUpdatedDate:new Date().toISOString().slice(0,19).replace('T', ' ')
-
-    }
-    console.log(data)
-    const response = await axios.post(`${API_URL}/progress`, body)
-    console.log(response)
-    if(response.status===200){
-      toast.success("Congratulations you have completed the course")
-    }
+  async function createProgress(progress_data){
+    let data = qs.stringify({
+      'std_id': stdID,
+      'courseID': progress_data.course_id,
+      'programID': 'null',
+      'ProgressPercentage': 100,
+      'CompletionStatus': 'Completed',
+      'LastUpdatedDate':  new Date().toISOString().slice(0,19).replace('T', ' ')
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API_URL}/progress`,
+      headers: {
+        "authentication": `Bearer ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      if(response.status===200){
+        toast.success("Congratulations you have completed the course")
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
   }
   useEffect(()=>{
     console.log(id)

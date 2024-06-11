@@ -7,7 +7,7 @@ import React from 'react'
 import ProgramBanner from '../assets/598198350abe8-page-banners6.jpg';
 import { API_URL } from '../utils'
 import SearchIcon from '@mui/icons-material/Search';
-
+import qs from 'qs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Programs(){
@@ -15,7 +15,7 @@ export default function Programs(){
   const [programs, setPrograms] = useState([])
   const [searchQuery, setSearchQuery]=useState([])
   const [filterQuery, setFilterQuery]=useState()
-
+const token = localStorage.getItem('authToken')
   function handleFilterChange(e){
     setFilterQuery(e.target.value)
     console.log("filter", filterQuery)
@@ -46,17 +46,35 @@ export default function Programs(){
       toast.warning("Please login to enroll")
     }
     else{
-      const data={
-        std_id:stdID,
-        course_id:null,
-        program_id: id,
-        AppDate:new Date().toISOString().slice(0,19).replace('T', ' '),
-        Status: 'pending'
-      }
-      const response = await axios.post(`${API_URL}/apply_for_program`, {body:data})
-      if (response.status===201){
-        toast.success("program enrolled successfully")
-      }
+      let data = qs.stringify({
+        'AppDate': new Date().toISOString().slice(0, 19).replace('T', ' '),
+        'Status': '"pending"',
+        'course_id': 'null',
+        'program_id': id,
+        'std_id': stdID
+      });
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${API_URL}/apply_for_program`,
+        headers: {
+          "authentication": `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: data
+      };
+      const response = await axios.request(config)
+        .then((response) => {
+          console.log(response)
+          if (response.data.success) {
+            toast.success("Program enrolled successfully")
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log(response)
     }
 
   }
