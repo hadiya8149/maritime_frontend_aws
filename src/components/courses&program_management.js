@@ -153,13 +153,32 @@ export default function CoursesAndProgramsManagement() {
 
   }
   async function deleteCourse(id) {
-    const response = await axios.delete(`${API_URL}/course/` + id, { headers: myHeaders });
-    if (response.status === 200) {
-      toast.success("course deleted successfully")
+    let config = {
+      method: 'delete',
+      maxBodyLength: Infinity,
+      url: `${API_URL}/course${id}`,
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    };
+    // const response = await axios.delete(`${API_URL}/course/` + id);
+    axios.request(config)
+      .then((response) => {
+        if (response.status === 201) {
+          toast.success("Course created successfully")
+        }
+      })
+      .catch((error) => {
+
+        console.log(error);
+      });
+    // if (response.status === 200) {
+      // toast.success("course deleted successfully")
     }
-  }
+  // }
   async function deleteProgram(id) {
-    const response = await axios.delete(`${API_URL}/program/` + id, { headers: myHeaders });
+    const response = await axios.delete(`${API_URL}/program/` + id);
     if (response.status === 200) {
       toast.success("Program deleted successfully")
     }
