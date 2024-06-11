@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../utils';
 import ToggleButton from '@mui/material/ToggleButton';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
-
+import qs from 'qs'
 import profile_image from '../assets/profile-icon-design-free-vector.jpg'
 export default function EmployerProfile() {
   const [enableEdit, setEnableEdit]=useState(false)
@@ -45,6 +45,31 @@ export default function EmployerProfile() {
         }
     }, []);
     async function handleSubmit(){
+      let data = qs.stringify({
+        'company_name': 'Devsinc changed' 
+      });
+      
+      let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: `${API_URL}/update_employer/${employer_id}`,
+        headers: { 
+          'authentication': `Bearer ${token}`, 
+          'Content-Type': 'application/x-www-form-urlencoded', 
+        },
+        data : data
+      };
+      
+      axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
+
+
       const response = await axios.put(`${API_URL}/update_employer/`+employer_id, 
       {body:editProfile}, {headers:myHeaders})
       console.log("respnose", response)

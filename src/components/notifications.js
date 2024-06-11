@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_URL } from '../utils.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import qs from 'qs'
 export default function AdminNotifications(){
     const [notificationForm, setNotificationForm]=useState({
       content:"",
@@ -26,10 +26,31 @@ export default function AdminNotifications(){
       }))
   }
   async function createNotification(){
-    const response = await axios.post(`${API_URL}/sendnotification`, {body:notificationForm}, {headers:myHeaders})
-    if(response.status===200){
-      toast.success("notification created successfully")
-    }
+    let data = qs.stringify({
+      'content': notificationForm.content,
+      'user_id': notificationForm.user_id 
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/api/sendnotification',
+      headers: { 
+        'authentication': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphcmFAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMTAkUjd4OXZrWExxcG1hai9SRndjSHJSdXRqVWpFTTluMzlpVmpXckY4YVRQa0hORW9ESlpnY1MiLCJ1c2VybmFtZSI6IlphcmEiLCJyb2xlIjoiZW1wbG95ZXIiLCJ1c2VyX2lkIjo0LCJpYXQiOjE3MTgwOTIwODgsImV4cCI6MTcxODExMzY4OH0.gb4hfuErY8uBG5h7N2Ki0faJlkVjhgwZmp-xRXi3rmI', 
+        'Content-Type': 'application/x-www-form-urlencoded', 
+        'Cookie': 'connect.sid=s%3AzQGTVLYvxEhspYm8B8k6HBvQFNignxfI.yntLFQLUXwFuvd02ZQO31XtYUER6W7YRsheZQ98smUU'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
   }
     async function getNotifications(){
       const response = await axios.get(`${API_URL}/notifications`, {headers:myHeaders});

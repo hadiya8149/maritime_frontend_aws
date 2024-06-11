@@ -4,13 +4,15 @@ import axios from 'axios';
 import { API_URL } from '../utils.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+axios.defaults.headers.common['Authentication'] = `Bearer ${localStorage.getItem('authToken')}`;
 
 export default function AdminMessages(){
+
   const token = localStorage.getItem('authToken')
   const myHeaders = new Headers()
 
   useEffect(()=>{
-   myHeaders.append('authentication', `Bearer ${token}`)
+    myHeaders.append('authentication', `Bearer ${token}`)
 
   })
   const user_id = localStorage.getItem("user_id")
@@ -33,11 +35,21 @@ export default function AdminMessages(){
   //   }
   // }
     async function getMessages(){
-      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
-      if(response.status===200){
-      console.log(response)
-        setMessages(response.data)
-      }
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${API_URL}/message_by_user_id/${user_id}`,
+      
+      };
+      
+      axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
     }
     function handleMsgChange(e){
     
@@ -48,6 +60,7 @@ export default function AdminMessages(){
       console.log(msgForm)
     }
     async function submitMessage(id){
+      console.log(msgForm)
       const receiverID = msgForm.user_id
       const response = await axios.post(`${API_URL}/send_message`, {
         sender_id:user_id,
@@ -55,7 +68,7 @@ export default function AdminMessages(){
         body:msgForm.body,
         receiver_id:receiverID,
         Timestamp:new Date().toISOString().slice(0,19).replace('T', ' ')
-      }, {headers:myHeaders})
+      }, {headers:{'authentication': `Bearer ${token}`}})
       console.log(response)
   
     }
