@@ -7,10 +7,10 @@ const courseApplicationRouter = Router();
 
 //craete course
 courseApplicationRouter.post('/apply_for_course', authenticateJwt, async (req,res, next)=>{
-    const {std_id, course_id, program_id, AppDate, Status}=req.body.body
+    const {std_id, course_id, program_id, AppDate, Status}=req.body
     console.log(":post api hi t")
-    if(!req.body.body){
-        return res.status(200).json({msg:'req.body.body undefined'})
+    if(!req.body){
+        return res.status(200).json({msg:'req.body undefined'})
     }
     console.log(req.body)
     const sql = `INSERT INTO applications_for_courses_and_programs (std_id, course_id, program_id, AppDate, Status) VALUES(?, ?, ?, ?, ?)`;

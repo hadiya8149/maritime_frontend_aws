@@ -4,7 +4,7 @@ import { db } from '../config/dbConnection.js';
 
 // Create a new program
 export const createProgram = async (req, res, next) => {
-  const { program_name, description, duration_months, trainer } = req.body.body;
+  const { program_name, description, duration_months, trainer } = req.body;
   console.log(program_name, description, duration_months, trainer)
 
   // Check if all required fields are present

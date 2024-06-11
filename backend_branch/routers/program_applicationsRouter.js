@@ -6,8 +6,8 @@ const programApplicationRouter = Router();
 programApplicationRouter.use(authenticateJwt)
 //craete program
 programApplicationRouter.post('/apply_for_program', (req,res)=>{
-    const {std_id, course_id, program_id, AppDate, Status}=req.body.body
-    console.log(req.body.body)
+    const {std_id, course_id, program_id, AppDate, Status}=req.body
+    console.log(req.body)
     const sql = `INSERT INTO applications_for_courses_and_programs (std_id, course_id, program_id, AppDate, Status) VALUES(?, ?, ?, ?, ?)`;
     const values = [std_id, course_id, program_id, AppDate, Status]
     db.query(sql,values, (err, result) => {

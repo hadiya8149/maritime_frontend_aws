@@ -2,7 +2,7 @@ import {db} from '../config/dbConnection.js';
 import { upload } from '../middleware/upload.js';
 // Create job application
 export const createJobApplication = (req, res) => {
-    const { jobSeeker_id, job_id, AppDate, Status, ResumeURL } = req.body.body;
+    const { jobSeeker_id, job_id, AppDate, Status, ResumeURL } = req.body;
     const filePath = req.file;
     console.log(jobSeeker_id, job_id, AppDate, Status, ResumeURL)
     

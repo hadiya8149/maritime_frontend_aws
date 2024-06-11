@@ -2,7 +2,7 @@ import {db} from '../config/dbConnection.js';
 
 // Create job
 export const  createJob =async (req, res) => {
-    const { job_title, job_description, requirements, location, salary, employer_id, PostingDate, ExpiryDate } = req.body.body;
+    const { job_title, job_description, requirements, location, salary, employer_id, PostingDate, ExpiryDate } = req.body;
     console.log(req.body)
     console.log(job_title, job_description, requirements, location, salary, employer_id, PostingDate, ExpiryDate)
     const sql = `INSERT INTO jobs (job_title, job_description, requirements, location, salary, employer_id, PostingDate, ExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;

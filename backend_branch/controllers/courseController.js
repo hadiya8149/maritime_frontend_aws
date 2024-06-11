@@ -3,7 +3,7 @@ import { db } from '../config/dbConnection.js';
 // CREATE COURSE 
 
 export const createCourse  = async (req, res) => {
-  const { course_name, description, duration_months, instructor } = req.body.body;
+  const { course_name, description, duration_months, instructor } = req.body;
   console.log(course_name, description, duration_months, instructor)
   const images = req.files; // Retrieve the array of uploaded files
   const query = `

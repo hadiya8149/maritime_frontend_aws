@@ -26,7 +26,7 @@ export const createEmployer = (req, res) => {
 // Update employer by ID
 export const updateEmployer = (req, res) => {
     const employerId = req.params.id;
-    const {  company_name, contact_email, contact_number, company_website, company_size, location, description } = req.body.body;
+    const {  company_name, contact_email, contact_number, company_website, company_size, location, description } = req.body;
     console.log(req.body)
     async function updateTable(col, value){
         const sql = `UPDATE employers SET ${col} =? WHERE employer_id=?;`
