@@ -6,8 +6,9 @@ import {authenticateJwt} from '../middleware/authMiddleware.js'
 const courseApplicationRouter = Router();
 
 //craete course
-courseApplicationRouter.post('/apply_for_course', authenticateJwt, (req,res)=>{
+courseApplicationRouter.post('/apply_for_course', authenticateJwt, async (req,res, next)=>{
     const {std_id, course_id, program_id, AppDate, Status}=req.body.body
+    console.log(":post api hi t")
     if(!req.body.body){
         return res.status(200).json({msg:'req.body.body undefined'})
     }
