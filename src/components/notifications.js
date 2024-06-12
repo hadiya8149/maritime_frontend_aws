@@ -1,4 +1,3 @@
-import AdminNavbar from './admin_navbar.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { API_URL } from '../utils.js';
@@ -64,7 +63,6 @@ export default function AdminNotifications(){
    
     return(
         <div  style={{minHeight:'100vh'}}>
-        <AdminNavbar/>
         
         <div>
         <ToastContainer/>

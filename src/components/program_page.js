@@ -19,10 +19,12 @@ export default function ProgramInfo(){
     setProgram(response.data.data)
   }
   async function createProgress(program_data){
+      console.log(program_data)
+      const id = program_data.program_id
     let data = qs.stringify({
       'std_id': stdID,
       'courseID': null,
-      'programID': program_data.program_id,
+      'ProgramID': id,
       'ProgressPercentage': 100,
       'CompletionStatus': 'Completed',
       'LastUpdatedDate':  new Date().toISOString().slice(0,19).replace('T', ' ')
@@ -99,7 +101,7 @@ export default function ProgramInfo(){
 
 <div style={{marginBottom:'5%'}}>
   Program Content
-  <iframe src={'http://localhost:8000/'+programDetail.content} style={{width:"100%", height:"700px"}} >
+  <iframe src={API_URL+programDetail.content} style={{width:"100%", height:"700px"}} >
 
   </iframe>
   <button onClick={(e)=>{createProgress(programDetail)}} className='btn btn-primary'>Mark as completed</button>

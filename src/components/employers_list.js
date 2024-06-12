@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AdminNavbar from './admin_navbar';
 import '../css/admin.css'
 import { API_URL } from '../utils';
 export default function EmployersList() {
@@ -43,7 +42,6 @@ export default function EmployersList() {
     }
     return (
 <div style={{minHeight:'100vh'}}>
-<AdminNavbar/>
         <div className='container m-auto mt-5 align-item-center'>
             <h2 style={{ textAlign: 'center' }}> Employers Management</h2>
             <div>

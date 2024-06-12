@@ -36,7 +36,7 @@ export default function JobSeekerPortal() {
       console.log(user_id)
       const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
       console.log(response.data)
-      setMessages(response.data)
+      setMessages(response.data.data)
     }
     const fetchData = async () => {
         try {
@@ -72,7 +72,7 @@ export default function JobSeekerPortal() {
                                 <a className="nav-link " aria-current="page" href="/jobseeker">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link " aria-current="page" target="_blank" href="/jobs">View jobs</a>
+                                <a className="nav-link " aria-current="page" target="_blank" rel="noopener" href="/jobs">View jobs</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" style={{ border: 'None', background: 'white'}} href='/applied_jobs'>My Applications</a>

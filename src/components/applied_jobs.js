@@ -70,7 +70,7 @@ fetchMessages()
                                 <a className="nav-link " aria-current="page" href="/jobseeker">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link " aria-current="page" target="_blank" href="/jobs">View jobs</a>
+                                <a className="nav-link " aria-current="page" target="_blank" rel="noopener" href="/jobs">View jobs</a>
                             </li>
                             <li className="nav-item">
                                 <button className="nav-link" style={{ border: 'None', background: 'white', }} onClick={fetchData}>My Applications</button>

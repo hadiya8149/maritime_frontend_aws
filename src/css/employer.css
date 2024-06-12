@@ -3,7 +3,13 @@
     color: #333;
     border-bottom: 1px solid #ddd;
   }
-  
+  #employer_profile_card{
+   /* max-width:300px; */
+   width:auto; 
+  }
+  #company_card{
+    min-height: 100%;
+  }
   .navbar-secondary .nav-link {
     color: #333;
     font-weight: 500;

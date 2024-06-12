@@ -49,7 +49,7 @@ export default function JobSeekerProfile() {
         console.log(user_id)
         const response = await axios.get(`${API_URL}/message_by_user_id/` + user_id, { headers: myHeaders });
         console.log(response.data)
-        setMessages(response.data)
+        setMessages(response.data.data)
     }
     const fetchData = async () => {
         try {
@@ -119,23 +119,20 @@ export default function JobSeekerProfile() {
         }))
     }
     async function handleJobSeekerProfileSubmit() {
-        let data = qs.stringify({
-            'name': 'sara hadiya' 
-          });
+        let data = qs.stringify(editjobSeekerProfile);
           
           let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: 'https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/api/update_jobseeker/1',
+            url: `${API_URL}/update_jobseeker/${jobSeeker_id}`,
             headers: { 
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRXMGJtMUdpQmJzYTQ4dlVwM0k1VWNPaWM1YXgwZk44VDF3TEtzUXNxWTNSRHdxMU5Nb05SYSIsInVzZXJuYW1lIjoiQWxpIiwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjozLCJpYXQiOjE3MTgwNzczMTIsImV4cCI6MTcxODA5ODkxMn0.R2bPqgctJPhjZnW17RLdFSaME22sToQ-AWU4as2TRjU', 
+              'Authorization': `Bearer ${localStorage.getItem('authToken')}`, 
               'Content-Type': 'application/x-www-form-urlencoded', 
-              'Cookie': 'connect.sid=s%3ALPsR1zAcMYj7dy4kpGfm-QUPrZvRXemo.ookZAV43fMEIh6FlZi5Flf89fy3mG7ibwVb9pdEAsf0'
             },
             data : data
           };
           
-          axios.request(config)
+          await axios.request(config)
           .then((response) => {
             console.log(JSON.stringify(response.data));
           })
@@ -375,7 +372,7 @@ export default function JobSeekerProfile() {
                                     <p>Email: {profile.email}</p>
                                     <p>Age: {userProfile.user_age}</p>
                                 </div>
-                                <a href="#editDetails" data-bs-toggle="modal" data-bs-target="#editDetails" className="btn btn-primary">Edit</a>
+                                {/* <a href="#editDetails" data-bs-toggle="modal" data-bs-target="#editDetails" className="btn btn-primary">Edit</a> */}
                             </div>
                         </div>
 
@@ -432,7 +429,7 @@ export default function JobSeekerProfile() {
                     <div className="col-12">
                         <div className="jobseeker-profile">
                             <div className="d-flex justify-content-between  align-items-center mb-3">
-                                <h4>Name: {profile.name}</h4>
+                                <h4>Full Name: {profile.name}</h4>
                                 <a className="btn" id="editprofilebtn" href="#editJobSeeker" role="button" data-bs-toggle="modal" data-bs-target="#editJobSeeker">
                                     Edit Profile
                                 </a>
@@ -482,20 +479,43 @@ export default function JobSeekerProfile() {
                             <h5 className="modal-title">Edit Profile</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div className="modal-body">
+                        <div className="modal-body text-left">
                             <form className='m-auto w-100' onSubmit={handleJobSeekerProfileSubmit}>
-                                <input className='form-control' type='text' placeholder='Name' onChange={handleJobSeekerProfileChange} name='name'></input>
-                                <input className='form-control' type='email' placeholder='email' onChange={handleJobSeekerProfileChange} name='email'></input>
-                                <input className='form-control' type='text' placeholder='workExperience' onChange={handleJobSeekerProfileChange} name='workExperience'></input>
-                                <input className='form-control' type='text' placeholder='Degree' onChange={handleJobSeekerProfileChange} name='education'></input>
-                                <input className='form-control' type='text' placeholder="certifications" onChange={handleJobSeekerProfileChange} name='certifications'></input>
-                                <input className='form-control' type='text' placeholder="skills" onChange={handleJobSeekerProfileChange} name='skills'></input>
-                                <input className='form-control' type='text' placeholder="languages" onChange={handleJobSeekerProfileChange} name='languages'></input>
+                              
+<div className='d-flex'>
+    <div  className='mr-3'>
+                                <label  style={{fontSize:'18px', color:'black'}} className='form-label' htmlFor='#name'>Name</label>
+                                <input className='form-control ' type='text' placeholder='Name' defaultValue={profile.name} onChange={handleJobSeekerProfileChange} name='name'></input>
+
+    </div>
+<div>
+
+<label  style={{fontSize:'18px', color:'black'}} className='form-label' htmlFor='#email'>Email</label>
+<input className='form-control' type='email' placeholder='email' defaultValue={profile.email} onChange={handleJobSeekerProfileChange} name='email'></input>
+
+</div>
+</div>
+
+                             
+                                <label htmlFor='#workExperience' style={{fontSize:'18px', color:'black'}}>Work Experience</label>
+                                <textarea className='form-control' id='workExperience' type='text' placeholder='workExperience' defaultValue={profile.workExperience} onChange={handleJobSeekerProfileChange} name='workExperience'/>
+                                <label htmlFor='#education' style={{fontSize:'18px', color:'black'}} >Education</label>
+                              
+                                <input className='form-control' type='text' placeholder='Degree' defaultValue={profile.education} onChange={handleJobSeekerProfileChange} name='education'></input>
+                                <label htmlFor='certifications' style={{fontSize:'18px', color:'black'}}>Certifications & licenses</label>
+                              
+                                <input className='form-control' type='text' placeholder="certifications" defaultValue={profile.certifications} onChange={handleJobSeekerProfileChange} name='certifications'></input>
+                                <label htmlFor='#skills' style={{fontSize:'18px', color:'black'}} >Skills</label>
+                              
+                                <input className='form-control' type='text' placeholder="skills"  defaultValue={profile.skills} onChange={handleJobSeekerProfileChange} name='skills'></input>
+                                <label htmlFor='#languages' style={{fontSize:'18px', color:'black'}}>Languages</label>
+                              
+                                <input className='form-control' type='text' placeholder="languages"  defaultValue={profile.languages} onChange={handleJobSeekerProfileChange} name='languages'></input>
 
                                 <hr />
                                 <div>
                                     <button type="button" className="btn bg-secondary" style={{ color: 'white', marginRight: '5px', width: '100px' }} data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" className="btn btn-primary" style={{ color: 'white', width: '200px' }}>Save changes</button>
+                                    <button type="submit" className="btn bg-primary" style={{ color: 'white', width: '200px' }}>Save changes</button>
 
                                 </div>
 

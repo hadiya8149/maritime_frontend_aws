@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import qs from 'qs';
 
+
 export default function Job_Portal() {
 
 
@@ -23,11 +24,12 @@ export default function Job_Portal() {
   const [searchQuery, setSearchQuery] = useState([])
   const token = localStorage.getItem('authToken')
   const myHeaders = new Headers()
+  useEffect(()=>{
+    fetchData();
+  },[])
 
   // const authToken = localStorage.getItem('authToken')
-  useEffect(()=>{
-      
-  }, [])
+
   function search(data) {
     if (searchQuery.length > 1)
       return data.filter((job) =>
@@ -111,9 +113,7 @@ export default function Job_Portal() {
     }
     
   }
-  useEffect(()=>{
-    fetchData();
-  },[])
+
   const [filterQuery, setFilterQuery]=useState()
   function handleFilterChange(e){
     setFilterQuery(e.target.value)

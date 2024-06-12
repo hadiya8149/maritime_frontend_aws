@@ -3,7 +3,6 @@ import '../css/manage_courses&programs.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import React from 'react'
-import AdminNavbar from './admin_navbar';
 import { API_URL } from '../utils';
 import { ToastContainer, toast } from 'react-toastify';
 import { useCallback } from 'react';
@@ -269,7 +268,6 @@ export default function CoursesAndProgramsManagement() {
   }
   return (
     <div>
-      <AdminNavbar />
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
           <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Courses</button>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AdminNavbar from './admin_navbar';
 import { API_URL } from '../utils';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -44,7 +43,6 @@ export default function StudentsList() {
     }
     return (
 <div style={{minHeight:'100vh'}}>
-<AdminNavbar/>
 
 <div className='container m-auto mt-5'>
             <h2 style={{ textAlign: 'center' }}> Student Management</h2>

@@ -126,11 +126,15 @@ export default function JobApplications(){
 
   }
   function getpdf(filepath){
-    window.open('http://localhost:8000/'+filepath)
+    window.open(`https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/${filepath}`)
 }
   async function submitEditJobForm(id){
+    setEditJobForm(prevData => ({
+      ...prevData, [employer_id]: employer_id }))
     try{
-      await axios.put(`${API_URL}/update_job/`+id, {body:editJobForm})
+      await axios.put(`${API_URL}/update_job/${id}`, editJobForm,{headers:{
+        "Authorization":`Bearer ${localStorage.getItem('authToken')}`
+      }})
       .then(
           (data)=>
           new Promise((resolve, reject) => {
@@ -171,16 +175,22 @@ export default function JobApplications(){
     console.log(response)
     setNotifications(response.data)
 }
-  async function sendRejectNotification(id){
-  const content = "Thank you for taking the time to apply. We regret to inform that we have moved with another applicant."
-  
+  async function sendRejectNotification(app){
+    const job_data = applications.find((job)=>job.job_id === app.job_id);
+    console.log(job_data)
+    debugger;
+    let job_id = job_data.job_id;
+    let job_title = job_data.job_title;
+  const content = `$Thank you for taking the time to apply. We regret to inform that we have moved with another applicant for the position of  ${job_title}.`
   const notificationType="reject";
-  const response = await axios.post(`${API_URL}/sendnotificationtouser/`+id, {content:content, notificationType:notificationType}, {headers:myHeaders});
+  const response = await axios.post(`${API_URL}/sendnotificationtouser/`+app.jobSeeker_id, {content:content, notificationType:notificationType}, {headers:{
+    "Authorization":`Bearer ${localStorage.getItem('authToken')}`
+  }});
   console.log(response)
   }
 async function deleteJobApplication(app){
   const id=app.app_id
-  
+  sendRejectNotification(app)
   const response = await axios.delete(`${API_URL}/delete_job_application/`+id, {headers:myHeaders});
   if (response.status===200){
     toast.success("job deleted successfully")
@@ -188,9 +198,9 @@ async function deleteJobApplication(app){
   }
   else{
     console.log(response)
-  }
+  }console.log("applications ", app)
   console.log(applicants);
-  sendRejectNotification(app.jobSeeker_id)
+  
   setApplicants((prevApplicants) => prevApplicants.filter((applicant) => applicant.id !== applicant.id)); // Filter out deleted applicant
 
 }
@@ -208,7 +218,9 @@ async function deleteJobApplication(app){
       subject:msgForm.subject,
       body:msgForm.body,
       jobseeker_id:id
-    }, {headers:myHeaders})
+    }, {headers:{
+      "Authorization":`Bearer ${localStorage.getItem('authToken')}`
+    }})
     console.log(response)
 
   }

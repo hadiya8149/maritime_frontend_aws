@@ -154,29 +154,29 @@ export default function EmployerProfile() {
 
 <div className='container' style={{display:'flex', justifyContent:'center',minHeight:'80vh', alignItems:'center'}} >
            <div className='card'>
-  <div className='row'>
-            <div className='col-sm  p-0' >
+  <div className='row' style={{height:'80%'}}>
+            <div className='col-sm  pl-3' >
 
-                  <div className='card gradient-custom'>
+                  <div className='card gradient-custom' id='employer_profile_card' style={{height:'300px;'}}>
                   <div className="card-body" >
                             
                             <img src={profile_image} style={{ height: '100px', width: '100px' }} className="card-img" alt="..."></img>
-                            <div className='mb-3' style={{color:'white'}}>
-                                <h3 style={{color:'white'}}>Personal Details</h3>
+                            <div className='mb-3' style={{color:'white', textAlign:'left'}}>
+                                <h5 style={{color:'white'}}>Personal Details</h5>
 
-                            <h4 style={{color:'white'}} >username{profile.username}</h4>
+                            <p style={{color:'white'}} >username{profile.username}</p>
                             <div>
-                                <h4  style={{color:'white'}}>Employer id : {profile.employer_id}</h4>
+                                <p  style={{color:'white'}}>Employer id : {profile.employer_id}</p>
                               
-                            <h4  style={{color:'white'}}>Email: {profile.email}</h4>
+                            <p  style={{color:'white'}}>Email: {profile.email}</p>
                             </div>
                             </div>
                         </div>
 
                   </div>
             </div>
-<div className='col p-0'>
-<div className='card company' style={{border:'0px'}}>
+<div className='col-md-10 p-0'>
+<div className='card company' id="company_card" style={{border:'0px', minHeight:'100%'}}>
 <div className="">
       <div className="">
       <form className='m-auto w-100' onSubmit={handleSubmit}>

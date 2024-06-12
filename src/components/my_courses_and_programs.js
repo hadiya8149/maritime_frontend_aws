@@ -47,27 +47,7 @@ export default function MyCoursesAndPrograms() {
     }, []);
     return (
         <div style={{minHeight:'100vh'}}>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <ul className="navbar-nav">
-        <li className="nav-item">
-          <a className="nav-link " aria-current="page" href="/student">Home</a>
-        </li>
-     
-        <li className="nav-item">
-          <a className="nav-link" href="/my_course&programs">My Courses and Programs</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/profile">Profile</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+
             <div className="container m-auto">
       
                 <div>
@@ -88,7 +68,7 @@ export default function MyCoursesAndPrograms() {
                         return (
         <tr key={course.course_id}>
                                 <td style={{ marginBottom: '5px' }}>{course.course_name}</td>
-                                <td><a href={`/course_info/${course.course_id}`} style={{color:'blue', textDecoration:'underline'}}>Go to course</a></td>
+                                <td><a href={`/course_info/${course.course_id}`} target='_blank' rel="noopener" style={{color:'blue', textDecoration:'underline'}}>Go to course</a></td>
                            
         </tr>    
             
@@ -113,7 +93,7 @@ export default function MyCoursesAndPrograms() {
                         return (
                             <tr key={program.program_id}>
                             <td style={{ marginBottom: '5px' }}>{program.program_name}</td>
-                            <td><a href={`/program_info/${program.program_id}`} style={{color:'blue', textDecoration:'underline'}}>Go to Program</a></td>
+                            <td><a href={`/program_info/${program.program_id}`} target='_blank' rel="noopener" style={{color:'blue', textDecoration:'underline'}}>Go to Program</a></td>
                        
     </tr>    
         

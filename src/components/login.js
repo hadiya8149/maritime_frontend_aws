@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export const Login = () => {
+export default function Login  ()  {
   const navigate = useNavigate();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -114,9 +114,10 @@ export const Login = () => {
         <ToastContainer />
 
         <div className='m-auto form-container'>
-          <div className='card w-50 h-50' style={{ background: 'none', border: 'none' }}>
+          <div className='card w-50 h-50' style={{backgroundColor:'rgba(255, 255, 255, 0.8)'}}>
+          <h3 id="form-heading" style={{textAlign:'center', marginTop:'10%'}}>Login</h3>
+
             <form id='loginForm' className='m-auto w-75 text-center' onSubmit={handleSubmit} >
-              <span id="form-heading">Login</span>
               <div className="mb-3">
                 <input placeholder='Enter email' type="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" onChange={handleEmail} />
               </div>

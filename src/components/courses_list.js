@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import qs from 'qs'
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 export default function CoursesList() {
@@ -15,6 +16,7 @@ export default function CoursesList() {
   const [filterQuery, setFilterQuery] = useState()
   const [searchQuery, setSearchQuery] = useState([])
   const token = localStorage.getItem('authToken')
+  const navigate = useNavigate()
   const myHeaders = new Headers();
   function handleFilterChange(e) {
     setFilterQuery(e.target.value)
@@ -34,7 +36,7 @@ export default function CoursesList() {
   }, []);
   const enrollCourse = async (id) => {
     if (!stdID) {
-      toast.warning("please login to continue")
+      navigate('/login')
     }
     else {
       let data = qs.stringify({

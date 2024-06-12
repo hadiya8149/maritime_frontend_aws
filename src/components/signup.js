@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup() {
+    const navigate = useNavigate();
     const [signupForm, setsignupForm] = useState({
         username: "",
         email: "",
@@ -57,11 +58,12 @@ export default function Signup() {
             console.log(error)
         })
         toast.success("user signed up")
+        navigate('/login')
     }
 
 
     return (
-        <div id="bannerImage">
+        <div id="bannerImage" style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center'}}>
             <div className='container signupform-container'>
                 <div className='m-auto form-container'>
                     <div className=" w-100 signupcard" style={{ background: 'none', border: 'none' }}>

@@ -8,6 +8,7 @@ import ProgramBanner from '../assets/598198350abe8-page-banners6.jpg';
 import { API_URL } from '../utils'
 import SearchIcon from '@mui/icons-material/Search';
 import qs from 'qs';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Programs(){
@@ -15,6 +16,7 @@ export default function Programs(){
   const [programs, setPrograms] = useState([])
   const [searchQuery, setSearchQuery]=useState([])
   const [filterQuery, setFilterQuery]=useState()
+  const navigate = useNavigate()
 const token = localStorage.getItem('authToken')
   function handleFilterChange(e){
     setFilterQuery(e.target.value)
@@ -43,7 +45,7 @@ const token = localStorage.getItem('authToken')
   
   const enrollProgram= async(id)=>{
     if(!stdID){
-      toast.warning("Please login to enroll")
+      navigate('/login')
     }
     else{
       let data = qs.stringify({

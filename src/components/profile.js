@@ -3,6 +3,7 @@ import profile_image from '../assets/profile-icon-design-free-vector.jpg'
 import { useState, useEffect} from 'react'
 import axios from 'axios'
 import React from 'react'
+import qs from 'qs'
 import { useCallback } from 'react'
 
 import { API_URL } from '../utils.js';
@@ -50,18 +51,36 @@ export default function Profile() {
     };
     function handleChange(e){
       const { name, value } = e.target;
+      console.log(name, value)
+      console.log("name, value")
       setEditProfile(prevData => ({
           ...prevData, [name]: value
       }));
-      console.log(editProfile
-
-      )
-    }
-    async function handleSubmit(e){
       console.log(editProfile)
-      await axios.put(`${API_URL}/update_student/${std_id}`,{headers:myHeaders}, {editProfile}).then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
+    }
+
+    async function handleSubmit(e){
+      let data = qs.stringify(editProfile);
+  
+      let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: `${API_URL}/update_student/${std_id}`,
+        headers: { 
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`, 
+          'Content-Type': 'application/x-www-form-urlencoded', 
+        },
+        data : data
+      };
+      
+      await axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
     }
   useEffect(() => {
     fetchProfile();
@@ -69,27 +88,7 @@ export default function Profile() {
 }, []);
     return (
 <>
-<nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <ul className="navbar-nav">
-        <li className="nav-item">
-          <a className="nav-link " aria-current="page" href="/student">Home</a>
-        </li>
-     
-        <li className="nav-item">
-          <a className="nav-link" href="/my_course&programs">My Courses and Programs</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/profile">Profile</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+
             <div className="container mt-5 mb-10 m-auto d-flex">
 
                 <div className="left-side mr-3">
@@ -120,30 +119,33 @@ export default function Profile() {
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
-        <form className='m-auto w-100' onSubmit={()=>handleSubmit()}>
+        <form className='m-auto w-100' onSubmit={handleSubmit}>
         <div className='row mb-3'>       
-            <label className='col-sm-4 col-form-label' htmlFor='#firstName'>First Name</label>
-            <input className='col-sm-8' type='text' name='first_name' id='firstName' />
+            <label className='col-sm-4 col-form-label' htmlFor='first_name'>First Name</label>
+            
+            <input type="text" onChange={handleChange} id="first_name" className='col-sm-8' name="first_name" defaultValue={profile.first_name} />
+
+            
             </div>
             <div className='row mb-3'>       
-            <label className='col-sm-4 col-form-label'  htmlFor='#lastName'>Last Name</label>
-            <input   className='col-sm-8' name='last_name' onChange={handleChange}  type='text' id='LastName' />
+            <label className='col-sm-4 col-form-label'  htmlFor='last_name'>Last Name</label>
+            <input   className='col-sm-8' name='last_name' defaultValue={profile.last_name}   onChange={handleChange}  type='text' id='last_name' />
             </div>
             <div className='row mb-3'>       
-            <label className='col-sm-4 col-form-label' htmlFor='#studentName'>Full Name</label>
-            <input type='text' id='StudentName' className='col-sm-8'  name='studentName' onChange={handleChange}/>
+            <label className='col-sm-4 col-form-label' htmlFor='studentName'>Full Name</label>
+            <input type='text' id='studentName' className='col-sm-8' defaultValue={profile.studentName}   name='studentName' onChange={handleChange}/>
             </div>
            <div className='row mb-3'>       
-            <label className='col-sm-4 col-form-label'  htmlFor='#editNumber'>Contact No. </label>
-            <input  className='col-sm-8'  name='contact_no' onChange={handleChange} type='tel' id='editNumber' />
+            <label className='col-sm-4 col-form-label'  htmlFor='contact_no'>Contact No. </label>
+            <input  className='col-sm-8'  name='contact_no' defaultValue={profile.contact_no}  onChange={handleChange} type='tel' id='contact_no' />
             </div>
 <div className='row mb-3'>
-            <label className='col-sm-4 col-form-label' htmlFor='#editAddress'>Address</label>
-            <input name='address'onChange={handleChange}  className='col-sm-8'  id='editAddress' type='text'/>
+            <label className='col-sm-4 col-form-label' htmlFor='address'>Address</label>
+            <input name='address'onChange={handleChange} defaultValue={profile.address}  className='col-sm-8'  id='address' type='text'/>
             </div>
 <hr/>
         <button type="button" className="btn bg-secondary " style={{color:'white', marginRight:'16px'}} data-bs-dismiss="modal">Close</button>
-        <button type="submit" className="btn bg-primary "  style={{color:'white'}}>Save changes</button>
+        <button type="submit" className="btn bg-primary  "  style={{color:'white'}}>Save changes</button>
 
         </form>
       </div>

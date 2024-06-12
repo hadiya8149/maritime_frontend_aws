@@ -1,4 +1,3 @@
-import AdminNavbar from './admin_navbar.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { API_URL } from '../utils.js';
@@ -78,7 +77,6 @@ export default function AdminMessages(){
 
     return(
         <div>
-        <AdminNavbar/>
         <div>
           
 <h4 className='mt-4 ml-5 text-center'>Messages</h4>
