@@ -8,28 +8,44 @@ const courseApplicationRouter = Router();
 //craete course
 courseApplicationRouter.post('/apply_for_course', authenticateJwt, async (req,res, next)=>{
     const {std_id, course_id, program_id, AppDate, Status}=req.body
-    console.log(":post api hi t")
     if(!req.body){
         return res.status(200).json({msg:'req.body undefined'})
     }
-    console.log(req.body)
-    const sql = `INSERT INTO applications_for_courses_and_programs (std_id, course_id, program_id, AppDate, Status) VALUES(?, ?, ?, ?, ?)`;
-    const values = [std_id, course_id, program_id, AppDate, Status]
-    db.query(sql,values, (err, result) => {
-        if (err) {
-            console.error('Error executing SQL:', err);
-            res.status(500).json({ error: 'Error inserting data in applicaitons courses and programs' });
-            return;
+    // check if already applied
+    const check_previous_course = `select * from applications_for_courses_and_programs where course_id=? AND std_id=?`
+    db.query(check_previous_course, [course_id, std_id], (err, result)=>{
+        if(err){
+            console.log(err)
         }
         else{
-            res.status(201).json({
-                success : true,
-                msg: "Program enrolled successfully"
-            });    
+            if(result.length>=1){
+                return res.status(409).json("Already Applied")
+            }
+            else{
+                console.log(req.body)
+                const sql = `INSERT INTO applications_for_courses_and_programs (std_id, course_id, program_id, AppDate, Status) VALUES(?, ?, ?, ?, ?)`;
+                const values = [std_id, course_id, program_id, AppDate, Status]
+                db.query(sql,values, (err, result) => {
+                    if (err) {
+                        console.error('Error executing SQL:', err);
+                        res.status(500).json({ error: 'Error inserting data in applicaitons courses and programs' });
+                        return;
+                    }
+                    else{
+                        res.status(201).json({
+                            success : true,
+                            msg: "Program enrolled successfully"
+                        });    
+                    }
+                    console.log(result)
+                    
+                });
+            }
+            
         }
-        console.log(result)
-        
-    });
+
+    })
+    
 });
 
 // Get all courses

@@ -84,7 +84,7 @@ userRouter.put('/update_user/:id', authenticateJwt, updateUser);
 // DELETE /api/user/:userId
 // userRouter.delete('/delete_user/:userId', authenticateJwt,  deleteUser);
 userRouter.delete('/delete_user/:userId', authenticateJwt, deleteUser);
-
+ 
 
 userRouter.post('/logout', authenticateJwt, logout);
 userRouter.post('/send_reset_link', async(req, res)=>{
@@ -144,7 +144,8 @@ userRouter.put('/update_password', authenticateJwt, async(req, res)=>{
         }
         else{
             console.log(result)
-            res.status(200)
+            res.status(200).json("password updated successfully")
+        
         }
     })
 }
