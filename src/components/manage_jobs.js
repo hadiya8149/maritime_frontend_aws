@@ -90,13 +90,14 @@ function search(data) {
         <h6 className="card-subtitle mb-2 text-muted">{dataObj.location}</h6>
         <hr />
         <p className="card-text">{dataObj.job_description}</p>
-        <a onClick={() => {
-          fetchJobDescription(dataObj.job_id);
-        }}
-        >View</a>
+       
+
+<h6 className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
+<a href="#"  onClick={() => {
+            fetchJobDescription(dataObj.job_id);
+          }}  className="btn btn-primary mb-3 w-75 m-auto">View</a>
       </div>
-      <h6 className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
-      <a href="#" className="btn btn-primary mb-3 w-75 m-auto">Easy Apply</a>
+    
 
     </div>
   </div>
@@ -115,12 +116,12 @@ function search(data) {
           <h6 className="card-subtitle mb-2 text-muted">{job.location}</h6>
           <hr />
           <p className="card-text">{job.job_description}</p>
-          
-        </div>
-        <p className='text-center'>Deadline: {job.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
+          <p className='text-center'>Deadline: {job.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
         <a href="#"  onClick={() => {
             fetchJobDescription(jobID);
           }}  className="btn btn-primary mb-3 w-75 m-auto">View</a>
+        </div>
+        
 
       </div>
     </div>
@@ -131,7 +132,7 @@ function search(data) {
     <div className=' w-100 mt-3'>
 
             <div className="card mb-3 p-3" style={{ float:'left'}}>
-            <div className="card-body">
+            <div className="card-body text-leftc:\Users\M\AppData\Local\Packages\Microsoft.ScreenSketch_8wekyb3d8bbwe\TempState\Recordings\20240613-1328-53.4379045.mp4">
               
             <h1>Job Description</h1>
               <h3 className="card-title">{jobDetails.job_title}</h3>

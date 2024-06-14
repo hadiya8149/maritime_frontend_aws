@@ -170,11 +170,7 @@ export default function JobApplications(){
     }
   };
   
-  async function getNotifications(){
-    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
-    console.log(response)
-    setNotifications(response.data)
-}
+
   async function sendRejectNotification(app){
     const job_data = applications.find((job)=>job.job_id === app.job_id);
     console.log(job_data)
@@ -224,91 +220,22 @@ async function deleteJobApplication(app){
     console.log(response)
 
   }
-  async function fetchMessages(){
-    console.log(user_id)
-    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
-    console.log(response.data)
-    setMessages(response.data)
-  }
   useEffect(()=>{
     fetchApplications()
-    getNotifications();
-    fetchMessages();
-    
   },[])
 
     return (
       <>
-      <nav className="navbar  navbar-expand-lg bg-body-tertiary w-100">
-  <div className="container-fluid">
-  <button className="navbar-toggler " type="button"  data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className=""><ToggleButton  value="left" aria-label="left aligned" >
-              <FormatAlignJustifyIcon/>
-              </ToggleButton></span>
-          </button>
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <ul className="navbar-nav">
-        <li className="nav-item">
-          <a className="nav-link" aria-current="page" href="/employer">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link"  onClick={fetchApplications} href="">My Jobs</a>
-        </li>
-        <li className="nav-item">
-          <a  className="nav-link" href="#postJobModal" data-bs-toggle="modal" data-target="#postJobModal">Post a job</a>
-        </li>
-        <div className="dropdown">
-                               
-                                <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} className='msg_icon'></img></a>
-                                <ul className="dropdown-menu messaages" style={{width:'500px'}}>
-                                {messages.length === 0 ? (
-      <li className="">No notifications</li>
-    ) : (
-      messages.data.map((message) => (
-        <li key={message.message_id} >
-          {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
-          <hr/>
-        </li>
-      ))
-    )}
-                                </ul>
-                            </div>
-                            <div className="dropdown">
-                                <a className="nav-link fw-medium dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Notifications
-                                </a>
-                                <ul className="dropdown-menu notifications">
-                                {notifications.length === 0 ? (
-      <li className="">No notifications</li>
-    ) : (
-      notifications.map((notification) => (
-        <li key={notification.notification_id} >
-          {notification.content} {/* Assuming notifications have a title property */}
-          <hr/>
-        </li>
-      ))
-    )}
-                                </ul>
-                            </div>
-                            <li className="nav-item px-2"><a className="nav-link fw-medium" href='/employer_profile' role='button'>
-                                Profile
-                            </a></li>
-                              {/* <li className="nav-item px-2"><a className="nav-link fw-medium" onClick={handleLogout} href='#' role='button'>
-                                Logout
-                            </a></li> */}
-      </ul>
-    </div>
-  </div>
-</nav>
+
 <ToastContainer/>
 
-<div style={{minHeight:'100vh'}}>
+<div style={{minHeight:'100vh'}} className='pt-5 m-auto'>
 
-<div>
+<div className='m-auto'>
 
 <h3>Jobs created</h3>
 <div className='m-auto'>
-<div className='row row-cols-1 mt-3 row-cols-md-2 g-4 w-100'>
+<div className='row row-cols-1 mt-3 row-cols-md-3 g-4 w-100'>
 
 {applications.map(application => {
  const jobId =application.job_id;
@@ -430,46 +357,7 @@ async function deleteJobApplication(app){
     </div>
   </div>
 </div>
-<div className="modal fade" id="postJobModal" tabIndex="-1" aria-labelledby="postJobModalLabel" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="postJobModalLabel">Post a Job</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div className="modal-body">
-                <form onSubmit={createJob}>
-                  <div className="mb-3">
-                    <label htmlFor="jobTitle" className="form-label">Job Title</label>
-                    <input type="text" className="form-control" id="jobTitle" name='job_title' onChange={handleChange} required />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="jobDescription" className="form-label">Job Description</label>
-                    <textarea className="form-control" id="jobDescription" name='job_description' onChange={handleChange} rows="3" required></textarea>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="Requirements" className="form-label">Requirements</label>
-                    <textarea className="form-control" id="Requirements" rows="3" name='requirements' onChange={handleChange} required></textarea>
-                  </div>
-                  <div className="mb-3" style={{ textAlign: 'left' }}>
-                    <input type='text' id='location' required name='location' placeholder='Location' onChange={handleChange} />
-                  </div>
-                  <div className="mb-3" style={{ textAlign: 'left' }}>
-                    <input type='text' id='salary' required name="salary" placeholder='Salary' onChange={handleChange} />
-                  </div>
-                  <div className="mb-3" style={{ textAlign: 'left' }}>
-                    <input type='text' id='deadline' required name='ExpiryDate' placeholder='Deadline' onChange={handleChange} />
-                  </div>
-                  <div style={{ textAlign: 'left' }}>
-                    <label htmlFor="postingDate" className="form-label" style={{ fontSize: '14px' }}>Posting Date {new Date().toISOString().slice(0, 10)}</label>
-                  </div>
-                  <br />
-                  <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+
 </div>
 </>
 

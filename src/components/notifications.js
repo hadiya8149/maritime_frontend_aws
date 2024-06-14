@@ -9,7 +9,7 @@ export default function AdminNotifications(){
       content:"",
       user_id:""
     })
-
+    const role = localStorage.getItem('role')
     const [notifications, setNotifications]=useState([])
     const token = localStorage.getItem('authToken')
     const myHeaders = new Headers()
@@ -33,11 +33,10 @@ export default function AdminNotifications(){
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/api/sendnotification',
+      url: `${API_URL}/sendnotification`,
       headers: { 
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphcmFAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMTAkUjd4OXZrWExxcG1hai9SRndjSHJSdXRqVWpFTTluMzlpVmpXckY4YVRQa0hORW9ESlpnY1MiLCJ1c2VybmFtZSI6IlphcmEiLCJyb2xlIjoiZW1wbG95ZXIiLCJ1c2VyX2lkIjo0LCJpYXQiOjE3MTgwOTIwODgsImV4cCI6MTcxODExMzY4OH0.gb4hfuErY8uBG5h7N2Ki0faJlkVjhgwZmp-xRXi3rmI', 
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`, 
         'Content-Type': 'application/x-www-form-urlencoded', 
-        'Cookie': 'connect.sid=s%3AzQGTVLYvxEhspYm8B8k6HBvQFNignxfI.yntLFQLUXwFuvd02ZQO31XtYUER6W7YRsheZQ98smUU'
       },
       data : data
     };
@@ -52,6 +51,7 @@ export default function AdminNotifications(){
     
   }
     async function getNotifications(){
+      
       const response = await axios.get(`${API_URL}/notifications`, {headers:myHeaders});
       if(response.status===200){
       setNotifications(response.data.Data)
@@ -67,26 +67,47 @@ export default function AdminNotifications(){
         <div>
         <ToastContainer/>
 
-<div className='d-flex' style={{background:'rgb(241, 243, 247)', height:'100',width:'75%' ,margin:'auto',padding:'16px', paddingTop:'5px', color:'black'}}>
-<h4 className='w-75 mt-4 ml-5'>Notifications</h4>
-<form className="row gx-3 gy-2 align-items-center   w-100" onSubmit={createNotification} style={{boxShadow:'none', background:'none'}}>
-  <div className="col-4">
-    <textarea type="text" onChange={handleFormChange}  style={{height:'50px', padding:'5px'}} id="content" name='content' placeholder="Content" required />
-  </div>
-  <div className="col-4">
-    <div className="input-group">
+<div className='' style={{background:'rgb(241, 243, 247)', height:'100' ,margin:'auto',padding:'16px', paddingTop:'5px', color:'black'}}>
+<div className='w-75 m-auto '>
+<h4 className='mt-4 ml-5 text-center'>Notifications</h4>
+
+
+<div className="modal fade" id="createNotificationModal" tabIndex="-1" aria-labelledby="createNotificationModalLabel" aria-hidden="true">
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="createNotificationModalLabel">Send Notification</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div className="modal-body">
+                  <form className="align-items-center   w-100" onSubmit={createNotification} style={{boxShadow:'none', background:'none'}}>
+<div className="col-3 mb-3">
+    <div className="text-left">
       <input type="number" onChange={handleFormChange} style={{height:'50px', padding:'5px'}} id="user_id" name="user_id" placeholder="user id " required />
     </div>
   </div>
+  <div className="col-md-8">
+    <textarea type="text" onChange={handleFormChange} className='form-control' style={{height:'100px', padding:'5px'}} id="content" name='content' placeholder="Content" required />
+    <div className='text-left'>
+    <button type="submit" style={{height:'50px',width:'100px',marginTop:'15px', background:'#2b74b0',borderRadius:'8px', color:'white' ,border:'none', boxShadow: '4px 4px #f1f3f7'}}>Send</button>
+
+    </div>
+
+  </div>
+
 
   
-  <div className="col-auto">
-    <button type="submit" style={{height:'50px', background:'#2b74b0',borderRadius:'8px', color:'white' ,border:'none', boxShadow: '4px 4px #f1f3f7'}}>+ Create notification</button>
-  </div>
+
 </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+</div>
 </div>
 <div className='text-left' style={{paddingLeft:'25px',paddingRight:'25px',paddingTop:'25px',marginTop:'3%',marginLeft:'auto', marginRight:'auto', width:'75%'}}>
 <div  className='mb-3'>
+<a  className='btn btn-primary text-center' href="#createNotificationModal" data-bs-toggle="modal" data-target="#createNotificationModal" style={{height:'50px',marginTop:'15px', background:'#2b74b0',borderRadius:'8px', color:'white' ,border:'none', boxShadow: '4px 4px #f1f3f7'}}>+ Create notification</a>
 
 </div>
 <table className='table'>

@@ -1,15 +1,18 @@
-
 import React, { useState, useEffect } from 'react';
 import '../css/login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { API_URL } from '../utils';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Air } from '@mui/icons-material';
 
+//API.get
+export default function Login() {
 
-export default function Login  ()  {
+  // const myAPI = 'getUsers'
+  // const path = '/api/users'
+  // const endpoint = 'https://sy0za5fgni.execute-api.ap-southeast-2.amazonaws.com/main'
   const navigate = useNavigate();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -26,12 +29,13 @@ export default function Login  ()  {
     event.preventDefault()
 
     var requestOptions = {
-      method: 'POST',
       email: email,
       password: password,
       redirect: 'follow',
       withCredentials: true
     };
+    // const res = await axios.post(`${API_URL}/login`)
+    // console.log(res)
     try {
       await axios.post(`${API_URL}/login`, requestOptions).then(
         (data) =>
@@ -60,32 +64,27 @@ export default function Login  ()  {
                 }
                 else if (data.data.user_role == 'Job Seeker') {
                   const user_id = localStorage.getItem('user_id')
-                  const fetchJobSeekerID = async () => {
-                    const response = await axios.get(`${API_URL}/jobseeker_by_user_id/` + user_id, { headers: myHeaders })
-                    if (response.status === 200) {
-                      localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
-                      navigate('/jobseeker')
 
-                    }
-                  }
+                  navigate('/jobseeker')
 
-                  fetchJobSeekerID()
                 }
+
                 else if (data.data.user_role == 'admin') {
                   navigate('/admin')
                 }
               }
-              
-            else{
-              setFlag(false)
+
+              else {
+                setFlag(false)
+              }
             }
-            }
-            , 1);
+              , 1);
           }),
 
       ).catch(function (error) {
         if (error.response.status == 401) {
           toast.error("Invalid password. Please try again")
+          setFlag(false)
         }
         else if (error.response.status == 404) {
           toast.error("user not found . Please signup")
@@ -97,16 +96,18 @@ export default function Login  ()  {
       console.log(err)
     }
   }
-
-
-
+  // async function getUsers(e) {
+  //   await API.get('backendrestapi', '/api/users')
+  // }
   useEffect(() => {
     const user_id = localStorage.getItem('user_id')
     if (user_id) {
       navigate('/')
     }
+    // getUsers()
 
   })
+
   return (
 
     <div id="bannerImage" style={{ width: '100%' }}>
@@ -114,10 +115,10 @@ export default function Login  ()  {
         <ToastContainer />
 
         <div className='m-auto form-container'>
-          <div className='card w-50 h-50' style={{backgroundColor:'rgba(255, 255, 255, 0.8)'}}>
-          <h3 id="form-heading" style={{textAlign:'center', marginTop:'10%'}}>Login</h3>
+          <div className='card w-50 h-50' style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+            <h3 id="form-heading" style={{ textAlign: 'center', marginTop: '10%' }}>Login</h3>
 
-            <form id='loginForm' className='m-auto w-75 text-center' onSubmit={handleSubmit} >
+            <form id='loginForm' className='m-auto w-75 text-center' onSubmit={handleSubmit} style={{backgroundColor:'none'}} >
               <div className="mb-3">
                 <input placeholder='Enter email' type="email" className="form-control" id="InputEmail" aria-describedby="emailHelp" onChange={handleEmail} />
               </div>
@@ -127,16 +128,18 @@ export default function Login  ()  {
               <div className="mb-3 ">
                 <a className='link-primary' href='/signup'>Don't have account? Signup Here</a>
                 <br />
-                <a className='link-primary' href='reset_password'>Reset password</a>
+                <a  className='link-primary' href='/forgot_password' >Forgot Password?</a>
               </div>
+
+
               <button type="submit" className="btn btn-primary" disabled={flag} >Submit</button>
               {flag && (
                 <button class="btn " type="button" disabled={!flag}>
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span class="visually-hidden" role="status">Loading...</span>
-              </button>
+                  <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                  <span class="visually-hidden" role="status">Loading...</span>
+                </button>
               )}
-              
+
             </form>
           </div>
         </div>

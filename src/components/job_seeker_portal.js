@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import NotificationsIcon from '@mui/icons-material/Notifications';
+
 import { API_URL } from '../utils';
 import '../css/jobseeker.css'
 export default function JobSeekerPortal() {
@@ -10,10 +12,17 @@ export default function JobSeekerPortal() {
     const token = localStorage.getItem('authToken')
     const [notifications, setNotifications]=useState([])
     const role = localStorage.getItem('role')
+    const user_id = localStorage.getItem('user_id')
+    async function getJobSeekerID(){
+        const response = await axios.get(`${API_URL}/jobseeker_by_user_id/${user_id}`, {headers:{"Authorization":`Bearer ${localStorage.getItem('authToken')}`}})
+        if(response.status===200){
+            localStorage.setItem("jobSeeker_id",response.data.data.jobSeeker_id)
+        }
+    }
     useEffect(() => {
       if (role){
         if (role.toLowerCase()==='job seeker'){
-          fetchData();
+           getJobSeekerID()
          }
      else{
        navigate('/')
@@ -24,102 +33,13 @@ export default function JobSeekerPortal() {
       }
      
     }, []);
-    const jobSeeker_id = localStorage.getItem('jobSeeker_id');
-    const user_id = localStorage.getItem('user_id')
-    const [appliedJobs, setAppliedJobs] = useState([])
-    const jobseekerID = localStorage.getItem('jobSeeker_id')
     
-    const myHeaders = new Headers()
-    myHeaders.append("Authorization", `Bearer ${token}`)
- const [messages, setMessages]=useState([])
-    async function fetchMessages(){
-      console.log(user_id)
-      const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
-      console.log(response.data)
-      setMessages(response.data.data)
-    }
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id,{headers:myHeaders});
-            if (response.status === 200) {
-                // Update state immediately
-                setAppliedJobs(response.data.data);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    async function getNotifications(){
-        const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
-        console.log(response)
-        setNotifications(response.data)
-    }
-    useEffect(()=>{
-        getNotifications();
-        fetchMessages()
-    },[])
-    return (
+return (
         <div  className='jobseeker-portal-div'>
   
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
-                <div className="container-fluid">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                        <li className="nav-item">
-                                <a className="nav-link " aria-current="page" href="/jobseeker">Home</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link " aria-current="page" target="_blank" rel="noopener" href="/jobs">View jobs</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" style={{ border: 'None', background: 'white'}} href='/applied_jobs'>My Applications</a>
-                            </li>
-                            <div className="dropdown">
-                                <a className="nav-link fw-medium dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Notifications
-                                </a>
-                                <ul className="dropdown-menu notifications">
-                                {notifications.length === 0 ? (
-      <li className="">No notifications</li>
-    ) : (
-      notifications.map((notification) => (
-        <li key={notification.notification_id} >
-          {notification.content} {/* Assuming notifications have a title property */}
-          <hr/>
-        </li>
-      ))
-    )}
-                                </ul>
-                            </div>
-                            <div className="dropdown">
-                               
-                               <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} className='msg_icon'></img></a>
-                               <ul className="dropdown-menu overflow-auto" style={{width:'600px', height:'500px'}}>
-                               {messages.length === 0 ? (
-     <li className="">No Messages</li>
-   ) : (
-     messages.map((message) => (
-       <li key={message.message_id} >
-         {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
-         <hr/>
-       </li>
-     ))
-   )}
-                               </ul>
-                           </div>
-                            <li className="nav-item">
-                                <a className="nav-link" href='/jobseeker_profile' role='button'>Profile</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+          
             <div className='container m-auto  '>
-                <h2>
+                <h2 className='mt-10'>
                     Welcome to Maritime Job Seeker Portal
                 </h2>
                 <div style={{textAlign:'left', marginTop:'10%', marginBottom:'10%'}}>

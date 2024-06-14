@@ -280,7 +280,7 @@ export default function CoursesAndProgramsManagement() {
       <div className="tab-content" id="myTabContent">
         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
           <div className='' style={{ padding: '25px', marginBottom: '25px', marginLeft: 'auto', marginRight: 'auto' }}>
-            <form className='m-auto ' onSubmit={createCourse} id="CreateCourse">
+            <form className='m-auto ' onSubmit={createCourse} id="CreateCourse" style={{width:'500px'}}>
 
               <div className='mb-3'>
                 <input onChange={handleCourseChange} className='form-control' name='course_name' id='courseName' placeholder='course name' type='text' required />
@@ -304,17 +304,17 @@ export default function CoursesAndProgramsManagement() {
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="postJobModalLabel">Post a Job</h5>
+                    <h5 className="modal-title" id="editCourseModalLabel">Edit Course</h5>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div className="modal-body">
-                    <form id='UpdateCourse' className='m-auto' onSubmit={editCourse}>
+                    <form id='UpdateCourse' className='m-auto' onSubmit={editCourse} style={{height:'500px'}}>
                       <div className='mb-3'>
-                        <input type='number' value={selectedCourse}></input>
+                        <input type='number' value={selectedCourse} className='mr-3'></input>
                         <input onChange={handleEditCourseChange} defaultValue={editCourseForm.course_name} className='' name='course_name' id='courseName' placeholder='course name' type='text' />
                       </div>
                       <div className='mb-3'>
-                        <textarea onChange={handleEditCourseChange} defaultValue={editCourseForm.description} className='form-control' id='courseDescription' placeholder='description' name='description' type='text' />
+                        <textarea style={{height:'300px', margin:'auto'}} onChange={handleEditCourseChange} defaultValue={editCourseForm.description} className='form-control' id='courseDescription' placeholder='description' name='description' type='text' />
                       </div>
                       <div className='mb-3'>
                       </div>

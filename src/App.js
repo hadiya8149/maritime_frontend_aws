@@ -32,6 +32,10 @@ const AdminNotifications = lazy(() => delayForDemo(import( './components/notific
 const CourseInfo = lazy(() => delayForDemo(import( './components/course_page.js')));
 const PageNotFound = lazy(() => import( './components/pagenotfound.js'));
 const Login = lazy(() => import('./components/login.js'));
+const PostJob = lazy(()=>import ('./components/post_a_job.js'))
+const ClientMessages = lazy(()=>delayForDemo(import('./components/client_messages.js')))
+const ResetPassword=lazy(()=>delayForDemo(import ('./components/reset_password.js')))
+const ResetLink = lazy(()=>delayForDemo(import ('./components/reset_link.js')))
 function delayForDemo(promise) {
   return new Promise(resolve => {
     setTimeout(resolve, 1000);
@@ -55,6 +59,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path='/forgot_password' element={<ResetLink/>}/>
+        <Route path='/reset_password' element={<ResetPassword/>}/>
         <Route path="/admin" element={<AdminPage />} />
         <Route path='/manage_jobs' element={<ManageJobs/>}/>
         <Route path="/employers_list" element={<EmployersList />} />
@@ -75,9 +81,11 @@ function App() {
         <Route path="/programs" element={<Programs />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/employer" element={<EmployerPortal />} />
+        <Route path='/post_job' element={<PostJob/>}/>
         <Route path="/employer_profile" element={<EmployerProfile />} />
         <Route path='/admin_notifications' element={<AdminNotifications/>}/>
         <Route path='/messages_page' element={<AdminMessages/>} />
+        <Route path='/user_messages' element={<ClientMessages/>}/>
         <Route path='*' element={<PageNotFound/>}/>
       </Routes>
       <Footer />

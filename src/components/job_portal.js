@@ -11,22 +11,22 @@ import { useCallback } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DoneIcon from '@mui/icons-material/Done';
 import qs from 'qs';
-
 
 export default function Job_Portal() {
 
-
+  const [myJobs, setmyJobs] = useState([])
+  const [unappliedJobs, setUnappliedJobs]=useState([])
   const [jobs, setJobs] = useState([])
   const user_id = localStorage.getItem('user_id')
   const jobSeeker_id = localStorage.getItem('jobSeeker_id')
   const [jobDetails, setJobDetails] = useState([])
   const [searchQuery, setSearchQuery] = useState([])
   const token = localStorage.getItem('authToken')
+  const [appliedFlag, setAppliedFlag]=useState(false)
   const myHeaders = new Headers()
-  useEffect(()=>{
-    fetchData();
-  },[])
+
 
   // const authToken = localStorage.getItem('authToken')
 
@@ -90,6 +90,8 @@ export default function Job_Portal() {
     .then((response) => {
       if(response.status==201){
         toast.success("Successfuly applied to job")
+        setAppliedFlag(true)
+        // setJobDetails([])
       }
     })
     .catch((error) => {
@@ -118,7 +120,41 @@ export default function Job_Portal() {
   function handleFilterChange(e){
     setFilterQuery(e.target.value)
     console.log("filter", filterQuery)
+// show only jobs that are not applied by user
   }
+const fetchAppliedJobs = async () => {
+    
+  const myHeaders = new Headers()
+  myHeaders.append("Authorization", `Bearer ${token}`)
+      try {
+          const response = await axios.get(`${API_URL}/applied_jobs_by_user/`+jobSeeker_id, {headers:myHeaders});
+          if (response.status === 200) {
+              setmyJobs(response.data.data);
+              console.log(response.data.data)
+          }
+          else{
+            console.log(response)
+          }
+      } catch (error) {
+          console.error(error);
+      }
+  };
+// filter out data
+function filterAvailableJobs(){
+  const appliedJobsIds = myJobs.map((t)=>t.job_id)
+  console.log(jobs.filter(job=>!appliedJobsIds.includes(job.job_id)))
+  setUnappliedJobs(jobs.filter(job=>!appliedJobsIds.includes(job.job_id)))
+}
+
+  useEffect(()=>{
+    fetchData();
+    fetchAppliedJobs();
+  },[])
+useEffect(()=>{
+  filterAvailableJobs();
+  console.log(unappliedJobs)
+},[jobs, myJobs])
+  
   return (
     <div className=''>
       <ToastContainer/>
@@ -194,7 +230,7 @@ export default function Job_Portal() {
   <br></br>
           <div className='row row-cols-1 row-cols-md-2 g-4 w-100'>
 
-            {jobs.map(job => {
+            {unappliedJobs.map(job => {
               const jobID = job.job_id;
               return (
                 <div className='col'>
@@ -246,7 +282,9 @@ export default function Job_Portal() {
                     <h5>Application Deadline : {jobDetails.ExpiryDate && jobDetails.ExpiryDate.toLocaleString().slice(0, 10).replace('T', ' ')}
                     </h5>
                     <div className='text-left mb-3'>
-                  <button className='btn btn-success mr-3' style={{ height: '50px' }} onClick={() => { applyForJob(jobDetails.job_id) }} >Apply Now</button>
+                  <button className='btn btn-success mr-3' style={{ height: '50px', display:!appliedFlag?'':'none' }} onClick={() => { applyForJob(jobDetails.job_id) }} >Apply Now</button>
+                  <button className='btn btn-success mr-3' style={{ height: '50px',display:appliedFlag?'':'none' }}><DoneIcon/>Applied</button>
+
                 </div>
                   </div>
                 </div>

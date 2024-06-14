@@ -1,0 +1,93 @@
+{
+  "api": {
+    "backendrestapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getUsers"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "admin"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "admin": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getUsers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "maritimefrontendawsmysql2": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_admin_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "admin"
+        }
+      ]
+    },
+    "AMPLIFY_function_admin_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "admin"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUsers_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUsers"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUsers_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUsers"
+        }
+      ]
+    },
+    "AMPLIFY_function_maritimefrontendawsmysql2_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "maritimefrontendawsmysql2"
+        }
+      ]
+    },
+    "AMPLIFY_function_maritimefrontendawsmysql2_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "maritimefrontendawsmysql2"
+        }
+      ]
+    }
+  }
+}

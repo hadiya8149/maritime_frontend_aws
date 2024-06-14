@@ -9,20 +9,9 @@ import { useNavigate } from 'react-router-dom';
 export default function AppliedJobs() {
   const token = localStorage.getItem('authToken')
   const navigate = useNavigate()
-  const [notifications, setNotifications]=useState([])
-  const [messages, setMessages]=useState([])
   
   const user_id= localStorage.getItem('user_id')
-  async function fetchMessages(){
-    
-  const myHeaders = new Headers()
-  myHeaders.append("Authorization", `Bearer ${token}`)
-    console.log(user_id)
-    console.log(myHeaders)
-    const response = await axios.get(`${API_URL}/message_by_user_id/`+user_id, {headers:myHeaders});
-    console.log(response.data)
-    setMessages(response.data)
-  }
+
     const [myJobs, setmyJobs] = useState([])
     const jobSeeker_id = localStorage.getItem('jobSeeker_id')
     
@@ -35,7 +24,7 @@ export default function AppliedJobs() {
           if (response.status === 200) {
               setmyJobs(response.data.data);
           }
-          else{
+          else if (response.status===404){
             console.log(response)
           }
       } catch (error) {
@@ -43,79 +32,13 @@ export default function AppliedJobs() {
       }
   };
 
-  async function getNotifications(){
-    
-  const myHeaders = new Headers()
-  myHeaders.append("Authorization", `Bearer ${token}`)
-    const response = await axios.get(`${API_URL}/notification_by_user_id/`+user_id, {headers:myHeaders})
-    console.log(response)
-    setNotifications(response.data)
-}
+
   useEffect(() => {
-    
       fetchData();
-    getNotifications();
-fetchMessages()
   },[]);
     return (
         <div style={{marginBottom:'20%'}}>
-     <nav className="navbar navbar-expand-lg bg-body-tertiary">
-                <div className="container-fluid">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                        <li className="nav-item">
-                                <a className="nav-link " aria-current="page" href="/jobseeker">Home</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link " aria-current="page" target="_blank" rel="noopener" href="/jobs">View jobs</a>
-                            </li>
-                            <li className="nav-item">
-                                <button className="nav-link" style={{ border: 'None', background: 'white', }} onClick={fetchData}>My Applications</button>
-                            </li>
-                            <div className="dropdown">
-                                <a className="nav-link fw-medium dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Notifications
-                                </a>
-                                <ul className="dropdown-menu notifications">
-                                {notifications.length === 0 ? (
-      <li className="">No notifications</li>
-    ) : (
-      notifications.map((notification) => (
-        <li key={notification.notification_id} >
-          {notification.content} {/* Assuming notifications have a title property */}
-          <hr/>
-        </li>
-      ))
-    )}
-                                </ul>
-                            </div>
-                            <div className="dropdown">
-                               
-                               <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} alt='msg dropdown' className='msg_icon'></img></a>
-                               <ul className="dropdown-menu messaages overflow-auto" style={{width:'600px', height:'500px'}}>
-                               {messages.length === 0 ? (
-     <li className="">No Messages</li>
-   ) : (
-     messages.map((message) => (
-       <li key={message.message_id} >
-         {message.body}<h6 style={{textAlign:'right', fontSize:'8px'}}>{message.Timestamp.toLocaleString().slice(0,19).replace('T' , ' ')}</h6>
-         <hr/>
-       </li>
-     ))
-   )}
-                               </ul>
-                           </div>
-                            <li className="nav-item">
-                                <a className="nav-link" href='/jobseeker_profile' role='button'>Profile</a>
-                            </li>
 
-                        </ul>
-                    </div>
-                </div>
-            </nav>
         <div className='container' style={{marginBottom:'100px', marginTop:'100px', marginLeft:'auto', marginRight:'auto', padding:'10px'}}>
 
             <h3>Applied jobs</h3>
@@ -130,7 +53,7 @@ fetchMessages()
     </tr>
   </thead>
   <tbody>
-    {myJobs.map((myJob)=>{
+    {myJobs.length===0?<p className='text-center'>Not applied to any jobs yet</p>:myJobs.map((myJob)=>{
       return(
         <tr>
       <td>{myJob.app_id}</td>

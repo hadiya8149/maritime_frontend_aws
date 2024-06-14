@@ -13,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function JobSeekerProfile() {
     const navigate = useNavigate();
     const token = localStorage.getItem('authToken')
-    const [notifications, setNotifications] = useState([])
     const [userProfile, setUserProfile] = useState([])
     const [editUser, setEditUser] = useState({
         username: '',
@@ -35,22 +34,21 @@ export default function JobSeekerProfile() {
     const user_id = localStorage.getItem('user_id')
     const role = localStorage.getItem('role')
     const jobseekerID = localStorage.getItem('jobSeeker_id')
-    const [messages, setMessages] = useState([])
-
+  const fetchJobSeekerID = async () => {
+        const response = await axios.get(`${API_URL}/jobseeker_by_user_id/` + user_id, { headers: myHeaders })
+        
+        if (response.status === 200) {
+            localStorage.setItem('jobSeeker_id', response.data.data.jobSeeker_id);
+        }
+    }
     const myHeaders = new Headers()
 
     // const authToken = localStorage.getItem('authToken')
     useEffect(() => {
         myHeaders.append("Authorization", `Bearer ${token}`)
-
+        fetchJobSeekerID()
     }, [])
-    async function fetchMessages() {
 
-        console.log(user_id)
-        const response = await axios.get(`${API_URL}/message_by_user_id/` + user_id, { headers: myHeaders });
-        console.log(response.data)
-        setMessages(response.data.data)
-    }
     const fetchData = async () => {
         try {
             const response = await axios.get(`${API_URL}/applied_jobs_by_user/` + jobSeeker_id, { headers: myHeaders });
@@ -78,11 +76,7 @@ export default function JobSeekerProfile() {
             console.error(error);
         }
     };
-    async function getNotifications() {
-        const response = await axios.get(`${API_URL}/notification_by_user_id/` + user_id, { headers: myHeaders })
-        console.log(response)
-        setNotifications(response.data)
-    }
+  
 
     async function handleSubmit() {
         let data = qs.stringify({
@@ -185,71 +179,13 @@ export default function JobSeekerProfile() {
     }
     useEffect(() => {
         fetchProfile()
-        getNotifications();
         fetchUserProfile();
-        fetchMessages()
     }, []);
     return (
         <div className='mb-10'>
             <ToastContainer />
 
-            <nav className="navbar navbar-expand-lg bg-body-tertiary" >
-                <div className="container-fluid">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <a className="nav-link " aria-current="page" href="/jobseeker">Home</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link " aria-current="page" href="/jobs">View jobs</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" style={{ border: 'None', background: 'white', }} href='/applied_jobs'>My Applications</a>
-                            </li>
-                            <div className="dropdown">
-                                <a className="nav-link fw-medium dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Notifications
-                                </a>
-                                <ul className="dropdown-menu notifications">
-                                    {notifications.length === 0 ? (
-                                        <li className="">No notifications</li>
-                                    ) : (
-                                        notifications.map((notification) => (
-                                            <li key={notification.notification_id} >
-                                                {notification.content} {/* Assuming notifications have a title property */}
-                                                <hr />
-                                            </li>
-                                        ))
-                                    )}
-                                </ul>
-                            </div>
-                            <div className="dropdown">
-
-                                <a className="nav-link fw-medium " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src={msg_icon} className='msg_icon'></img></a>
-                                <ul className="dropdown-menu messages overflow-auto" style={{ width: '600px', height: '500px' }}>
-                                    {messages.length === 0 ? (
-                                        <li className="">No Messages</li>
-                                    ) : (
-                                        messages.map((message) => (
-                                            <li key={message.message_id} >
-                                                {message.body}<h6 style={{ textAlign: 'right', fontSize: '8px' }}>{message.Timestamp.toLocaleString().slice(0, 19).replace('T', ' ')}</h6>
-                                                <hr />
-                                            </li>
-                                        ))
-                                    )}
-                                </ul>
-                            </div>
-                            <li className="nav-item">
-                                <a className="nav-link" href='/jobseeker_profile' role='button'>Profile</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+      
             {/* <div className="" style={{ marginTop: '4%' }}>
                 <div className=''></div>
                 <div className="">
@@ -360,9 +296,10 @@ export default function JobSeekerProfile() {
                 <div className=''></div>
             </div> */}
             <div className="container">
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="card profile-card">
+                <div className='d-flex m-auto'>
+                <div className="row d-flex pt-10" style={{flexDirection:'column'}}>
+                    <div className="col col-md-6">
+                        <div className="card profile-card" style={{marginBottom:'8px'}}>
                             <img src={profile_image} className="card-img-top mx-auto" alt="..." style={{ height: "100px", width: "100px" }} />
                             <div className="card-body" style={{ textAlign: 'left' }}>
                                 <h5 className="card-title">Personal Details</h5>
@@ -405,7 +342,7 @@ export default function JobSeekerProfile() {
                         </div>
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col col-md-6">
                         <div className="card resume-card">
                             <div className="card-body">
                                 <div className="card-text">
@@ -425,7 +362,7 @@ export default function JobSeekerProfile() {
                     </div>
                 </div>
 
-                <div className="row">
+                <div className="row pt-10" style={{width:'100%', paddingLeft:'32px', paddingRight:'32px'}}>
                     <div className="col-12">
                         <div className="jobseeker-profile">
                             <div className="d-flex justify-content-between  align-items-center mb-3">
@@ -524,6 +461,7 @@ export default function JobSeekerProfile() {
 
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     )
