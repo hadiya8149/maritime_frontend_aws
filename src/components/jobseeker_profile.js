@@ -175,7 +175,8 @@ export default function JobSeekerProfile() {
     };
 
     function getpdf(filepath) {
-        window.open('https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/' + filepath)
+        // the file doesn't uses /api path 
+        window.open('http://localhost:8000/' + filepath)
     }
     useEffect(() => {
         fetchProfile()

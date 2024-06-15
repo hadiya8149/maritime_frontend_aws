@@ -33,6 +33,7 @@ export default function EmployersList() {
         try {
             const url = `${API_URL}/delete_user/` + userID;
             const response = await axios.delete(url, {headers:myHeaders});
+            console.log(response)
             if (response.status === 200) {
                 fetchData(); // Update users list after deletion
             }

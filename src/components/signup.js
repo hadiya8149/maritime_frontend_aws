@@ -49,7 +49,7 @@ export default function Signup() {
                         if (data['status'] === 201) {
                             console.log(data)
                             toast.success("user signed up successfully")
-                            
+                            navigate('/login')
                         }
                     }, 1);
                 }),
@@ -70,10 +70,10 @@ export default function Signup() {
                         <form onSubmit={handleSubmit} id="signupform" className=" m-auto p-5" style={{ color: 'black' }}>
                         <span id="create-account"><h4 style={{textAlign:'center'}}>Create Account</h4></span>
 
-                            <div className="mb-3 group " >
+                            <div className="mb-3  input-group " >
                              
-                                <input type="email" placeholder="Email Address" className="form-control mr-3 " onChange={handleChange} name='email' id="InputEmail" aria-describedby="emailHelp" required />
-                           
+                                <input type="email" placeholder="Email Address" className="form-control " style={{marginRight:'8px'}} onChange={handleChange} name='email' id="InputEmail" aria-describedby="emailHelp" required />
+                           <span style={{margin:'8px'}}></span>
                                 <input type="text" placeholder="User Name" className="form-control mr-3 " onChange={handleChange} id="InputUserName" name='username' aria-describedby="UserNameHelp" required/>
                             </div>
                             <div className="mb-3">
@@ -83,13 +83,17 @@ export default function Signup() {
                             </div>
                             <div className="mb-3 group">
                                 <input type="number" placeholder="age" className="form-control mr-3" id="InputAge" name='age' onChange={handleChange} aria-describedby="AgeHelp" min='18'required and max='70' />
-                                <select onChange={handleChange} className=" w-100 mr-3 " name='gender' required>
+                                <span style={{margin:'8px'}}></span>
+
+                                <select onChange={handleChange} className=" form-control mr-3 " name='gender' required>
                                     <option>Gender</option>
                                     <option >Female</option>
                                     <option>Male</option>
                                     <option>Others</option>
                                 </select>
-                                <select onChange={handleChange} htmlFor='role' className="w-100 mr-3" name='role' required>
+                                <span style={{margin:'8px'}}></span>
+
+                                <select onChange={handleChange} htmlFor='role' className="form-control  mr-3" name='role' required>
                                     <option>Role</option>
                                     <option>
                                         Student

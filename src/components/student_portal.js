@@ -44,21 +44,21 @@ export default function StudentPortal() {
 
       <ToastContainer />
 
-      <div className='container m-auto h-100 '>
-        <h2>
+      <div className='container m-auto ' style={{minHeight:'100vh'}}>
+        <h1  className='mt-7'>
           Welcome to Maritime student Portal
-        </h2>
+        </h1>
         <p>
           The Maritime Education System  is a web-based platform designed to provide a
           comprehensive resource for maritime education  within the maritime industry.
         </p>
         <div className=' d-flex' style={{ marginTop: '25px' }}>
           <div style={{ width: '50%', marginTop: '10%' }}>
-            <h4>What you can do through the Maritime Student Portal</h4>
-            <ul style={{ listStyleType: 'square', textAlign:'left' }}>
-              <li>Search various courses & programs</li>
-              <li>Track progress of courses</li>
-              <li>Equip yourself with knowledge and gain hands-on-skills</li>
+            <h4 className='text-left'>What you can do through the Maritime Student Portal</h4>
+            <ul style={{padding:'16px', listStyleType: 'square', textAlign:'left', marginLeft:'50px' }}>
+              <li style={{paddingLeft:'25px'}}>Search various courses & programs</li>
+              <li style={{paddingLeft:'25px'}}>Track progress of courses</li>
+              <li style={{paddingLeft:'25px'}}>Equip yourself with knowledge and gain hands-on-skills</li>
             </ul>
             <p>
               Enhance your career with a globally recognised Diploma or short course, view our courses  to find one that’s right for you!

@@ -65,7 +65,13 @@ export default function CoursesList() {
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.log("error")
+          console.log(error)
+          if(error.response.status===409){
+            
+            toast.info("Already applied to this course")
+            
+          }
         });
       console.log(response)
     }

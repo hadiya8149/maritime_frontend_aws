@@ -25,6 +25,7 @@ export default function Job_Portal() {
   const [searchQuery, setSearchQuery] = useState([])
   const token = localStorage.getItem('authToken')
   const [appliedFlag, setAppliedFlag]=useState(false)
+  const role = localStorage.getItem('role')
   const myHeaders = new Headers()
 
 
@@ -188,14 +189,13 @@ useEffect(()=>{
         <hr />
         <p className="card-text">{dataObj.job_description}</p>
         <div>
-        <a onClick={() => {
-          fetchJobDescription(dataObj.job_id);
-        }} style={{width:'100%'}}
-        >View</a>
+       
 </div>
       </div>
       <p className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
-      <a href="#" className="btn btn-primary mb-3 w-75 m-auto">Easy Apply</a>
+      <a href="#"  onClick={() => {
+                        fetchJobDescription(dataObj.job_id);
+                      }} style={{width:'auto'}} className="btn btn-primary m-auto mb-3">View</a>
 
     </div>
   </div>
@@ -212,13 +212,12 @@ useEffect(()=>{
         <h6 className="card-subtitle mb-2 text-muted">{dataObj.location}</h6>
         <hr />
         <p className="card-text">{dataObj.job_description}</p>
-        <a onClick={() => {
-          fetchJobDescription(dataObj.job_id);
-        }}
-        >View</a>
+  
       </div>
       <p className='text-center'>Deadline: {dataObj.ExpiryDate.toLocaleString().slice(0, 19).replace('T', ' ')}</p>
-      <a href="#" className="btn btn-primary mb-3 w-75 m-auto">Easy Apply</a>
+      <a href="#"  onClick={() => {
+                        fetchJobDescription(dataObj.job_id);
+                      }} style={{width:'auto'}} className="btn btn-primary m-auto mb-3">View</a>
 
     </div>
   </div>
@@ -256,35 +255,39 @@ useEffect(()=>{
         </div>
         <div className=' job-description '>
           <div className="card job-card mb-3 p-3" style={{ width: '100%', float: 'left' }}>
-            <div className="card-body">
+            <div className="card-body" style={{textAlign:'left'}}>
 
               <h1>Job Description</h1>
               <h3 className="card-title">{jobDetails.job_title}</h3>
               <h6 className="card-subtitle mb-2 text-muted"><a href='/'>Company Name</a></h6>
 
 
-              <div className="card-text">
-                <h5>Pay: {jobDetails.salary} Rs </h5>
-                <h5>Location: {jobDetails.location}</h5>
-               
+              <div className="">
+                <h5>Pay: </h5>
+                <p>{jobDetails && (jobDetails.salary)} </p>
+                <h5>Location: </h5>
+               <p>{jobDetails.location}</p>
                 <div>
                   <h5>Full Job Description</h5>
                   <div>
-                    <h5>
+                    <p>
                       {jobDetails.job_description}
-                    </h5>
+                    </p>
                     <h5>Requirements</h5>
                     <p className='text-left'>
                     {jobDetails.requirements}
                     </p>
-                    <h5>Date Posted: {jobDetails.PostingDate && jobDetails.PostingDate.toLocaleString().slice(0, 10).replace('T', ' ')}</h5>
-
-                    <h5>Application Deadline : {jobDetails.ExpiryDate && jobDetails.ExpiryDate.toLocaleString().slice(0, 10).replace('T', ' ')}
+                    <h5>Date Posted:</h5>
+<p>
+{jobDetails.PostingDate && jobDetails.PostingDate.toLocaleString().slice(0, 10).replace('T', ' ')}
+</p>
+                    <h5>Application Deadline : 
                     </h5>
+                    <p>{jobDetails.ExpiryDate && jobDetails.ExpiryDate.toLocaleString().slice(0, 10).replace('T', ' ')}</p>
                     <div className='text-left mb-3'>
-                  <button className='btn btn-success mr-3' style={{ height: '50px', display:!appliedFlag?'':'none' }} onClick={() => { applyForJob(jobDetails.job_id) }} >Apply Now</button>
+                  <button className='btn btn-success mr-3' style={{ height: '50px', display:!appliedFlag && role!=='employer'?'':'none' }} onClick={() => { applyForJob(jobDetails.job_id) }} >Apply Now</button>
                   <button className='btn btn-success mr-3' style={{ height: '50px',display:appliedFlag?'':'none' }}><DoneIcon/>Applied</button>
-
+                  
                 </div>
                   </div>
                 </div>

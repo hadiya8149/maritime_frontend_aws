@@ -72,7 +72,7 @@ export default function JobApplications(){
                 setTimeout(() => {
                    if(data.status===200){
                     console.log(data.data.message)
-                    toast.info("Job deleted successfully!")
+                    toast.success("Job deleted successfully!")
                    }
                 }, 1);
               }),
@@ -126,7 +126,7 @@ export default function JobApplications(){
 
   }
   function getpdf(filepath){
-    window.open(`https://mbuig2i6bdtonzsxfxbuohmvxq0esskf.lambda-url.ap-southeast-2.on.aws/${filepath}`)
+    window.open(`http://localhost:8000/${filepath}`)
 }
   async function submitEditJobForm(id){
     setEditJobForm(prevData => ({
@@ -141,7 +141,7 @@ export default function JobApplications(){
               setTimeout(() => {
                  if(data.status===200){
                   console.log(data.data.message)
-                  toast.info("job Updated successfully")
+                  toast.info("Job Updated successfully")
                  }
               }, 1);
             }),
@@ -189,7 +189,7 @@ async function deleteJobApplication(app){
   sendRejectNotification(app)
   const response = await axios.delete(`${API_URL}/delete_job_application/`+id, {headers:myHeaders});
   if (response.status===200){
-    toast.success("job deleted successfully")
+    toast.success("Job Application deleted successfully")
 
   }
   else{
@@ -233,16 +233,16 @@ async function deleteJobApplication(app){
 
 <div className='m-auto'>
 
-<h3>Jobs created</h3>
-<div className='m-auto'>
-<div className='row row-cols-1 mt-3 row-cols-md-3 g-4 w-100'>
+<h1>Jobs created</h1>
+<div className='m-auto ' style={{paddingLeft:'16px', paddingRight:'16px'}}> 
+<div className='row align-items-center justify-content-center m-auto' style={{paddingLeft:'16px', paddingRight:'16px'}}>
 
 {applications.map(application => {
  const jobId =application.job_id;
 
  return(
 
-<div className='col job-col' key={application.job_id}>
+<div className='col-md-3 job-col ' key={application.job_id}>
      <div className="card my-jobs mb-3 m-auto">
 <div className="card-body">
 <h5 className="card-title">{application.job_title}</h5>

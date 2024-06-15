@@ -94,7 +94,8 @@ export default function CoursesAndProgramsManagement() {
   function getToken(){
     return localStorage.getItem('authToken')
   }
-  async function createCourse() {
+  async function createCourse(e) {
+    e.preventDefault();
     let data = qs.stringify({
       'course_name': courseForm.course_name,
       'description': courseForm.description,
@@ -124,7 +125,8 @@ export default function CoursesAndProgramsManagement() {
         debugger;
       });
   }
-  async function createProgram() {
+  async function createProgram(e) {
+    e.preventDefault();
     let data = qs.stringify({
       'program_name': programForm.program_name,
       'description': programForm.description,
@@ -135,9 +137,9 @@ export default function CoursesAndProgramsManagement() {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${API_URL}/program/`,
+      url: `${API_URL}/program`,
       headers: {
-        'Authorization': `Bearer ${getToken()}`,
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
       },
       data : data
     };
@@ -246,22 +248,21 @@ export default function CoursesAndProgramsManagement() {
     let config = {
       method: 'put',
       maxBodyLength: Infinity,
-      url: `${API_URL}/program/${program_id}`,
+      url: `${API_URL}/update_program/${program_id}`,
+      data : data,
+
       headers: { 
-        'Authorization': `Bearer ${getToken()}`, 
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`, 
         'Content-Type': 'application/x-www-form-urlencoded', 
-      },
-      data : data
+      }
     };
     
     await axios.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
-      debugger;
     })
     .catch((error) => {
       console.log(error);
-      debugger;
     });
     
 
@@ -290,9 +291,9 @@ export default function CoursesAndProgramsManagement() {
                 <textarea onChange={handleCourseChange} className='form-control' id='courseDescription' placeholder='description' name='description' type='text' required />
 
               </div>
-              <div className='mb-3'>
-                <input onChange={handleCourseChange} className='mr-3' name='duration_months' placeholder='Months duration' id='courseDuration' max='6' type='text' required />
-                <input onChange={handleCourseChange} className='mr-3' name='instructor' id='courseInstructor' placeholder='instructor' type='text' required />
+              <div className='mb-3 '>
+                <input onChange={handleCourseChange} className='mr-3 form-control' name='duration_months' placeholder='Months duration' id='courseDuration' max='6' type='text' required />
+                <input onChange={handleCourseChange} className='mr-3 form-control' name='instructor' id='courseInstructor' placeholder='instructor' type='text' required />
 
               </div>
 
@@ -309,18 +310,20 @@ export default function CoursesAndProgramsManagement() {
                   </div>
                   <div className="modal-body">
                     <form id='UpdateCourse' className='m-auto' onSubmit={editCourse} style={{height:'500px'}}>
-                      <div className='mb-3'>
-                        <input type='number' value={selectedCourse} className='mr-3'></input>
-                        <input onChange={handleEditCourseChange} defaultValue={editCourseForm.course_name} className='' name='course_name' id='courseName' placeholder='course name' type='text' />
+                      <div className='mb-3 input-group'>
+                        <input type='number' value={selectedCourse} className='col-sm-6 '></input>
+                        <span style={{margin:'8px'}}></span>
+                        <input onChange={handleEditCourseChange} defaultValue={editCourseForm.course_name} className='col-sm-6 ' name='course_name' id='courseName' placeholder='course name' type='text' />
                       </div>
                       <div className='mb-3'>
-                        <textarea style={{height:'300px', margin:'auto'}} onChange={handleEditCourseChange} defaultValue={editCourseForm.description} className='form-control' id='courseDescription' placeholder='description' name='description' type='text' />
+                        <textarea style={{height:'300px', margin:'auto'}} onChange={handleEditCourseChange} defaultValue={editCourseForm.description} className='form-control col-sm-12' id='courseDescription' placeholder='description' name='description' type='text' />
                       </div>
                       <div className='mb-3'>
                       </div>
-                      <div className='mb-3'>
-                        <input onChange={handleEditCourseChange} defaultValue={editCourseForm.duration_months} name='duration_months' placeholder='Months duration' className="mr-3" id='courseDuration' max='6' type='text' />
-                        <input onChange={handleEditCourseChange} defaultValue={editCourseForm.instructor} name='instructor' id='courseInstructor' placeholder='instructor' type='text' />
+                      <div className='mb-3 input-group'>
+                        <input onChange={handleEditCourseChange} defaultValue={editCourseForm.duration_months} name='duration_months' placeholder='Months duration' className="mr-3 col-sm-6" id='courseDuration' max='6' type='text' />
+                       <span style={{margin:'8px'}}></span>
+                        <input onChange={handleEditCourseChange} defaultValue={editCourseForm.instructor} name='instructor' id='courseInstructor' placeholder='instructor' className='col-sm-6 ' type='text' />
                       </div>
                       <div><button className='btn btn-primary' >Edit Course</button></div>
 
@@ -411,23 +414,23 @@ export default function CoursesAndProgramsManagement() {
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="postJobModalLabel">Post a Job</h5>
+                    <h5 className="modal-title" id="postJobModalLabel">Edit Program</h5>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div className="modal-body">
-                    <form className='m-auto' style={{ width: '' }} onSubmit={editProgram}>
-                      <div className='mb-3'>
-                        <input type='number' readOnly={true} value={selectedProgram}></input>
-                        <input onChange={handleEditProgramChange} name='program_name' defaultValue={editProgramForm.program_name} placeholder='Program name' id='programName' type='text' />
+                    <form className='m-auto' style={{height:'500px', width: '' }} onSubmit={editProgram}>
+                      <div className='input-group mb-3'>
+                        <input type='number' className='mr-3 form-control col-sm-6'  readOnly={true} value={selectedProgram}></input>
+                        <input onChange={handleEditProgramChange}  className='form-control col-sm-6' name='program_name' defaultValue={editProgramForm.program_name} placeholder='Program name' id='programName' type='text' />
 
                       </div>
                       <div className='mb-3'>
-                        <textarea onChange={handleEditProgramChange} className='form-control' defaultValue={editProgramForm.description} name='description' placeholder='description' id='programDescriptionName' type='text' />
+                        <textarea style={{height:'250px'}}  onChange={handleEditProgramChange} className='form-control col-sm-12' defaultValue={editProgramForm.description} name='description' placeholder='description' id='programDescriptionName' type='text' />
 
                       </div>
-                      <div className='mb-3'>
-                        <input onChange={handleEditProgramChange} className='mr-3' name='duration_months' defaultValue={editProgramForm.duration_months} placeholder='Months duration' id='programDuration' max='6' type='text' />
-                        <input onChange={handleEditProgramChange} className='' name='trainer' placeholder='trainer' defaultValue={editProgramForm.trainer} id='programTrainer' type='text' />
+                      <div className='mb-3 input-group'>
+                        <input onChange={handleEditProgramChange} className='col-sm-6  form-control mr-3' name='duration_months' defaultValue={editProgramForm.duration_months} placeholder='Months duration' id='programDuration' max='6' type='text' />
+                        <input onChange={handleEditProgramChange} className='col-sm-6 form-control' name='trainer' placeholder='trainer' defaultValue={editProgramForm.trainer} id='programTrainer' type='text' />
 
                       </div>
 

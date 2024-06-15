@@ -60,7 +60,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path='/forgot_password' element={<ResetLink/>}/>
-        <Route path='/reset_password' element={<ResetPassword/>}/>
+        <Route path='/reset_password?' element={<ResetPassword/>}/>
         <Route path="/admin" element={<AdminPage />} />
         <Route path='/manage_jobs' element={<ManageJobs/>}/>
         <Route path="/employers_list" element={<EmployersList />} />

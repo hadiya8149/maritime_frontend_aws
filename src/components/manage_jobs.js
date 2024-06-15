@@ -132,14 +132,14 @@ function search(data) {
     <div className=' w-100 mt-3'>
 
             <div className="card mb-3 p-3" style={{ float:'left'}}>
-            <div className="card-body text-leftc:\Users\M\AppData\Local\Packages\Microsoft.ScreenSketch_8wekyb3d8bbwe\TempState\Recordings\20240613-1328-53.4379045.mp4">
+            <div className="card-body" style={{textAlign:'left'}}>
               
             <h1>Job Description</h1>
               <h3 className="card-title">{jobDetails.job_title}</h3>
               {/* <h6 className="card-subtitle mb-2 text-muted"><a href='/'>Company Name</a></h6> */}
               
               
-              <div className="card-text">
+              <div className="card-text text-left">
 {jobDetails.job_description}
               <h5>Pay: {jobDetails.salary} Rs </h5>  
               <h5>Location: {jobDetails.location}</h5>
@@ -164,8 +164,8 @@ function search(data) {
               </div>
           </div>
                   </div>
-                  <div className='d-flex mb-3'>
-                <button className='btn btn-danger w-25 m-auto' onClick={()=>{deleteJob(jobDetails.job_id)}} >Delete job</button>
+                  <div className='d-flex mb-3 text-left'>
+                <button className='btn btn-danger w-25 ' onClick={()=>{deleteJob(jobDetails.job_id)}} >Delete job</button>
           </div>
             </div>
           </div>

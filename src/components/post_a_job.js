@@ -32,26 +32,17 @@ export default function PostJob(){
           ...prevData, [name]: value
         }))
       }
-    async function createJob() {
+    async function createJob(e) {
+      e.preventDefault()
         console.log(jobForm)
         
         try {
-          await axios.post(`${API_URL}/create_job`, { body: jobForm }, {headers:myHeaders})
-            .then(
-              (data) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    if (data.status === 201) {
-                      console.log(data.data.message)
-                      console.log(data.data.result)
-                      toast.success("job created successfully")
-                    }
-                  }, 1);
-                }),
-            )
-            .catch((err) => {
-              if (err.response) console.log("this is error.response.dat", err.response.data);
-            });
+          await axios.post(`${API_URL}/create_job`, jobForm , {headers:{'Authorization':`Bearer ${localStorage.getItem('authToken')}`}}).then((response)=>{
+            console.log(response)
+            if(response.status===201){
+              toast.success("Job created successfully")
+            }
+          })
         }
         catch (e) {
           console.log(e)
