@@ -7,11 +7,10 @@ export default function ClientMessages(){
 
     const token = localStorage.getItem('authToken')
     const myHeaders = new Headers()
-  
+    const [usersData, setUsersData]=useState([])
     useEffect(()=>{
       myHeaders.append('Authorization', `Bearer ${token}`)
-  
-    })
+    },[])
     const user_id = localStorage.getItem("user_id")
       const [messageForm, setMessageForm]=useState({
         content:"",
@@ -77,28 +76,43 @@ export default function ClientMessages(){
         }))
         console.log(msgForm)
       }
+      async function getUserIDs(){
+        const response = await axios.get(`${API_URL}/users`,  {headers:{'Authorization': `Bearer ${token}`}})
+        if(response.status===200){
+          setUsersData(response.data.data)
+        }
+
+      }
       async function submitMessage(id){
-        console.log(msgForm)
-        const receiverID = msgForm.user_id
-        const response = await axios.post(`${API_URL}/send_message`, {
+       
+        const foundUser = usersData.find(user => user.email === msgForm.user_email);
+
+        const receiverID = foundUser.user_id
+        // debugger;
+        // const receiverID = msgForm.user_id
+        const data = {
           sender_id:user_id,
           subject:msgForm.subject,
           body:msgForm.body,
           receiver_id:receiverID,
           Timestamp:new Date().toISOString().slice(0,19).replace('T', ' ')
-        }, {headers:{'Authorization': `Bearer ${token}`}})
+        
+        }
+        const response = await axios.post(`${API_URL}/send_message`,data, 
+        {headers:{'Authorization': `Bearer ${localStorage.getItem('authToken')}`}})
         console.log(response)
     
       }
       useEffect(()=>{
         getMessages();
         fetchSentMessages()
+        getUserIDs()
       },[])
-  
+
       return(
           <div className='container m-auto' style={{minHeight:'100vh'}}>
     
-  <h4 className='mt-4 ml-5 text-center'>Sent Messages</h4>
+  <div className='mt-4 ml-5 text-center'></div>
   <ul className="nav nav-tabs" id="nav-tab" role="tablist">
         <li className="nav-item" role="presentation">
           <button className="nav-link active" id="sent-tab" data-bs-toggle="tab" data-bs-target="#sent" type="button" role="tab" aria-controls="sent" aria-selected="true">Sent</button>
@@ -177,7 +191,7 @@ export default function ClientMessages(){
       border:'none',    boxShadow:' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
       <div className='card-title  bg-light' style={{textAlign:'left', padding:'8px', color:'black'}}>New Message</div>
     <form className="row gx-3 gy-2 align-items-center m-auto  w-100" onSubmit={submitMessage}  >
-  <input type="number" className='form-control' onChange={handleMsgChange} style={{height:'50px', padding:'5px'}} id="user_id" name="user_id" placeholder="user id " required />
+  <input type="email" className='form-control' onChange={handleMsgChange} style={{height:'50px', padding:'5px'}} id="user_email" name="user_email" placeholder="Enter email" required />
     
       <input type='text'  className='form-control'  name='subject' id='subject' onChange={handleMsgChange} placeholder='Subject'></input>
       <textarea type="text"  className='form-control overflow-auto'  onChange={handleMsgChange}  style={{height:'200px', padding:'5px'}} id="body" name='body' placeholder="body" required />

@@ -7,16 +7,21 @@ import axios from 'axios'
 import { API_URL } from "../utils";
 import {toast, ToastContainer} from 'react-toastify'
 import { useState } from "react";
-import { useParams } from 'react-router-dom';
+import { json, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 export default function ResetPassword() {
     const navigate=useNavigate()
+    const [email, setEmail ]=useState("")
     const [resetForm, setResetForm] = useState({
-        email: "",
+        email: email,
         password: "",
         password1: '',
     })
-    const {token}=window.location.search
+    const [token, setToken]=useState('')
+
+useEffect(()=>{
+    setToken(window.location.search.slice(7))
+},[])    
     function handleChange(e) {
         const { name, value } = e.target;
         setResetForm(prevData => ({
@@ -49,8 +54,23 @@ export default function ResetPassword() {
         toast.error("Passwords do not match")
     }
  }
-
-  
+ function decodeJWT(jwt_token) {
+    const parts = jwt_token.split('.');
+    if (parts.length !== 3) {
+      console.error("invalid json webtoken")
+    }
+    else{
+        const decodedHeader = JSON.parse(atob(parts[0]));
+        const decodedPayload = JSON.parse(atob(parts[1].replace('-', '+').replace('_', '/')));
+        console.log(decodedHeader, decodedPayload )
+        return decodedPayload.email
+    
+    }
+  }
+  useEffect(()=>{
+    console.log(token)
+    setEmail(decodeJWT(token))
+  },[email])
     return (
         <div id="bannerImage" style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center'}}>
             <ToastContainer position='top-center'/>
@@ -62,7 +82,7 @@ export default function ResetPassword() {
 
                             <div className="mb-3 group " >
                              
-                                <input type="email" placeholder="Email Address" className="form-control mr-3 " onChange={handleChange} name='email' id="InputEmail" aria-describedby="emailHelp" required />
+                                <input type="email" placeholder="Email Address" className="form-control mr-3 " value={email} name='email' id="InputEmail" aria-describedby="emailHelp" readOnly disabled={true} />
                            
                             </div>
                             <div className="mb-3">

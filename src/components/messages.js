@@ -9,11 +9,19 @@ export default function AdminMessages(){
 
   const token = localStorage.getItem('authToken')
   const myHeaders = new Headers()
+  const [usersData, setUsersData]=useState([])
 
   useEffect(()=>{
     myHeaders.append('Authorization', `Bearer ${token}`)
 
   })
+  async function getUserIDs(){
+    const response = await axios.get(`${API_URL}/users`,  {headers:{'Authorization': `Bearer ${token}`}})
+    if(response.status===200){
+      setUsersData(response.data.data)
+    }
+
+  }
   const user_id = localStorage.getItem("user_id")
     const [messageForm, setMessageForm]=useState({
       content:"",
@@ -58,8 +66,9 @@ export default function AdminMessages(){
       console.log(msgForm)
     }
     async function submitMessage(id){
-      console.log(msgForm)
-      const receiverID = msgForm.user_id
+      const foundUser = usersData.find(user => user.email === msgForm.user_email);
+
+      const receiverID = foundUser.user_id
       const response = await axios.post(`${API_URL}/send_message`, {
         sender_id:user_id,
         subject:msgForm.subject,
@@ -71,7 +80,8 @@ export default function AdminMessages(){
   
     }
     useEffect(()=>{
-      getMessages()
+      getMessages();
+      getUserIDs();
     },[])
 
     return(

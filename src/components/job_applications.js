@@ -189,7 +189,7 @@ async function deleteJobApplication(app){
   sendRejectNotification(app)
   const response = await axios.delete(`${API_URL}/delete_job_application/`+id, {headers:myHeaders});
   if (response.status===200){
-    toast.success("Job Application deleted successfully")
+    toast.success("Job Application Rejected successfully")
 
   }
   else{

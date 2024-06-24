@@ -27,7 +27,7 @@ export default function Job_Portal() {
   const [appliedFlag, setAppliedFlag]=useState(false)
   const role = localStorage.getItem('role')
   const myHeaders = new Headers()
-
+  const [viewJobDescription, setViewJobDescription]=useState(false)
 
   // const authToken = localStorage.getItem('authToken')
 
@@ -55,6 +55,7 @@ export default function Job_Portal() {
       if (response.status === 200) {
         console.log(response.data.data)
         setJobDetails(response.data.data);
+        setViewJobDescription(true)
 
       }
     } catch (error) {
@@ -253,7 +254,7 @@ useEffect(()=>{
             })}
           </div>
         </div>
-        <div className=' job-description '>
+        <div className=' job-description ' style={{display:viewJobDescription?'':'none'}}>
           <div className="card job-card mb-3 p-3" style={{ width: '100%', float: 'left' }}>
             <div className="card-body" style={{textAlign:'left'}}>
 

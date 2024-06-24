@@ -15,6 +15,7 @@ export default function CoursesList() {
   const stdID = localStorage.getItem('std_id')
   const [filterQuery, setFilterQuery] = useState()
   const [searchQuery, setSearchQuery] = useState([])
+
   const token = localStorage.getItem('authToken')
   const navigate = useNavigate()
   const myHeaders = new Headers();
@@ -24,15 +25,30 @@ export default function CoursesList() {
   }
 
   const fetchData = useCallback(async () => {
-    try {
+    if (stdID) {
       const response = await axios.get(`${API_URL}/courses`);
-      if (response.status === 200) {
-        setCourses(response.data.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+        if (response.status === 200) {
+          const all_courses = response.data.data
+          const coursesToRemove = await filterunAppliedCourses()
 
+          const filteredCourses = all_courses.filter(course => {
+            // Check if course_id in any object of coursesToRemove matches the current course
+            return !coursesToRemove.some(courseToRemove => courseToRemove.course_id === course.course_id);
+          });
+          setCourses(filteredCourses);
+        }
+    }
+    else {
+      try {
+        const response = await axios.get(`${API_URL}/courses`);
+        if (response.status === 200) {
+          setCourses(response.data.data);
+          console.log(response.data.data)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }, []);
   const enrollCourse = async (id) => {
     if (!stdID) {
@@ -67,10 +83,10 @@ export default function CoursesList() {
         .catch((error) => {
           console.log("error")
           console.log(error)
-          if(error.response.status===409){
-            
+          if (error.response.status === 409) {
+
             toast.info("Already applied to this course")
-            
+
           }
         });
       console.log(response)
@@ -97,11 +113,20 @@ export default function CoursesList() {
     }
 
   }
+  async function filterunAppliedCourses() {
+   
+      const response = await axios.get(`${API_URL}/course_application_by_std/${stdID}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+      return response.data.data
+  }
   useEffect(() => {
     fetchData();
-
+    
   }, []);
-
   return (
     <div style={{ minHeight: '100vh' }} id="CourseBanner">
       <ToastContainer />

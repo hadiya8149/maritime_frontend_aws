@@ -81,7 +81,23 @@ const token = localStorage.getItem('authToken')
 
   }
   const fetchData = async () => {
-    try {
+    if(stdID){
+      const response = await axios.get(`${API_URL}/get_all_programs`);
+        if (response.status === 200) {
+          console.log(response.data.data)
+          const all_programs = response.data.data
+          const programsToRemove =  await filterunAppliedPrograms()
+          const filteredPrograms = all_programs.filter(program => {
+            // Check if course_id in any object of coursesToRemove matches the current course
+            return !programsToRemove.some(programToRemove => programToRemove.program_id === program.program_id);
+          });
+          console.log(filteredPrograms)
+          setPrograms(filteredPrograms);
+        }
+    }
+    else{
+
+      try {
         const response = await axios.get(`${API_URL}/get_all_programs`);
         if (response.status === 200) {
           console.log(response.data.data)
@@ -90,7 +106,25 @@ const token = localStorage.getItem('authToken')
     } catch (error) {
         console.error(error);
     }
+    }
 };
+async function filterunAppliedPrograms() {
+   
+  const response = await axios.get(`${API_URL}/program_application_by_std/${stdID}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
+  console.log(response)
+  if (response.status===200){
+    return response.data.data
+
+  }
+  else{
+    return []
+  }
+}
   useEffect(() => {
       fetchData();
   }, []);
