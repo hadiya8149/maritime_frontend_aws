@@ -72,10 +72,8 @@ export default function EmployerProfile() {
 },[]);
     return (
         <div style={{minHeight:'100vh'}}>
-
-
 <div className='container pt-7 mb-10' style={{display:'flex', justifyContent:'center',minHeight:'80vh', alignItems:'center'}} >
-           <div className='card' style={{borderRadius:'2px', backgroundColor:'light'}}>
+           <div className='card' style={{border:'none', backgroundColor:'light'}}>
   <div className='row' style={{height:'80%'}}>
             <div className='col-sm  p-3' >
 

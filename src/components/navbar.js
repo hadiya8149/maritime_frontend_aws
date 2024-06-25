@@ -121,11 +121,11 @@ async function countUnReadNotifications(data){
 
           <a className={window.location.pathname === '/employer' ? "active fw-medium nav-link " : "fw-medium nav-link"} href='/post_job'>Post a job</a>
         </li>
-        <li style={{display:role==='admin'?"":'none'}} className='nav-item'>
+        {/* <li style={{display:role==='admin'?"":'none'}} className='nav-item'>
               <a className={window.location.pathname === '/messages_page' ? "active fw-medium nav-link " : "fw-medium nav-link"} href="/messages_page">Messages</a>
-            </li>
+            </li> */}
             
-        <li style={{display:username && role!=='admin'?"":'none'}} className='nav-item'>
+        <li style={{display:username ?"":'none'}} className='nav-item'>
               <a className={window.location.pathname === '/user_messages' ? "active fw-medium nav-link " : "fw-medium nav-link"} href="/user_messages">Messages</a>
             </li>
             

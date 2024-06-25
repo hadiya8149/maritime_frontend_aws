@@ -1,7 +1,16 @@
 .jobseeker-portal-div {
     min-height: 100vh;
 }
-
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
+  
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right bottom, rgb(7 48 91), rgb(62 184 244)) ;
+    color:white;
+  
+  }
+  
 .jobseeker-portal-bg {
     background-image: url(../assets/img/illustrations/online-job-search-4836622-4032953.png);
     background-repeat: no-repeat;
@@ -11,6 +20,9 @@
 #profile-card, #resume-card{
     height:auto;
     width:250px;
+    color:'white';
+    background: none;
+    border:'none'
 }
 .profile-container {
     display: flex;

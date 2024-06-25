@@ -9,7 +9,7 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import qs from 'qs';
 import 'react-toastify/dist/ReactToastify.css';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 export default function JobSeekerProfile() {
     const navigate = useNavigate();
     const token = localStorage.getItem('authToken')
@@ -298,11 +298,14 @@ export default function JobSeekerProfile() {
             </div> */}
             <div className="container">
                 <div className='d-flex m-auto'>
-                <div className="row d-flex pt-10" style={{flexDirection:'column'}}>
+                <div className="row d-flex mt-7 pt-3  gradient-custom" style={{flexDirection:'column'}}>
                     <div className="col col-md-6">
-                        <div className="card profile-card" style={{marginBottom:'8px'}}>
-                            <img src={profile_image} className="card-img-top mx-auto" alt="..." style={{ height: "100px", width: "100px" }} />
-                            <div className="card-body" style={{ textAlign: 'left' }}>
+                        <div className="card " id="profile-card"style={{marginBottom:'8px'}}>
+                            <div className='text-center'>
+                            <AccountBoxIcon  style={{height:'80px', width:'80px'}} color='inherit' />
+
+                            </div>
+                            <div className="card-body" style={{ textAlign: 'left' , color:"white"}}>
                                 <h5 className="card-title">Personal Details</h5>
                                 <div className="card-text">
                                     <p>ID: {profile.jobSeeker_id}</p>
@@ -344,10 +347,10 @@ export default function JobSeekerProfile() {
                     </div>
 
                     <div className="col col-md-6">
-                        <div className="card resume-card">
+                        <div className="card " id="resume-card">
                             <div className="card-body">
-                                <div className="card-text">
-                                    <h6>Resume</h6>
+                                <div className="">
+                                    <h5 className='card-title' style={{textAlign:'left'}}>Resume</h5>
                                     {profile.resumeURL && (
                                         <a href="#" onClick={() => getpdf(profile.resumeURL)} className="mb-3 text-black">
                                             {profile.resumeURL}
@@ -363,7 +366,7 @@ export default function JobSeekerProfile() {
                     </div>
                 </div>
 
-                <div className="row pt-10" style={{width:'100%', paddingLeft:'32px', paddingRight:'32px'}}>
+                <div className="row mt-7 pt-3 " style={{width:'100%', paddingLeft:'32px', paddingRight:'32px'}}>
                     <div className="col-12">
                         <div className="jobseeker-profile">
                             <div className="d-flex justify-content-between  align-items-center mb-3">

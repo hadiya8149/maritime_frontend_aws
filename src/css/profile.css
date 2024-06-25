@@ -43,3 +43,13 @@ h4,h5,h6{
     justify-content: center;
 
 }
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
+  
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right bottom, rgb(7 48 91), rgb(62 184 244)) ;
+    color:white;
+  
+  }

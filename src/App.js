@@ -33,7 +33,7 @@ const CourseInfo = lazy(() => delayForDemo(import( './components/course_page.js'
 const PageNotFound = lazy(() => import( './components/pagenotfound.js'));
 const Login = lazy(() => import('./components/login.js'));
 const PostJob = lazy(()=>import ('./components/post_a_job.js'))
-const ClientMessages = lazy(()=>delayForDemo(import('./components/client_messages.js')))
+const ClientMessages = lazy(()=>delayForDemo(import('./components/user_messages.js')))
 const ResetPassword=lazy(()=>delayForDemo(import ('./components/reset_password.js')))
 const ResetLink = lazy(()=>delayForDemo(import ('./components/reset_link.js')))
 function delayForDemo(promise) {
@@ -84,7 +84,7 @@ function App() {
         <Route path='/post_job' element={<PostJob/>}/>
         <Route path="/employer_profile" element={<EmployerProfile />} />
         <Route path='/admin_notifications' element={<AdminNotifications/>}/>
-        <Route path='/messages_page' element={<AdminMessages/>} />
+        {/* <Route path='/messages_page' element={<AdminMessages/>} /> */} 
         <Route path='/user_messages' element={<ClientMessages/>}/>
         <Route path='*' element={<PageNotFound/>}/>
       </Routes>
